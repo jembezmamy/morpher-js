@@ -1,0 +1,3 @@
+%button{data-action: 'addImage'}
+  .icon.image
+  Add image

@@ -1,0 +1,8 @@
+.pane
+.menu
+  %button{title: 'Load image', data-action: 'openFile'}
+    .icon.replace
+  %button{title: 'Delete', data-action: 'delete'}
+    .icon.delete
+  %input{type: 'file', name: 'file'}
+  %input{type: 'text', name: 'url'}

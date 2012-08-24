@@ -1,72 +1,21 @@
-### 
-# Compass
-###
 
-# Susy grids in Compass
-# First: gem install compass-susy-plugin
-# require 'susy'
+helpers do
+  def body_class klass = nil
+    unless klass.nil?
+      @body_classes ||= []
+      @body_classes << klass
+    else
+      @body_classes.join ' '
+    end
+  end
+end
 
-# Change Compass configuration
-# compass_config do |config|
-#   config.output_style = :compact
-# end
+set :css_dir, 'stylesheets'
 
-###
-# Haml
-###
+set :js_dir, 'javascripts'
 
-# CodeRay syntax highlighting in Haml
-# First: gem install haml-coderay
-# require 'haml-coderay'
+set :images_dir, 'images'
 
-# CoffeeScript filters in Haml
-# First: gem install coffee-filter
-# require 'coffee-filter'
-
-# Automatic image dimensions on image_tag helper
-# activate :automatic_image_sizes
-
-###
-# Page command
-###
-
-# Per-page layout changes:
-# 
-# With no layout
-# page "/path/to/file.html", :layout => false
-# 
-# With alternative layout
-# page "/path/to/file.html", :layout => :otherlayout
-# 
-# A path which all have the same layout
-# with_layout :admin do
-#   page "/admin/*"
-# end
-
-# Proxy (fake) files
-# page "/this-page-has-no-template.html", :proxy => "/template-file.html" do
-#   @which_fake_page = "Rendering a fake page with a variable"
-# end
-
-###
-# Helpers
-###
-
-# Methods defined in the helpers block are available in templates
-# helpers do
-#   def some_helper
-#     "Helping"
-#   end
-# end
-
-# Change the CSS directory
-# set :css_dir, "alternative_css_directory"
-
-# Change the JS directory
-# set :js_dir, "alternative_js_directory"
-
-# Change the images directory
-# set :images_dir, "alternative_image_directory"
 
 # Build-specific configuration
 configure :build do

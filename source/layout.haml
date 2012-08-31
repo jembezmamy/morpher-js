@@ -3,7 +3,8 @@
   %head
     %title Morpher.js - JavaScript morphing library
     = stylesheet_link_tag "application"
-    = javascript_include_tag "morpher/morpher", "application"
+    = javascript_include_tag "application"
+    = javascript_include_tag "morpher/morpher"
     = yield_content :head
   
   %body{class: body_class}

@@ -1,4 +1,4 @@
-class Morpher.Matrix
+class MorpherJS.Matrix
   values: false
   transforms: false
   
@@ -16,25 +16,25 @@ class Morpher.Matrix
     
 
   translate: (tx = 0, ty = 0) =>
-    @transforms.unshift new Morpher.Matrix(1,0,tx,0,1,ty,0,0,1)
+    @transforms.unshift new MorpherJS.Matrix(1,0,tx,0,1,ty,0,0,1)
 
   scale: (sx = 1, sy = 1) =>
-    @transforms.unshift new Morpher.Matrix(sx,0,0,0,sy,0,0,0,1)
+    @transforms.unshift new MorpherJS.Matrix(sx,0,0,0,sy,0,0,0,1)
 
   skew: (sx = 0, sy = 0) =>
-    @transforms.unshift new Morpher.Matrix(1,Math.tan(sx),0,Math.tan(sy),1,0,0,0,1)
+    @transforms.unshift new MorpherJS.Matrix(1,Math.tan(sx),0,Math.tan(sy),1,0,0,0,1)
 
   rotate: (a) =>
-    @transforms.unshift new Morpher.Matrix(Math.cos(a),-Math.sin(a),0,Math.sin(a),Math.cos(a),0,0,0,1)
+    @transforms.unshift new MorpherJS.Matrix(Math.cos(a),-Math.sin(a),0,Math.sin(a),Math.cos(a),0,0,0,1)
 
   shear: (sx = 0, sy = 0) =>
-    @transforms.unshift new Morpher.Matrix(1,sx,0,sy,1,0,0,0,1)
+    @transforms.unshift new MorpherJS.Matrix(1,sx,0,sy,1,0,0,0,1)
 
   removeTransform: (i) =>
     @transforms.splice(@transforms.length-1-i, 1)
 
   apply: =>
-    matr = new Morpher.Matrix()
+    matr = new MorpherJS.Matrix()
     for transform in @transforms
       matr.multiplyWith(transform)
     matr

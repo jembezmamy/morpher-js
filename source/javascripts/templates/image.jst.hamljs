@@ -1,4 +1,6 @@
 .pane
+  .artboard
+    %canvas
 .menu
   %button{title: 'Load image', data-action: 'openFile'}
     .icon.replace

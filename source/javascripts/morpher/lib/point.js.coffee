@@ -1,50 +1,83 @@
-class Morpher.Point extends Morpher.EventDispatcher
+class MorpherJS.Point extends MorpherJS.EventDispatcher
   x: 0
   y: 0
-  dots: null
 
   constructor: (x, y) ->
-    @dots = []
     @x = x
     @y = y
+    
 
-  clone: =>
-    new Morpher.Point(@x, @y)
+  # getters & setters
 
-  distanceTo: (point) =>
-    Math.sqrt(Math.pow(point.x-@x, 2) + Math.pow(point.y-@y, 2))
+  getX: =>
+    @x
+  setX: (x, params = {}) =>
+    unless @x == x
+      @x = Math.round x
+      @trigger 'change:x change' unless params.silent
 
-  transform: (matrix) =>
-    tmpX = matrix.get(0,0)*@x + matrix.get(0,1)*@y + matrix.get(0,2)
-    tmpY = matrix.get(1,0)*@x + matrix.get(1,1)*@y + matrix.get(1,2)
-    @x = tmpX
-    @y = tmpY
+  getY: =>
+    @y
+  setY: (y, params = {}) =>
+    unless @y == y
+      @y = Math.round y
+      @trigger 'change:y change' unless params.silent
 
-  visualize: (el) =>
-    dot = new Morpher.DraggableDot()
-    dot.bind 'change', @changeHandler
-    dot.bind 'select', @selectHandler
-    dot.bind 'deselect', @deselectHandler
-    dot.el.appendTo(el)
-    @dots.push dot
-    @updateDots()
 
-  removeVisualization: =>
-    for dot in @dots
-      dot.remove()
-    @dots = []
+  # JSON
 
-  updateDots: =>
-    for dot in @dots
-      dot.moveTo(@x, @y)
+  toJSON: =>
+    {x: @x, y: @y}
 
-  changeHandler: (target) =>
-    @x = target.x
-    @y = target.y
-    @updateDots()
-    @trigger 'change', this
+  fromJSON: (json = {}, params = {}) =>
+    @reset() if params.hard
+    @setX x, params
+    @setY y, params
 
-  selectHandler: (target) =>
-    @trigger 'select', this
-  deselectHandler: (target) =>
-    @trigger 'deselect', this
+  reset: =>
+    @x = null
+    @y = null
+      
+
+  # old
+
+#  clone: =>
+#    new MorpherJS.Point(@x, @y)
+
+#  distanceTo: (point) =>
+#    Math.sqrt(Math.pow(point.x-@x, 2) + Math.pow(point.y-@y, 2))
+
+#  transform: (matrix) =>
+#    tmpX = matrix.get(0,0)*@x + matrix.get(0,1)*@y + matrix.get(0,2)
+#    tmpY = matrix.get(1,0)*@x + matrix.get(1,1)*@y + matrix.get(1,2)
+#    @x = tmpX
+#    @y = tmpY
+
+#  visualize: (el) =>
+#    dot = new MorpherJS.DraggableDot()
+#    dot.bind 'change', @changeHandler
+#    dot.bind 'select', @selectHandler
+#    dot.bind 'deselect', @deselectHandler
+#    dot.el.appendTo(el)
+#    @dots.push dot
+#    @updateDots()
+
+#  removeVisualization: =>
+#    for dot in @dots
+#      dot.remove()
+#    @dots = []
+
+#  updateDots: =>
+#    for dot in @dots
+#      dot.moveTo(@x, @y)
+
+#  changeHandler: (target) =>
+#    @x = target.x
+#    @y = target.y
+#    @updateDots()
+#    @trigger 'change', this
+
+#  selectHandler: (target) =>
+#    @trigger 'select', this
+#  deselectHandler: (target) =>
+#    @trigger 'deselect', this

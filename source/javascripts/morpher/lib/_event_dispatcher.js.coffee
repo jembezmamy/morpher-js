@@ -1,8 +1,8 @@
 # Based on Backbone.Events: http://backbonejs.org/
 
-class Morpher.EventDispatcher
+class MorpherJS.EventDispatcher
 
-  bind: (events, callback, context) =>
+  on: (events, callback, context) =>
     ev = null
     events = events.split(/\s+/)
     calls = @_callbacks || (@_callbacks = {})
@@ -14,7 +14,7 @@ class Morpher.EventDispatcher
       list.tail = tail.next = {}
     this
   
-  unbind: (events, callback, context) =>
+  off: (events, callback, context) =>
     ev = calls = node = null
     unless events
       delete @_callbacks

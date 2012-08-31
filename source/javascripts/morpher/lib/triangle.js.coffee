@@ -1,4 +1,4 @@
-class Morpher.Triangle extends Morpher.EventDispatcher
+class MorpherJS.Triangle extends Backbone.Model
   p1: false
   p2: false
   p3: false
@@ -12,7 +12,7 @@ class Morpher.Triangle extends Morpher.EventDispatcher
     @setPoint(3, p3)
 
   clone: =>
-    triangle = new Morpher.Triangle(@p1.clone(), @p2.clone(), @p3.clone())
+    triangle = new MorpherJS.Triangle(@p1.clone(), @p2.clone(), @p3.clone())
 
   transform: (matrix) =>
     @p1.transform(matrix)
@@ -71,13 +71,13 @@ class Morpher.Triangle extends Morpher.EventDispatcher
     ctx.clip()
     ctx.drawImage @source, left, top, width, height, 0, 0, width, height
 
-    matr1 = new Morpher.Matrix()
+    matr1 = new MorpherJS.Matrix()
     matr1.translate(-@p1.x, -@p1.y)
     matr1.rotate(-Math.atan2(@p2.y-@p1.y, @p2.x-@p1.x))
     from = @clone()
     from.transform(matr1.apply())
 
-    matr2 = new Morpher.Matrix()
+    matr2 = new MorpherJS.Matrix()
     rotation2 = Math.atan2(@destination.p2.y-@destination.p1.y, @destination.p2.x-@destination.p1.x)
     matr2.translate(-@destination.p1.x, -@destination.p1.y)
     matr2.rotate(-rotation2)

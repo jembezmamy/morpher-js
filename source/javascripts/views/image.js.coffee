@@ -1,24 +1,41 @@
-class Gui.Views.Image extends Backbone.View
-  className: 'image'
+class Gui.Views.Image extends Gui.Views.Tile
+  className: 'tile image'
   template: JST['templates/image']
+
+  canvas: null
+  ctx: null
+  img: null
+
+  pointViews: null
 
   events:
     'click [data-action]'     : 'clickHandler'
     'change input[name=file]' : 'fileHandler'
     'change input[name=url]'  : 'changeHandler'
+    'click canvas'            : 'canvasHandler'
 
   initialize: =>
     @model.bind 'change:file', @renderFile
-    @model.bind 'change:url', @renderUrl
+    @model.bind 'change:url', @renderUrl  
 
-  setPosition: (x, y, width, height) =>
-    @$el.css
-      left: "#{x*100}%",
-      top: "#{y*100}%",
-      width: "#{width*100}%",
-      height: "#{height*100}%"
-      
+    @pointViews = []
 
+    @img = new window.Image()
+    @img.onload = @draw
+
+    @model.morpherImage.on 'point:add', @addPointView
+    @model.morpherImage.on 'point:remove', @removePointView
+
+
+  # public methods
+  
+  setSize: (w, h) =>
+    @canvas.width = w
+    @canvas.height = h
+    @draw()
+
+
+  # menu interaction
 
   clickHandler: (e) =>
     @[$(e.currentTarget).data('action')]()
@@ -31,6 +48,16 @@ class Gui.Views.Image extends Backbone.View
     @$('input[name=file]').click()
 
 
+  # canvas interation
+
+  canvasHandler: (e) =>
+    offset = @$canvas.offset()
+    x = e.pageX-offset.left
+    y = e.pageY-offset.top
+    @model.addPoint x, y
+
+
+  # file related methods
 
   fileHandler: (e) =>
     file = e.target.files[0]
@@ -50,16 +77,44 @@ class Gui.Views.Image extends Backbone.View
     @model.save $(e.currentTarget).attr('name'), $(e.currentTarget).val()
 
 
+  # points
+
+  addPointView: (point) =>
+    view = new Gui.Views.Point(model: point)
+    @pointViews.push view
+    view.on 'drag:stop', @dragStopHandler
+    @$el.find('.pane .artboard').append view.render().el
+
+  addAllPointViews: =>
+    @addPointView(point) for point in @model.morpherImage.points
+
+  removePointView: =>
+
+  dragStopHandler: =>
+    @trigger 'drag:stop'
+
+
+  # rendering
+  
   renderUrl: =>
     @$('input[name=url]').val @model.get('url')
 
   renderFile: =>
-    @$('.pane > img').remove()
     if @model.get('file')?
-      $('<img />').attr(src: @model.get('file')).appendTo @$('.pane')
+      @img.src = @model.get('file')
 
   render: =>
     @$el.html @template()
+    @$canvas = @$('canvas')
+    @canvas = @$canvas[0]
+    @ctx = @canvas.getContext('2d')
     @renderUrl()
     @renderFile()    
     this
+
+
+  # canvas drawing
+
+  draw: =>
+    @canvas.width = @canvas.width
+    @ctx.drawImage @img, 0, 0

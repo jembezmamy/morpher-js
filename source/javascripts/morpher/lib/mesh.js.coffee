@@ -1,4 +1,4 @@
-class Morpher.Mesh extends Morpher.EventDispatcher
+class MorpherJS.Mesh extends Backbone.Model
   points: null
   triangles: null
   selected: null
@@ -20,7 +20,7 @@ class Morpher.Mesh extends Morpher.EventDispatcher
     mesh.bind('triangle:add', @triangleHandler)
 
   addTriangle: (p1, p2, p3) =>
-    triangle = new Morpher.Triangle(p1, p2, p3)
+    triangle = new MorpherJS.Triangle(p1, p2, p3)
     @triangles.push triangle
     @trigger 'triangle:add', @points.indexOf(p1), @points.indexOf(p2), @points.indexOf(p3)
     if @destination?
@@ -36,7 +36,7 @@ class Morpher.Mesh extends Morpher.EventDispatcher
 
   addPoint: =>
     if arguments.length > 1
-      p = new Morpher.Point(arguments[0], arguments[1])
+      p = new MorpherJS.Point(arguments[0], arguments[1])
     else
       p = arguments[0]
     p.bind 'select', @selectHandler

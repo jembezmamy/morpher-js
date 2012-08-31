@@ -5,16 +5,28 @@ class Gui.Views.Project extends Backbone.View
   menuEl: null
 
   imageViews: null
+  previewView: null
 
   initialize: =>
     @$menuEl = $('<div />').addClass('project-menu')
     @menuEl = @$menuEl[0]
     @$menuEl.on 'click', '[data-action]', @clickHandler
 
+    @model.morpher.on "resize", @updateImagesSize
+    @model.morpher.on "load", @loadHandler
+
+    @previewView = new Gui.Views.Tile()
+    
     @imageViews = []
     @model.images.bind 'add', @addImageView
     @model.images.bind 'reset', @addAllImageViews
     @model.images.bind 'remove', @removeImageView
+
+
+  # public methods
+
+  save: =>
+    @model.save()
 
   show: =>
     @$menuEl.addClass('visible')
@@ -29,12 +41,15 @@ class Gui.Views.Project extends Backbone.View
     super
 
 
+  # image views
+
   addImage: =>
     @model.images.create()
 
   addImageView: (image) =>
     imageView = new Gui.Views.Image(model: image)
     @imageViews.push imageView
+    imageView.on 'drag:stop', @save
     @$el.append imageView.render().el
     @arrangeImages()
     if image.isNew()
@@ -51,10 +66,21 @@ class Gui.Views.Project extends Backbone.View
     delete @imageViews.splice params.index, 1
     @arrangeImages()
 
+  updateImagesSize: (morpher, canvas) =>
+    for image in @imageViews
+      image.setSize canvas.width, canvas.height
+
   arrangeImages: =>
-    count = @imageViews.length
-    for image, i in @imageViews
+    views = @imageViews.slice 0
+    views.splice views.length/2, 0, @previewView
+    count = views.length
+    for image, i in views
       image.setPosition i/count, 0, 1/count, 1
+
+
+  loadHandler: (morpher, canvas)=>
+    image.addAllPointViews() for image in @imageViews
+    @updateImagesSize(morpher, canvas)
   
 
   clickHandler: (e) =>
@@ -62,5 +88,7 @@ class Gui.Views.Project extends Backbone.View
 
   render: =>
     @$menuEl.html @menuTemplate()
+    @previewView.render().$el.appendTo @el
+    @previewView.$pane.append @model.morpher.canvas
     @addAllImageViews()
     this

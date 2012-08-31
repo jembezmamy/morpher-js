@@ -1,4 +1,4 @@
-class Morpher.DraggableDot extends Morpher.EventDispatcher
+class MorpherJS.DraggableDot extends Backbone.Model
   el: null
   x: 0
   y: 0

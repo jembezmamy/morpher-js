@@ -4,14 +4,26 @@ class Gui.Models.Project extends Backbone.Model
   localStorage: projectsStorage
 
   images: null
+  morpher: null
+
+  constructor: ->
+    @morpher = new Morpher()
+    @morpher.on 'change image:add image:remove point:add point:remove', @morpherChange
+    
+    @images = new Gui.Collections.Images()
+    @images.bind 'add', @addImage
+    @images.bind 'reset', @addAllImages
+    @images.bind 'remove', @removeImage
+    @images.bind 'point:add', @addPoint
+    super
     
   initialize: (params) =>
     @setDefaultColor()
-    @images = new Gui.Collections.Images()
     if @isNew()
       @on 'sync', @initImagesStorage
     else
-      @initImagesStorage()
+      @initImagesStorage()    
+    
 
   setDefaultColor: =>
     unless @get('color')
@@ -23,10 +35,29 @@ class Gui.Models.Project extends Backbone.Model
       image.destroy()
     super
 
+
+  morpherChange: =>
+    @save morpher: @morpher.toJSON()
+    
+
   initImagesStorage: =>
     @off 'sync', @initImagesStorage
     @images.localStorage = new Backbone.LocalStorage("Images#{@get('id')}")
     @images.fetch()
+
+  addImage: (image, params = {}) =>
+    @morpher.addImage image.morpherImage, params
+
+  addAllImages: =>
+    @addImage(image, silent: true) for image in @images.models
+    @morpher.fromJSON @get('morpher'), hard: false, silent: true
+
+  removeImage: (image, collection, params) =>
+    @morpher.removeImage image.morpherImage
+
+  addPoint: (x, y) =>
+    @morpher.addPoint x, y
+    
 
 
 class Gui.Collections.Projects extends Backbone.Collection

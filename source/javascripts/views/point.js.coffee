@@ -5,6 +5,7 @@ class Gui.Views.Point extends Backbone.View
 
   events:
     'mousedown' : 'dragHandler'
+    'contextmenu' : 'destroy'
 
   initialize: =>
     @model.on 'change', @render
@@ -25,6 +26,10 @@ class Gui.Views.Point extends Backbone.View
         $('body').removeClass 'drag'
         $(window).off 'mousemove mouseup', @dragHandler
         @trigger 'drag:stop'
+
+  destroy: (e) =>
+    e.preventDefault()
+    @model.remove()
 
   render: =>
     @$el.css

@@ -14,7 +14,6 @@ class Gui.Models.Project extends Backbone.Model
     @images.bind 'add', @addImage
     @images.bind 'reset', @addAllImages
     @images.bind 'remove', @removeImage
-    @images.bind 'point:add', @addPoint
     super
     
   initialize: (params) =>
@@ -54,9 +53,6 @@ class Gui.Models.Project extends Backbone.Model
 
   removeImage: (image, collection, params) =>
     @morpher.removeImage image.morpherImage
-
-  addPoint: (x, y) =>
-    @morpher.addPoint x, y
     
 
 

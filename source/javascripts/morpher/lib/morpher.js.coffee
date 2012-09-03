@@ -17,6 +17,8 @@ class MorpherJS.Morpher extends MorpherJS.EventDispatcher
     @images.push image
     image.on 'load', @loadHandler
     image.on 'change', @changeHandler
+    image.on 'point:add', @addPointHandler
+    image.on 'point:remove', @removePointHandler
     @loadHandler()
     @trigger 'image:add' unless params.silent
 
@@ -42,6 +44,20 @@ class MorpherJS.Morpher extends MorpherJS.EventDispatcher
     for image in @images
       image.addPoint x: x, y: y
     @trigger 'point:add', this
+
+  addPointHandler: (point, image) =>
+    for img in @images
+      if img.points.length < image.points.length
+        img.addPoint x: point.x, y: point.y
+        return
+    @trigger 'point:add', this
+
+  removePointHandler: (point, index, image) =>
+    for img in @images
+      if img.points.length > image.points.length
+        img.removePoint index
+        return
+    @trigger 'point:remove', this
     
 
   # drawing

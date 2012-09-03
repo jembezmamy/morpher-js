@@ -22,15 +22,19 @@ class MorpherJS.Image extends MorpherJS.EventDispatcher
     unless point instanceof MorpherJS.Point
       point = new MorpherJS.Point point.x, point.y
     point.on "change", @changeHandler
+    point.on 'remove', @removePoint
     @points.push point
-    @trigger 'point:add', point unless params.silent
+    @trigger 'point:add', point, this unless params.silent
     point
 
-  removePoint: (point) =>
-    i = @points.indexOf point
-    if i != -1
+  removePoint: (point, params = {}) =>
+    if point instanceof MorpherJS.Point
+      i = @points.indexOf point
+    else
+      i = point
+    if i? && i != -1
       delete @points.splice i, 1
-      @trigger 'point:remove'
+      @trigger 'point:remove', point, i, this unless params.silent
 
   makeCompatibleWith: (image) =>
     if @points.length != image.points.length
@@ -39,7 +43,7 @@ class MorpherJS.Image extends MorpherJS.EventDispatcher
         @points.splice image.points.length, @points.length-image.points.length
       else
         for point in image.points[(@points.length)..(image.points.length)]
-          @addPoint point.x, point.y
+          @addPoint x: point.x, y: point.y
 
   changeHandler: =>
     @trigger 'change'

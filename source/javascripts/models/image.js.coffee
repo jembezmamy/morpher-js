@@ -11,7 +11,7 @@ class Gui.Models.Image extends Backbone.Model
     super
 
   addPoint: (x, y) =>
-    @trigger 'point:add', x, y
+    @morpherImage.addPoint x: x, y: y
   
 
 class Gui.Collections.Images extends Backbone.Collection

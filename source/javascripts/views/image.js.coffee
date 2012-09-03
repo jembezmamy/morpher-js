@@ -80,15 +80,21 @@ class Gui.Views.Image extends Gui.Views.Tile
   # points
 
   addPointView: (point) =>
+    console.log 'add point view'
     view = new Gui.Views.Point(model: point)
     @pointViews.push view
     view.on 'drag:stop', @dragStopHandler
     @$el.find('.pane .artboard').append view.render().el
 
   addAllPointViews: =>
+    for view in @pointViews
+      view.remove()
+    @pointViews = []
     @addPointView(point) for point in @model.morpherImage.points
 
-  removePointView: =>
+  removePointView: (point, index, image) =>
+    @pointViews[index].remove()
+    delete @pointViews.splice index, 1
 
   dragStopHandler: =>
     @trigger 'drag:stop'

@@ -23,6 +23,11 @@ class MorpherJS.Point extends MorpherJS.EventDispatcher
       @y = Math.round y
       @trigger 'change:y change' unless params.silent
 
+  # public methods
+
+  remove: =>
+    @trigger 'remove', this
+
 
   # JSON
 

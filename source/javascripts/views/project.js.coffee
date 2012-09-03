@@ -7,6 +7,8 @@ class Gui.Views.Project extends Backbone.View
   imageViews: null
   previewView: null
 
+  selectedPoints: null
+
   initialize: =>
     @$menuEl = $('<div />').addClass('project-menu')
     @menuEl = @$menuEl[0]
@@ -16,6 +18,8 @@ class Gui.Views.Project extends Backbone.View
     @model.morpher.on "load", @loadHandler
 
     @previewView = new Gui.Views.Tile()
+
+    @selectedPoints = []
     
     @imageViews = []
     @model.images.bind 'add', @addImageView
@@ -51,6 +55,7 @@ class Gui.Views.Project extends Backbone.View
     @imageViews.push imageView
     imageView.on 'drag:stop', @save
     imageView.on 'highlight', @hightlightHandler
+    imageView.on 'select', @selectHandler
     @$el.append imageView.render().el
     @arrangeImages()
     if image.isNew()
@@ -81,6 +86,15 @@ class Gui.Views.Project extends Backbone.View
   hightlightHandler: (index, state) =>
     for image in @imageViews
       image.highlightPoint index, state
+
+  selectHandler: (index) =>
+    i = @selectedPoints.indexOf(index)
+    if i != -1
+      @selectedPoints.splice i, 1
+    else
+      @selectedPoints.push index
+    for image in @imageViews
+      image.selectPoint index, i == -1
 
 
   loadHandler: (morpher, canvas)=>

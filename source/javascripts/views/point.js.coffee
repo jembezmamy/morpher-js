@@ -8,6 +8,7 @@ class Gui.Views.Point extends Backbone.View
     'contextmenu' : 'destroy'
     'mouseover'   : 'highlightHandler'
     'mouseout'    : 'highlightHandler'
+    'dblclick'    : 'selectHandler'
 
   initialize: =>
     @model.on 'change', @render
@@ -50,6 +51,19 @@ class Gui.Views.Point extends Backbone.View
       @$el.addClass 'highlighted'
     else
       @$el.removeClass 'highlighted'
+
+  # Select
+
+  selectHandler: (e) =>
+    @trigger 'select', this
+
+  setSelection: (selected) =>
+    if selected
+      @$el.addClass 'selected'
+    else
+      @$el.removeClass 'selected'
+
+  # Render
 
   render: =>
     @$el.css

@@ -95,7 +95,7 @@ body.gui
           position: absolute
           width: 6px
           height: 6px
-          border-radius: 5px
+          border-radius: 6px
           margin: -5px
           background-color: rgba(black, 0.5)
           border: 2px solid white
@@ -104,5 +104,11 @@ body.gui
           &.highlighted
             background-color: rgba(black, 0.7)
             @include browser-prefixes(box-shadow, (0 1px 1px 1px rgba(black, 0.7), 0 0 3px 5px rgba(white, 0.5)))
+          &.selected
+            background-color: black
+            width: 10px
+            height: 10px
+            border: 1px solid white
+            margin: -6px
             
           

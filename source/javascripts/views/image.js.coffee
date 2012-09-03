@@ -84,6 +84,7 @@ class Gui.Views.Image extends Gui.Views.Tile
     @pointViews.push view
     view.on 'drag:stop', @dragStopHandler
     view.on 'highlight', @highlightHandler
+    view.on 'select', @selectHandler
     @$el.find('.pane .artboard').append view.render().el
 
   addAllPointViews: =>
@@ -99,6 +100,8 @@ class Gui.Views.Image extends Gui.Views.Tile
   dragStopHandler: =>
     @trigger 'drag:stop'
 
+  # highlight
+
   highlightHandler: (point, state) =>
     index = @pointViews.indexOf point
     if index != -1
@@ -106,6 +109,16 @@ class Gui.Views.Image extends Gui.Views.Tile
 
   highlightPoint: (index, state) =>
     @pointViews[index].setHighlight state
+
+  # select
+
+  selectHandler: (point, state) =>
+    index = @pointViews.indexOf point
+    if index != -1
+      @trigger 'select', index
+
+  selectPoint: (index, state) =>
+    @pointViews[index].setSelection state
 
 
   # rendering

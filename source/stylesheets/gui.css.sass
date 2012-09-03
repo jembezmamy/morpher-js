@@ -101,5 +101,8 @@ body.gui
           border: 2px solid white
           @include browser-prefixes(box-shadow, 0 1px 1px 1px rgba(black, 0.5))
           cursor: pointer
+          &.highlighted
+            background-color: rgba(black, 0.7)
+            @include browser-prefixes(box-shadow, (0 1px 1px 1px rgba(black, 0.7), 0 0 3px 5px rgba(white, 0.5)))
             
           

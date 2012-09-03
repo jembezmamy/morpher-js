@@ -4,8 +4,10 @@ class Gui.Views.Point extends Backbone.View
   delta: null
 
   events:
-    'mousedown' : 'dragHandler'
+    'mousedown'   : 'dragHandler'
     'contextmenu' : 'destroy'
+    'mouseover'   : 'highlightHandler'
+    'mouseout'    : 'highlightHandler'
 
   initialize: =>
     @model.on 'change', @render
@@ -26,10 +28,28 @@ class Gui.Views.Point extends Backbone.View
         $('body').removeClass 'drag'
         $(window).off 'mousemove mouseup', @dragHandler
         @trigger 'drag:stop'
+        @delta = null
+        @highlightHandler()
 
   destroy: (e) =>
     e.preventDefault()
     @model.remove()
+
+
+  # Highlight
+
+  highlightHandler: (e) =>
+    return if @delta?
+    if e? && e.type == 'mouseover'
+      @trigger 'highlight', this, true
+    else
+      @trigger 'highlight', this, false
+
+  setHighlight: (highlight) =>
+    if highlight
+      @$el.addClass 'highlighted'
+    else
+      @$el.removeClass 'highlighted'
 
   render: =>
     @$el.css

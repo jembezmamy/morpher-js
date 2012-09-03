@@ -50,6 +50,7 @@ class Gui.Views.Project extends Backbone.View
     imageView = new Gui.Views.Image(model: image)
     @imageViews.push imageView
     imageView.on 'drag:stop', @save
+    imageView.on 'highlight', @hightlightHandler
     @$el.append imageView.render().el
     @arrangeImages()
     if image.isNew()
@@ -76,6 +77,10 @@ class Gui.Views.Project extends Backbone.View
     count = views.length
     for image, i in views
       image.setPosition i/count, 0, 1/count, 1
+
+  hightlightHandler: (index, state) =>
+    for image in @imageViews
+      image.highlightPoint index, state
 
 
   loadHandler: (morpher, canvas)=>

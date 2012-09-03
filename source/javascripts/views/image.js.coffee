@@ -80,10 +80,10 @@ class Gui.Views.Image extends Gui.Views.Tile
   # points
 
   addPointView: (point) =>
-    console.log 'add point view'
     view = new Gui.Views.Point(model: point)
     @pointViews.push view
     view.on 'drag:stop', @dragStopHandler
+    view.on 'highlight', @highlightHandler
     @$el.find('.pane .artboard').append view.render().el
 
   addAllPointViews: =>
@@ -98,6 +98,14 @@ class Gui.Views.Image extends Gui.Views.Tile
 
   dragStopHandler: =>
     @trigger 'drag:stop'
+
+  highlightHandler: (point, state) =>
+    index = @pointViews.indexOf point
+    if index != -1
+      @trigger 'highlight', index, state
+
+  highlightPoint: (index, state) =>
+    @pointViews[index].setHighlight state
 
 
   # rendering

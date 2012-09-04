@@ -8,6 +8,7 @@ class Gui.Views.Image extends Gui.Views.Tile
   img: null
 
   pointViews: null
+  MidpointViews: null
 
   events:
     'click [data-action]'     : 'clickHandler'
@@ -20,12 +21,14 @@ class Gui.Views.Image extends Gui.Views.Tile
     @model.bind 'change:url', @renderUrl  
 
     @pointViews = []
+    @midpointViews = []
 
     @img = new window.Image()
     @img.onload = @draw
 
     @model.morpherImage.on 'point:add', @addPointView
     @model.morpherImage.on 'point:remove', @removePointView
+    @model.morpherImage.on 'triangle:add', @addMidpointViews
     @model.morpherImage.on 'change triangle:add triangle:remove', @draw
 
 
@@ -102,15 +105,44 @@ class Gui.Views.Image extends Gui.Views.Tile
   dragStopHandler: =>
     @trigger 'drag:stop'
 
+  # control points
+
+  addMidpointView: (p1, p2) =>
+    for point in @midpointViews
+      return if point.p1 == p1 && point.p2 == p2
+      return if point.p1 == p2 && point.p2 == p1
+    view = new Gui.Views.Midpoint(p1: p1, p2: p2)
+    view.on 'highlight', @highlightHandler
+    @midpointViews.push view
+    @$el.find('.pane .artboard').append view.render().el
+
+  addMidpointViews: (i1, i2, i3, triangle) =>
+    @addMidpointView triangle.p1, triangle.p2
+    @addMidpointView triangle.p2, triangle.p3
+    @addMidpointView triangle.p3, triangle.p1
+
+  addAllMidpointViews: =>
+    for view in @midpointViews
+      view.remove()
+    @midpointViews = []
+    @addMidpointViews(0, 0, 0, triangle) for triangle in @model.morpherImage.triangles
+
   # highlight
 
   highlightHandler: (point, state) =>
     index = @pointViews.indexOf point
     if index != -1
       @trigger 'highlight', index, state
+      return
+    index = @midpointViews.indexOf point
+    if index != -1
+      @trigger 'highlight', index, state, true
 
-  highlightPoint: (index, state) =>
-    @pointViews[index].setHighlight state
+  highlightPoint: (index, state, midpoint = false) =>
+    unless midpoint
+      @pointViews[index].setHighlight state
+    else
+      @midpointViews[index].setHighlight state
 
   # select
 
@@ -124,7 +156,7 @@ class Gui.Views.Image extends Gui.Views.Tile
 
 
   # rendering
-  
+
   renderUrl: =>
     @$('input[name=url]').val @model.get('url')
 
@@ -140,7 +172,8 @@ class Gui.Views.Image extends Gui.Views.Tile
     @pattern = @buildPattern 10, 10
     @renderUrl()
     @renderFile()
-    
+    @addAllPointViews()
+    @addAllMidpointViews()
     this
 
 
@@ -163,6 +196,7 @@ class Gui.Views.Image extends Gui.Views.Tile
       @ctx.lineWidth = 1
       @ctx.strokeStyle = "rgba(0,0,0,0.5)"
       @ctx.stroke()
+    
 
   buildPattern: (w, h) =>
     canvas = document.createElement('canvas')

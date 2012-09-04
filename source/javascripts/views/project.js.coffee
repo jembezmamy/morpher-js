@@ -83,9 +83,9 @@ class Gui.Views.Project extends Backbone.View
     for image, i in views
       image.setPosition i/count, 0, 1/count, 1
 
-  hightlightHandler: (index, state) =>
+  hightlightHandler: (index, state, midpoint = false) =>
     for image in @imageViews
-      image.highlightPoint index, state
+      image.highlightPoint index, state, midpoint
 
   selectHandler: (index) =>
     i = @selectedPoints.indexOf(index)
@@ -105,7 +105,6 @@ class Gui.Views.Project extends Backbone.View
 
 
   loadHandler: (morpher, canvas)=>
-    image.addAllPointViews() for image in @imageViews
     @updateImagesSize(morpher, canvas)
   
 

@@ -91,7 +91,7 @@ body.gui
               line-height: 21px
               float: right
 
-        .point
+        .point, .midpoint
           position: absolute
           width: 6px
           height: 6px
@@ -110,5 +110,13 @@ body.gui
             height: 10px
             border: 1px solid white
             margin: -6px
-            
+
+        .midpoint
+          width: 6px
+          height: 6px
+          margin: -3px
+          border: none
+          background-color: rgba(white, 0.5)
+          &.highlighted
+            background-color: white
           

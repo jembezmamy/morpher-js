@@ -26,7 +26,7 @@ class Gui.Views.Image extends Gui.Views.Tile
 
     @model.morpherImage.on 'point:add', @addPointView
     @model.morpherImage.on 'point:remove', @removePointView
-    @model.morpherImage.on 'change triangle:add', @draw
+    @model.morpherImage.on 'change triangle:add triangle:remove', @draw
 
 
   # public methods

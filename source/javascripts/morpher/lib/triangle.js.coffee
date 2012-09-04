@@ -10,6 +10,15 @@ class MorpherJS.Triangle extends Backbone.Model
     @p1 = p1
     @p2 = p2
     @p3 = p3
+    @p1.on 'remove', @remove
+    @p2.on 'remove', @remove
+    @p3.on 'remove', @remove
+
+  # public methods
+
+  remove: =>
+    @trigger 'remove', this
+
 
 #  clone: =>
 #    triangle = new MorpherJS.Triangle(@p1.clone(), @p2.clone(), @p3.clone())

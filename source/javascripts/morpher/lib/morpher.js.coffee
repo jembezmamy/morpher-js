@@ -61,6 +61,9 @@ class MorpherJS.Morpher extends MorpherJS.EventDispatcher
       if img.points.length > image.points.length
         img.removePoint index
         return
+    for triangle in @triangles
+      for v, k in triangle
+        triangle[k] -= 1 if v >= index
     @trigger 'point:remove', this
 
 
@@ -86,8 +89,10 @@ class MorpherJS.Morpher extends MorpherJS.EventDispatcher
     @trigger 'triangle:add', this
 
   removeTriangleHandler: (triangle, index, image) =>
+    if image.triangles.length < @triangles.length
+      delete @triangles.splice index, 1
     for img in @images
-      if img.triangles.length > image.triangles.length
+      if img.triangles.length > @triangles.length
         img.removeTriangle index
         return
     @trigger 'triangle:remove', this

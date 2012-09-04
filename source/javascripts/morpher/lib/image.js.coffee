@@ -55,8 +55,18 @@ class MorpherJS.Image extends MorpherJS.EventDispatcher
 
   addTriangle: (p1, p2, p3) =>
     triangle = new MorpherJS.Triangle @points[p1], @points[p2], @points[p3]
+    triangle.on 'remove', @removeTriangle
     @triangles.push triangle
     @trigger 'triangle:add', p1, p2, p3, triangle, this
+
+  removeTriangle: (triangle, params = {})=>
+    if triangle instanceof MorpherJS.Triangle
+      i = @triangles.indexOf triangle
+    else
+      i = triangle
+    if i? && i != -1
+      delete @triangles.splice i, 1
+      @trigger 'triangle:remove', triangle, i, this unless params.silent
 
 
   # image

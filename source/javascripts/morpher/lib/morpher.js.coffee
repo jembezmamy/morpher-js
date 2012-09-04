@@ -1,9 +1,11 @@
 class MorpherJS.Morpher extends MorpherJS.EventDispatcher
   images: null
+  triangles: []
   canvas: null
 
   constructor: (params) ->
     @images = []
+    @triangles = []
     @canvas = document.createElement('canvas')
     
 
@@ -19,6 +21,8 @@ class MorpherJS.Morpher extends MorpherJS.EventDispatcher
     image.on 'change', @changeHandler
     image.on 'point:add', @addPointHandler
     image.on 'point:remove', @removePointHandler
+    image.on 'triangle:add', @addTriangleHandler
+    image.on 'triangle:remove', @removeTriangleHandler
     @loadHandler()
     @trigger 'image:add' unless params.silent
 
@@ -58,6 +62,35 @@ class MorpherJS.Morpher extends MorpherJS.EventDispatcher
         img.removePoint index
         return
     @trigger 'point:remove', this
+
+
+  # triangles
+
+  addTriangle: (i1, i2, i3) =>
+    if @images.length > 0
+      @images[0].addTriangle i1, i2, i3
+
+  triangleExists: (i1, i2, i3) =>
+    for t in @triangles
+      if t.indexOf(i1) != -1 && t.indexOf(i2) != -1 && t.indexOf(i3) != -1
+        return true
+    false
+
+  addTriangleHandler: (i1, i2, i3, triangle, image) =>
+    if image.triangles.length > @triangles.length && !@triangleExists(i1, i2, i3)
+      @triangles.push [i1, i2, i3]
+    for img in @images
+      if img.triangles.length < @triangles.length
+        img.addTriangle i1, i2, i3
+        return
+    @trigger 'triangle:add', this
+
+  removeTriangleHandler: (triangle, index, image) =>
+    for img in @images
+      if img.triangles.length > image.triangles.length
+        img.removeTriangle index
+        return
+    @trigger 'triangle:remove', this
     
 
   # drawing
@@ -85,6 +118,7 @@ class MorpherJS.Morpher extends MorpherJS.EventDispatcher
     json.images = []
     for image in @images
       json.images.push image.toJSON()
+    json.triangles = @triangles.slice()
     json
 
 
@@ -96,6 +130,9 @@ class MorpherJS.Morpher extends MorpherJS.EventDispatcher
           @addImage image, params
         else
           @images[i].fromJSON image, params
+    if json.triangles?
+      for triangle in json.triangles[@triangles.length..-1]
+        @addTriangle triangle[0], triangle[1], triangle[2]
       
 
   reset: =>

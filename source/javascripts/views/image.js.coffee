@@ -4,6 +4,7 @@ class Gui.Views.Image extends Gui.Views.Tile
 
   canvas: null
   ctx: null
+  pattern: null
   img: null
 
   pointViews: null
@@ -25,6 +26,7 @@ class Gui.Views.Image extends Gui.Views.Tile
 
     @model.morpherImage.on 'point:add', @addPointView
     @model.morpherImage.on 'point:remove', @removePointView
+    @model.morpherImage.on 'change triangle:add', @draw
 
 
   # public methods
@@ -135,8 +137,10 @@ class Gui.Views.Image extends Gui.Views.Tile
     @$canvas = @$('canvas')
     @canvas = @$canvas[0]
     @ctx = @canvas.getContext('2d')
+    @pattern = @buildPattern 10, 10
     @renderUrl()
-    @renderFile()    
+    @renderFile()
+    
     this
 
 
@@ -145,3 +149,40 @@ class Gui.Views.Image extends Gui.Views.Tile
   draw: =>
     @canvas.width = @canvas.width
     @ctx.drawImage @img, 0, 0
+    for triangle in @model.morpherImage.triangles
+      @ctx.beginPath()
+      @ctx.moveTo(triangle.p1.x, triangle.p1.y)
+      @ctx.lineTo(triangle.p2.x, triangle.p2.y)
+      @ctx.lineTo(triangle.p3.x, triangle.p3.y)
+      @ctx.closePath()
+      @ctx.fillStyle = @pattern
+      @ctx.fill()
+      @ctx.lineWidth = 2
+      @ctx.strokeStyle = "rgba(255,255,255,0.5)"
+      @ctx.stroke()
+      @ctx.lineWidth = 1
+      @ctx.strokeStyle = "rgba(0,0,0,0.5)"
+      @ctx.stroke()
+
+  buildPattern: (w, h) =>
+    canvas = document.createElement('canvas')
+    canvas.width = w
+    canvas.height = h
+    ctx = canvas.getContext('2d')
+    ctx.strokeStyle = "rgba(0,0,0,0.2)"
+    ctx.lineWidth = 1
+    ctx.lineCap = 'square'
+    ctx.beginPath()
+    ctx.moveTo(0,h/2)
+    ctx.lineTo(w/2,h)
+    ctx.stroke()
+    ctx.beginPath()
+    ctx.moveTo(w/2,0)
+    ctx.lineTo(w,h/2)
+    ctx.stroke()
+    ctx.strokeStyle = "rgba(255,255,255,0.2)"
+    ctx.beginPath()
+    ctx.moveTo(0,0)
+    ctx.lineTo(w,h)
+    ctx.stroke()
+    @ctx.createPattern canvas, "repeat"

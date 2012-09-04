@@ -8,7 +8,7 @@ class Gui.Models.Project extends Backbone.Model
 
   constructor: ->
     @morpher = new Morpher()
-    @morpher.on 'change image:add image:remove point:add point:remove', @morpherChange
+    @morpher.on 'change image:add image:remove point:add point:remove triangle:add triangle:remove', @morpherChange
     
     @images = new Gui.Collections.Images()
     @images.bind 'add', @addImage
@@ -33,6 +33,9 @@ class Gui.Models.Project extends Backbone.Model
     @images.each (image) =>
       image.destroy()
     super
+
+  addTriangle: (p1, p2, p3) =>
+    @morpher.addTriangle p1, p2, p3
 
 
   morpherChange: =>

@@ -2,11 +2,13 @@ class MorpherJS.Image extends MorpherJS.EventDispatcher
   el: null
 
   points: null
+  triangles: null
 
   constructor: (json = {}) ->
     @el = new window.Image()
     @el.onload = @loadHandler
     @points = []
+    @triangles = []
     @fromJSON json
     
 
@@ -47,6 +49,14 @@ class MorpherJS.Image extends MorpherJS.EventDispatcher
 
   changeHandler: =>
     @trigger 'change'
+
+
+  # triangles
+
+  addTriangle: (p1, p2, p3) =>
+    triangle = new MorpherJS.Triangle @points[p1], @points[p2], @points[p3]
+    @triangles.push triangle
+    @trigger 'triangle:add', p1, p2, p3, triangle, this
 
 
   # image

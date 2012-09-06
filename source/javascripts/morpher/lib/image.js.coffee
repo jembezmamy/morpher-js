@@ -51,6 +51,29 @@ class MorpherJS.Image extends MorpherJS.EventDispatcher
     @trigger 'change'
 
 
+  # edges
+
+  splitEdge: (p1, p2) =>
+    p4 = @addPoint
+      x: p1.x + (p2.x - p1.x)/2,
+      y: p1.y + (p2.y - p1.y)/2
+    i1 = @points.indexOf p1
+    i2 = @points.indexOf p2
+    i4 = @points.indexOf p4
+    i = 0
+    while i < @triangles.length
+      triangle = @triangles[i]
+      if triangle.hasPoint(p1) && triangle.hasPoint(p2)
+        p3 = point for point in [triangle.p1, triangle.p2, triangle.p3] when point != p1 && point != p2
+        i3 = @points.indexOf p3
+        triangle.remove()
+        @addTriangle(i1, i3, i4)
+        @addTriangle(i2, i3, i4)
+      else
+        i++
+        
+
+
   # triangles
 
   addTriangle: (p1, p2, p3) =>
@@ -64,8 +87,11 @@ class MorpherJS.Image extends MorpherJS.EventDispatcher
       i = @triangles.indexOf triangle
     else
       i = triangle
+      triangle = @triangles[i]
     if i? && i != -1
       delete @triangles.splice i, 1
+      triangle.off 'remove', @removeTriangle
+      triangle.remove()
       @trigger 'triangle:remove', triangle, i, this unless params.silent
 
 

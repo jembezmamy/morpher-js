@@ -19,6 +19,9 @@ class MorpherJS.Triangle extends Backbone.Model
   remove: =>
     @trigger 'remove', this
 
+  hasPoint: (p) =>
+    @p1 is p || @p2 is p || @p3 is p
+
 
 #  clone: =>
 #    triangle = new MorpherJS.Triangle(@p1.clone(), @p2.clone(), @p3.clone())
@@ -32,8 +35,7 @@ class MorpherJS.Triangle extends Backbone.Model
 #    @["p#{index}"] = point
 #    point.bind 'change', @changeHandler
 
-#  hasPoint: (p) =>
-#    @p1 is p || @p2 is p || @p3 is p
+#  
 
 #  getBounds: =>
 #    left = right = @p1.x

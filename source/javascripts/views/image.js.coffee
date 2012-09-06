@@ -8,7 +8,8 @@ class Gui.Views.Image extends Gui.Views.Tile
   img: null
 
   pointViews: null
-  MidpointViews: null
+  midpointViews: null
+  splitInProgress: false
 
   events:
     'click [data-action]'     : 'clickHandler'
@@ -91,6 +92,9 @@ class Gui.Views.Image extends Gui.Views.Tile
     view.on 'highlight', @highlightHandler
     view.on 'select', @selectHandler
     @$el.find('.pane .artboard').append view.render().el
+    if @splitInProgress
+      @splitInProgress = false
+      view.startDrag()
 
   addAllPointViews: =>
     for view in @pointViews
@@ -105,27 +109,39 @@ class Gui.Views.Image extends Gui.Views.Tile
   dragStopHandler: =>
     @trigger 'drag:stop'
 
-  # control points
+  # midpoints
 
-  addMidpointView: (p1, p2) =>
+  addMidpointView: (triangle, p1, p2) =>
     for point in @midpointViews
-      return if point.p1 == p1 && point.p2 == p2
-      return if point.p1 == p2 && point.p2 == p1
-    view = new Gui.Views.Midpoint(p1: p1, p2: p2)
+      if (point.p1 == p1 && point.p2 == p2) || (point.p1 == p2 && point.p2 == p1)
+        point.addTriangle triangle
+        return
+    view = new Gui.Views.Midpoint(triangle: triangle, p1: p1, p2: p2)
     view.on 'highlight', @highlightHandler
+    view.on 'edge:split', @splitHandler
+    view.on 'remove', @removeMidpointView
     @midpointViews.push view
     @$el.find('.pane .artboard').append view.render().el
 
   addMidpointViews: (i1, i2, i3, triangle) =>
-    @addMidpointView triangle.p1, triangle.p2
-    @addMidpointView triangle.p2, triangle.p3
-    @addMidpointView triangle.p3, triangle.p1
+    @addMidpointView triangle, triangle.p1, triangle.p2
+    @addMidpointView triangle, triangle.p2, triangle.p3
+    @addMidpointView triangle, triangle.p3, triangle.p1
 
   addAllMidpointViews: =>
     for view in @midpointViews
       view.remove()
     @midpointViews = []
     @addMidpointViews(0, 0, 0, triangle) for triangle in @model.morpherImage.triangles
+
+  removeMidpointView: (view) =>
+    i = @midpointViews.indexOf view
+    if i != -1
+      delete @midpointViews.splice i, 1
+
+  splitHandler: (p1, p2) =>
+    @splitInProgress = true
+    @model.splitEdge p1, p2
 
   # highlight
 

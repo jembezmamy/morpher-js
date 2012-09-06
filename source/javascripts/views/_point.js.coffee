@@ -13,15 +13,18 @@ class Gui.Views.Point extends Backbone.View
   initialize: =>
     @model.on 'change', @render
 
+  startDrag: (x = 0, y = 0)=>
+    @delta = 
+      x: @$el.offsetParent().offset().left - Math.round(x),
+      y: @$el.offsetParent().offset().top - Math.round(y)
+    $('body').addClass 'drag'
+    $(window).on 'mousemove mouseup', @dragHandler
+    @trigger 'drag:start'
+
   dragHandler: (e) =>
     switch e.type
       when 'mousedown'
-        @delta =
-          x: e.pageX - @$el.position().left,
-          y: e.pageY - @$el.position().top
-        $('body').addClass 'drag'
-        $(window).on 'mousemove mouseup', @dragHandler
-        @trigger 'drag:start'
+        @startDrag -(e.pageX - @$el.offset().left - @$el.width()/2), -(e.pageY - @$el.offset().top - @$el.height()/2)
       when 'mousemove'
         @model.setX e.pageX - @delta.x
         @model.setY e.pageY - @delta.y

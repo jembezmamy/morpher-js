@@ -49,10 +49,11 @@ class MorpherJS.Morpher extends MorpherJS.EventDispatcher
       image.addPoint x: x, y: y
     @trigger 'point:add', this
 
-  addPointHandler: (point, image) =>
+  addPointHandler: (point, image, pointParams = null) =>
+    position = pointParams || image.getRelativePositionOf(point)
     for img in @images
       if img.points.length < image.points.length
-        img.addPoint x: point.x, y: point.y
+        img.addPoint position
         return
     @trigger 'point:add', this
 

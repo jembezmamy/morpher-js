@@ -33,18 +33,22 @@ class MorpherJS.Matrix
   removeTransform: (i) =>
     @transforms.splice(@transforms.length-1-i, 1)
 
-  apply: =>
-    matr = new MorpherJS.Matrix()
+  apply: (onSelf = false) =>
+    matr = if onSelf then this else new MorpherJS.Matrix()
     for transform in @transforms
-      matr.multiplyWith(transform)
+      matr.multiplyWith(transform, true)
     matr
 
 
   toCSS: =>
-    "matrix(#{[@get(0,0), @get(1,0), @get(0,1), @get(1,1), @get(0,2), @get(1,2)].join(', ')})"
+    "matrix(#{@toTransform().join(', ')})"
+
+  toTransform: =>
+    [@get(0,0), @get(1,0), @get(0,1), @get(1,1), @get(0,2), @get(1,2)]
     
 
-  multiplyWith: (matrix) =>
+  multiplyWith: (matrix, dontApply = false) =>
+    @apply(true) unless dontApply
     values = []
     for i in [0..2]
       for j in [0..2]

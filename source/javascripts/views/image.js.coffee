@@ -15,13 +15,13 @@ class Gui.Views.Image extends Gui.Views.Tile
     'click [data-action]'       : 'clickHandler'
     'change input[name=file]'   : 'fileHandler'
     'change input[name=url]'    : 'changeHandler'
-    'change input[name=factor]' : 'changeHandler'
+    'change input[name=weight]' : 'changeHandler'
     'click canvas'              : 'canvasHandler'
 
   initialize: =>
     @model.bind 'change:file', @renderFile
     @model.bind 'change:url', @renderUrl
-    @model.bind 'change:factor', @renderFactor
+    @model.bind 'change:weight', @renderWeight
 
     @pointViews = []
     @midpointViews = []
@@ -178,8 +178,8 @@ class Gui.Views.Image extends Gui.Views.Tile
   renderUrl: =>
     @$('input[name=url]').val @model.get('url')
     
-  renderFactor: =>
-    @$('input[name=factor]').val @model.get('factor')
+  renderWeight: =>
+    @$('input[name=weight]').val @model.get('weight')
 
   renderFile: =>
     if @model.get('file')?
@@ -192,7 +192,7 @@ class Gui.Views.Image extends Gui.Views.Tile
     @ctx = @canvas.getContext('2d')
     @pattern = @buildPattern 10, 10
     @renderUrl()
-    @renderFactor()
+    @renderWeight()
     @renderFile()
     @addAllPointViews()
     @addAllMidpointViews()

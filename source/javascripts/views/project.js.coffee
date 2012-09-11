@@ -48,7 +48,7 @@ class Gui.Views.Project extends Backbone.View
   # image views
 
   addImage: =>
-    @model.images.create(factor: 0)
+    @model.images.create(weight: 0)
 
   addImageView: (image) =>
     imageView = new Gui.Views.Image(model: image)
@@ -114,6 +114,6 @@ class Gui.Views.Project extends Backbone.View
   render: =>
     @$menuEl.html @menuTemplate()
     @previewView.render().$el.appendTo @el
-    @previewView.$pane.append @model.morpher.canvas
+    @previewView.$pane.append $('<div />').addClass('artboard').append(@model.morpher.canvas)
     @addAllImageViews()
     this

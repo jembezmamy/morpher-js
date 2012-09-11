@@ -2,13 +2,15 @@ class MorpherJS.Image extends MorpherJS.EventDispatcher
   el: null
 
   mesh: null
-  factor: 0
+  weight: 0
 
   constructor: (json = {}) ->
     @el = new window.Image()
     @el.onload = @loadHandler
     @mesh = new MorpherJS.Mesh()
     @mesh.on 'all', @propagateMeshEvent
+    @triangles = @mesh.triangles
+    @points = @mesh.points
     @fromJSON json
     
 
@@ -17,12 +19,12 @@ class MorpherJS.Image extends MorpherJS.EventDispatcher
   setSrc: (src) =>
     @el.src = src
 
-  setFactor: (f, params = {}) =>
-    @factor = f
-    @trigger 'change:factor' unless params.silent
+  setWeight: (w, params = {}) =>
+    @weight = w*1
+    @trigger 'change:weight' unless params.silent
 
-  getFactor: =>
-    @factor
+  getWeight: =>
+    @weight
 
 
   # image
@@ -50,6 +52,14 @@ class MorpherJS.Image extends MorpherJS.EventDispatcher
 
   propagateMeshEvent: (type, target, args...) =>
     @trigger.apply this, [type, this].concat args
+
+
+  # drawing
+
+  draw: (ctx, mesh) =>
+    for triangle, i in @triangles
+      triangle.draw @el, ctx, mesh.triangles[i]
+    
 
 
   # JSON

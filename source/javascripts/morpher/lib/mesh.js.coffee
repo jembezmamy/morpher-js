@@ -38,7 +38,6 @@ class MorpherJS.Mesh extends MorpherJS.EventDispatcher
     if mesh instanceof MorpherJS.Image
       mesh = mesh.mesh
     if @points.length != mesh.points.length
-      console.warn "Incompatible mesh - number of the points should be equal" if console?
       if @points.length > mesh.points.length
         @points.splice mesh.points.length, @points.length-mesh.points.length
       else

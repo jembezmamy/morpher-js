@@ -28,8 +28,17 @@ class MorpherJS.Point extends MorpherJS.EventDispatcher
   remove: =>
     @trigger 'remove', this
 
+  clone: =>
+    new MorpherJS.Point(@x, @y)
+
   distanceTo: (point) =>
     Math.sqrt(Math.pow(point.x-@x, 2) + Math.pow(point.y-@y, 2))
+
+  transform: (matrix) =>
+    tmpX = matrix.get(0,0)*@x + matrix.get(0,1)*@y + matrix.get(0,2)
+    tmpY = matrix.get(1,0)*@x + matrix.get(1,1)*@y + matrix.get(1,2)
+    @x = tmpX
+    @y = tmpY
 
 
   # JSON

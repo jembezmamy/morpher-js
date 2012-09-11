@@ -1,12 +1,29 @@
 class MorpherJS.Morpher extends MorpherJS.EventDispatcher
   images: null
   triangles: []
-  canvas: null
+  mesh: null
 
-  constructor: (params) ->
+  totalWeight: 0
+  
+  canvas: null
+  ctx: null
+  tmpCanvas: null
+  tmpCtx: null
+
+  blendFunction: null
+  
+
+  constructor: (params = {}) ->
     @images = []
     @triangles = []
+    @mesh = new MorpherJS.Mesh()
+    
     @canvas = document.createElement('canvas')
+    @ctx = @canvas.getContext('2d')
+    @tmpCanvas = document.createElement('canvas')
+    @tmpCtx = @tmpCanvas.getContext('2d')
+    
+    @blendFunction = params.blendFunction || MorpherJS.Morpher.defaultBlendFunction
     
 
   # images
@@ -23,7 +40,7 @@ class MorpherJS.Morpher extends MorpherJS.EventDispatcher
     image.on 'point:remove', @removePointHandler
     image.on 'triangle:add', @addTriangleHandler
     image.on 'triangle:remove', @removeTriangleHandler
-    image.on 'change:factor', @draw
+    image.on 'change:weight', @draw
     @loadHandler()
     @trigger 'image:add' unless params.silent
 
@@ -46,21 +63,21 @@ class MorpherJS.Morpher extends MorpherJS.EventDispatcher
   # points
 
   addPoint: (x, y) =>
-    for image in @images
+    for image in @images.concat @mesh
       image.addPoint x: x, y: y
     @trigger 'point:add', this
 
   addPointHandler: (image, point, pointParams = null) =>
     position = pointParams || image.getRelativePositionOf(point)
-    for img in @images
-      if img.mesh.points.length < image.mesh.points.length
+    for img in @images.concat @mesh
+      if img.points.length < image.points.length
         img.addPoint position
         return
     @trigger 'point:add', this
 
   removePointHandler: (image, point, index) =>
-    for img in @images
-      if img.mesh.points.length > image.mesh.points.length
+    for img in @images.concat @mesh
+      if img.points.length > image.points.length
         img.removePoint index
         return
     for triangle in @triangles
@@ -82,19 +99,19 @@ class MorpherJS.Morpher extends MorpherJS.EventDispatcher
     false
 
   addTriangleHandler: (image, i1, i2, i3, triangle) =>
-    if image.mesh.triangles.length > @triangles.length && !@triangleExists(i1, i2, i3)
+    if image.triangles.length > @triangles.length && !@triangleExists(i1, i2, i3)
       @triangles.push [i1, i2, i3]
-    for img in @images
-      if img.mesh.triangles.length < @triangles.length
+    for img in @images.concat @mesh
+      if img.triangles.length < @triangles.length
         img.addTriangle i1, i2, i3
         return
     @trigger 'triangle:add', this
 
   removeTriangleHandler: (image, triangle, index) =>
-    if image.mesh.triangles.length < @triangles.length
+    if image.triangles.length < @triangles.length
       delete @triangles.splice index, 1
-    for img in @images
-      if img.mesh.triangles.length > @triangles.length
+    for img in @images.concat @mesh
+      if img.triangles.length > @triangles.length
         img.removeTriangle index
         return
     @trigger 'triangle:remove', this
@@ -105,9 +122,13 @@ class MorpherJS.Morpher extends MorpherJS.EventDispatcher
   draw: =>
     @canvas.width = @canvas.width
     @updateCanvasSize()
-#    for img in @images
-#      img.drawOn @ctx
-    @trigger 'draw', this, @canvas
+    @updateMesh()
+    if @canvas.width > 0 && @canvas.height > 0 && @totalWeight > 0
+      for image in @images
+        @tmpCanvas.width = @tmpCanvas.width
+        image.draw @tmpCtx, @mesh
+        @blendFunction @ctx, @tmpCanvas, image.weight/@totalWeight
+      @trigger 'draw', this, @canvas
 
   updateCanvasSize: =>
     w = 0
@@ -116,9 +137,25 @@ class MorpherJS.Morpher extends MorpherJS.EventDispatcher
       w = Math.max image.el.width, w
       h = Math.max image.el.height, h
     if w != @canvas.width || h != @canvas.height
-      @canvas.width = w
-      @canvas.height = h
+      @canvas.width = @tmpCanvas.width = w
+      @canvas.height = @tmpCanvas.height = h
       @trigger 'resize', this, @canvas
+
+  updateMesh: =>
+    @totalWeight = 0
+    @totalWeight += img.weight for img in @images
+    for p, i in @mesh.points
+      p.x = p.y = 0
+      for img in @images
+        p.x += img.points[i].x*img.weight/@totalWeight
+        p.y += img.points[i].y*img.weight/@totalWeight
+
+  @defaultBlendFunction: (destination, source, weight) =>
+    dData = destination.getImageData(0, 0, source.width, source.height)
+    sData = source.getContext('2d').getImageData(0, 0, source.width, source.height)
+    for value, i in sData.data
+      dData.data[i] += value*weight
+    destination.putImageData dData, 0, 0
 
 
   # JSON
@@ -140,6 +177,7 @@ class MorpherJS.Morpher extends MorpherJS.EventDispatcher
           @addImage image, params
         else
           @images[i].fromJSON image, params
+      @mesh.makeCompatibleWith(@images[0])
     if json.triangles?
       for triangle in json.triangles[@triangles.length..-1]
         @addTriangle triangle[0], triangle[1], triangle[2]

@@ -14,14 +14,14 @@ class MorpherJS.Point extends MorpherJS.EventDispatcher
   setX: (x, params = {}) =>
     unless @x == x
       @x = Math.round x
-      @trigger 'change:x change' unless params.silent
+      @trigger 'change:x change', this unless params.silent
 
   getY: =>
     @y
   setY: (y, params = {}) =>
     unless @y == y
       @y = Math.round y
-      @trigger 'change:y change' unless params.silent
+      @trigger 'change:y change', this unless params.silent
 
   # public methods
 
@@ -39,8 +39,8 @@ class MorpherJS.Point extends MorpherJS.EventDispatcher
 
   fromJSON: (json = {}, params = {}) =>
     @reset() if params.hard
-    @setX x, params
-    @setY y, params
+    @setX json.x, params
+    @setY json.y, params
 
   reset: =>
     @x = null

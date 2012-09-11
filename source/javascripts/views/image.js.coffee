@@ -12,14 +12,16 @@ class Gui.Views.Image extends Gui.Views.Tile
   splitInProgress: false
 
   events:
-    'click [data-action]'     : 'clickHandler'
-    'change input[name=file]' : 'fileHandler'
-    'change input[name=url]'  : 'changeHandler'
-    'click canvas'            : 'canvasHandler'
+    'click [data-action]'       : 'clickHandler'
+    'change input[name=file]'   : 'fileHandler'
+    'change input[name=url]'    : 'changeHandler'
+    'change input[name=factor]' : 'changeHandler'
+    'click canvas'              : 'canvasHandler'
 
   initialize: =>
     @model.bind 'change:file', @renderFile
-    @model.bind 'change:url', @renderUrl  
+    @model.bind 'change:url', @renderUrl
+    @model.bind 'change:factor', @renderFactor
 
     @pointViews = []
     @midpointViews = []
@@ -63,7 +65,7 @@ class Gui.Views.Image extends Gui.Views.Tile
     @model.addPoint x, y
 
 
-  # file related methods
+  # model attributes
 
   fileHandler: (e) =>
     file = e.target.files[0]
@@ -85,7 +87,7 @@ class Gui.Views.Image extends Gui.Views.Tile
 
   # points
 
-  addPointView: (point) =>
+  addPointView: (image, point) =>
     view = new Gui.Views.Point(model: point)
     @pointViews.push view
     view.on 'drag:stop', @dragStopHandler
@@ -100,9 +102,9 @@ class Gui.Views.Image extends Gui.Views.Tile
     for view in @pointViews
       view.remove()
     @pointViews = []
-    @addPointView(point) for point in @model.morpherImage.points
+    @addPointView(null, point) for point in @model.morpherImage.mesh.points
 
-  removePointView: (point, index, image) =>
+  removePointView: (image, point, index) =>
     @pointViews[index].remove()
     delete @pointViews.splice index, 1
 
@@ -111,7 +113,7 @@ class Gui.Views.Image extends Gui.Views.Tile
 
   # midpoints
 
-  addMidpointView: (triangle, p1, p2) =>
+  addMidpointView: (image, triangle, p1, p2) =>
     for point in @midpointViews
       if (point.p1 == p1 && point.p2 == p2) || (point.p1 == p2 && point.p2 == p1)
         point.addTriangle triangle
@@ -123,16 +125,16 @@ class Gui.Views.Image extends Gui.Views.Tile
     @midpointViews.push view
     @$el.find('.pane .artboard').append view.render().el
 
-  addMidpointViews: (i1, i2, i3, triangle) =>
-    @addMidpointView triangle, triangle.p1, triangle.p2
-    @addMidpointView triangle, triangle.p2, triangle.p3
-    @addMidpointView triangle, triangle.p3, triangle.p1
+  addMidpointViews: (image, i1, i2, i3, triangle) =>
+    @addMidpointView image, triangle, triangle.p1, triangle.p2
+    @addMidpointView image, triangle, triangle.p2, triangle.p3
+    @addMidpointView image, triangle, triangle.p3, triangle.p1
 
   addAllMidpointViews: =>
     for view in @midpointViews
       view.remove()
     @midpointViews = []
-    @addMidpointViews(0, 0, 0, triangle) for triangle in @model.morpherImage.triangles
+    @addMidpointViews(null, 0, 0, 0, triangle) for triangle in @model.morpherImage.mesh.triangles
 
   removeMidpointView: (view) =>
     i = @midpointViews.indexOf view
@@ -175,6 +177,9 @@ class Gui.Views.Image extends Gui.Views.Tile
 
   renderUrl: =>
     @$('input[name=url]').val @model.get('url')
+    
+  renderFactor: =>
+    @$('input[name=factor]').val @model.get('factor')
 
   renderFile: =>
     if @model.get('file')?
@@ -187,6 +192,7 @@ class Gui.Views.Image extends Gui.Views.Tile
     @ctx = @canvas.getContext('2d')
     @pattern = @buildPattern 10, 10
     @renderUrl()
+    @renderFactor()
     @renderFile()
     @addAllPointViews()
     @addAllMidpointViews()
@@ -198,7 +204,7 @@ class Gui.Views.Image extends Gui.Views.Tile
   draw: =>
     @canvas.width = @canvas.width
     @ctx.drawImage @img, 0, 0
-    for triangle in @model.morpherImage.triangles
+    for triangle in @model.morpherImage.mesh.triangles
       @ctx.beginPath()
       @ctx.moveTo(triangle.p1.x, triangle.p1.y)
       @ctx.lineTo(triangle.p2.x, triangle.p2.y)

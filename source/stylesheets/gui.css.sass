@@ -84,6 +84,13 @@ body.gui
             input[type=file]
               position: absolute
               clip: rect(0,0,0,0)
+            input[type=range]
+              display: block
+              float: left
+              margin: 2px 0 0 2px
+              width: 100px
+              height: 25px
+              @include browser-prefixes(box-sizing, border-box)
             input[type=text]
               height: 25px
               margin: 2px

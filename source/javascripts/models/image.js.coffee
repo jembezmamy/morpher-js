@@ -8,6 +8,8 @@ class Gui.Models.Image extends Backbone.Model
   set: (attr) =>
     if attr.file?
       @morpherImage.setSrc attr.file
+    if attr.factor?
+      @morpherImage.setFactor attr.factor
     super
 
   addPoint: (x, y) =>

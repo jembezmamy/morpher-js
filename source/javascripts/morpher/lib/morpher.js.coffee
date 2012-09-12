@@ -127,7 +127,7 @@ class MorpherJS.Morpher extends MorpherJS.EventDispatcher
       for image in @images
         @tmpCanvas.width = @tmpCanvas.width
         image.draw @tmpCtx, @mesh
-        @blendFunction @ctx, @tmpCanvas, image.weight/@totalWeight
+        @blendFunction @ctx, @tmpCanvas, image.weight
       @trigger 'draw', this, @canvas
 
   updateCanvasSize: =>

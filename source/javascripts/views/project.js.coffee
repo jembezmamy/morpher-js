@@ -48,7 +48,7 @@ class Gui.Views.Project extends Backbone.View
   # image views
 
   addImage: =>
-    @model.images.create(weight: 0)
+    @model.images.create()
 
   addImageView: (image) =>
     imageView = new Gui.Views.Image(model: image)

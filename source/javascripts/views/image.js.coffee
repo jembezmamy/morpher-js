@@ -12,11 +12,11 @@ class Gui.Views.Image extends Gui.Views.Tile
   splitInProgress: false
 
   events:
-    'click [data-action]'       : 'clickHandler'
-    'change input[name=file]'   : 'fileHandler'
-    'change input[name=url]'    : 'changeHandler'
-    'change input[name=weight]' : 'changeHandler'
-    'click canvas'              : 'canvasHandler'
+    'click [data-action]'             : 'clickHandler'
+    'change input[name=file]'         : 'fileHandler'
+    'change input[name=url]'          : 'changeHandler'
+    'change input[name=targetWeight]' : 'changeHandler'
+    'click canvas'                    : 'canvasHandler'
 
   initialize: =>
     @model.bind 'change:file', @renderFile
@@ -179,7 +179,7 @@ class Gui.Views.Image extends Gui.Views.Tile
     @$('input[name=url]').val @model.get('url')
     
   renderWeight: =>
-    @$('input[name=weight]').val @model.get('weight')
+    @$('input[name=targetWeight]').val @model.get('weight')
 
   renderFile: =>
     if @model.get('file')?

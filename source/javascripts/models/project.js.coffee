@@ -43,12 +43,11 @@ class Gui.Models.Project extends Backbone.Model
     @save morpher: @morpher.toJSON()
 
   weightHandler: (image) =>
-    maxW = (1-image.get('targetWeight'))/(@images.models.length-1)
-    defaultW = 1
+    totalW = 0
     for img in @images.models
-      if img isnt image && img.get('targetWeight') > 0
-        defaultW = 0
-        break
+      totalW += img.get('targetWeight') if img isnt image
+    defaultW = if totalW > 0 then 0 else 1
+    maxW = (1-image.get('targetWeight')) / (totalW || @images.models.length-1)
     for img in @images.models
       unless img is image
         img.set weight: (defaultW || img.get('targetWeight')) * maxW

@@ -11,7 +11,8 @@ class MorpherJS.Morpher extends MorpherJS.EventDispatcher
   tmpCtx: null
 
   blendFunction: null
-  
+
+  requestID: null  
 
   constructor: (params = {}) ->
     @images = []
@@ -120,6 +121,14 @@ class MorpherJS.Morpher extends MorpherJS.EventDispatcher
   # drawing
 
   draw: =>
+    return if @requestID?
+    requestFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.msRequestAnimationFrame || window.oRequestAnimationFrame || window.webkitRequestAnimationFrame
+    if requestFrame?
+      @requestID = requestFrame @drawNow
+    else
+      @drawNow()
+
+  drawNow: =>
     @canvas.width = @canvas.width
     @updateCanvasSize()
     @updateMesh()
@@ -129,6 +138,7 @@ class MorpherJS.Morpher extends MorpherJS.EventDispatcher
         image.draw @tmpCtx, @mesh
         @blendFunction @ctx, @tmpCanvas, image.weight
       @trigger 'draw', this, @canvas
+    @requestID = null
 
   updateCanvasSize: =>
     w = 0

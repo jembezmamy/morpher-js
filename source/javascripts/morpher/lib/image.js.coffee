@@ -4,6 +4,7 @@ class MorpherJS.Image extends MorpherJS.EventDispatcher
 
   mesh: null
   weight: 0
+  
 
   constructor: (json = {}) ->
     @el = new window.Image()
@@ -42,7 +43,9 @@ class MorpherJS.Image extends MorpherJS.EventDispatcher
 
 
   # mesh proxy
-
+  
+  setMaxSize: =>
+    @mesh.setMaxSize.apply this, arguments
   addPoint: =>
     @mesh.addPoint.apply this, arguments
   removePoint: =>

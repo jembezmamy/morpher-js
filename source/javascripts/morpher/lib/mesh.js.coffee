@@ -2,12 +2,19 @@ class MorpherJS.Mesh extends MorpherJS.EventDispatcher
   points: null
   triangles: null
   bounds: {width: 0, height: 0}
+
+  maxWidth: 0
+  maxHeight: 0
   
   constructor: (params = {}) ->
     @points = []
     @triangles = []
 
   # bounds
+
+  setMaxSize: (w, h) =>
+    @maxWidth = w
+    @maxHeight = h
 
   refreshBounds: (params = {})=>
     bounds = {width: 0, height: 0}
@@ -27,9 +34,10 @@ class MorpherJS.Mesh extends MorpherJS.EventDispatcher
       else
         position = pointParams
         pointParams = null
-      point = new MorpherJS.Point position.x, position.y
+      point = new MorpherJS.Point position.x, position.y, {mesh: this}
     else
       point = pointParams
+      point.mesh = this
       pointParams = null
     point.on "change", @changeHandler
     point.on 'remove', @removePoint

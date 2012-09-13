@@ -1,10 +1,12 @@
 class MorpherJS.Point extends MorpherJS.EventDispatcher
   x: 0
   y: 0
+  mesh: null
 
-  constructor: (x, y) ->
-    @x = x
-    @y = y
+  constructor: (x, y, params = {}) ->
+    @mesh = params.mesh if params.mesh?
+    @setX x, silent: true
+    @setY y, silent: true
     
 
   # getters & setters
@@ -12,17 +14,20 @@ class MorpherJS.Point extends MorpherJS.EventDispatcher
   getX: =>
     @x
   setX: (x, params = {}) =>
+    x = Math.max 0, Math.min @mesh.maxWidth, x if @mesh? && @mesh.maxWidth
     unless @x == x
-      @x = Math.round x
+      @x = x
       @trigger 'change:x change', this unless params.silent
 
   getY: =>
     @y
   setY: (y, params = {}) =>
+    y = Math.max 0, Math.min @mesh.maxHeight, y if @mesh? && @mesh.maxHeight
     unless @y == y
-      @y = Math.round y
+      @y = y
       @trigger 'change:y change', this unless params.silent
 
+      
   # public methods
 
   remove: =>

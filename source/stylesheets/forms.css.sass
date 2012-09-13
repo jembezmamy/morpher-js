@@ -25,7 +25,7 @@ input[type="submit"], button, .button
     @include browser-prefixes(box-shadow, none)
     border: 1px solid rgba(black, 0.2)
 
-input[type="text"], select
+input[type="text"], select, textarea
   @include browser-prefixes(box-sizing, border-box)
   padding: 0.2em 10px
   height: 2em
@@ -48,8 +48,12 @@ input[type="text"], select
   font-size: 130%
   &.standalone
     margin: 0
+  &.close:before
+    content: 'X'
   &.delete:before
     content: 'I'
+  &.export:before
+    content: 'o'
   &.file:before
     content: 'K'
   &.image:before

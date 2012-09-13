@@ -44,6 +44,10 @@ class Gui.Views.Project extends Backbone.View
     @$menuEl.remove()
     super
 
+  export: =>
+    popup = Gui.Views.Popup.show("templates/popups/code", code: @model.getCode())
+    popup.$el.find('.code > textarea').focus().select()
+
 
   # image views
 

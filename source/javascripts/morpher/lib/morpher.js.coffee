@@ -55,6 +55,7 @@ class MorpherJS.Morpher extends MorpherJS.EventDispatcher
     @draw()
     for image in @images
       return false unless image.el.width && image.el.height
+    @refreshMaxSize()
     @trigger 'load', this, @canvas
 
   changeHandler: (e) =>
@@ -149,9 +150,12 @@ class MorpherJS.Morpher extends MorpherJS.EventDispatcher
     if w != @canvas.width || h != @canvas.height
       @canvas.width = @tmpCanvas.width = w
       @canvas.height = @tmpCanvas.height = h
-      for img in @images
-        img.setMaxSize(w, h)
+      @refreshMaxSize()
       @trigger 'resize', this, @canvas
+
+  refreshMaxSize: =>
+    for img in @images
+      img.setMaxSize(@canvas.width, @canvas.height)
 
   updateMesh: =>
     @totalWeight = 0

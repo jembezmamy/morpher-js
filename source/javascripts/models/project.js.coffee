@@ -42,6 +42,12 @@ class Gui.Models.Project extends Backbone.Model
   morpherChange: =>
     @save morpher: @morpher.toJSON()
 
+  getCode: =>
+    json = @morpher.toJSON()
+    for img, i in json.images
+      img.src = @images.models[i].get('url')
+    JSON.stringify json
+
   weightHandler: (image) =>
     totalW = 0
     for img in @images.models

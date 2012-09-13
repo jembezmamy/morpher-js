@@ -26,8 +26,8 @@ class Gui.Views.Point extends Backbone.View
       when 'mousedown'
         @startDrag -(e.pageX - @$el.offset().left - @$el.width()/2), -(e.pageY - @$el.offset().top - @$el.height()/2)
       when 'mousemove'
-        @model.setX e.pageX - @delta.x
-        @model.setY e.pageY - @delta.y
+        @model.setX Math.round e.pageX - @delta.x
+        @model.setY Math.round e.pageY - @delta.y
       when 'mouseup'
         $('body').removeClass 'drag'
         $(window).off 'mousemove mouseup', @dragHandler

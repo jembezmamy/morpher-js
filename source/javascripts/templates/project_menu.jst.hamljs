@@ -1,3 +1,6 @@
 %button{data-action: 'addImage'}
   .icon.image
   Add image
+%button{data-action: 'export'}
+  .icon.export
+  Export code

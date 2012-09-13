@@ -1,5 +1,6 @@
 class MorpherJS.Image extends MorpherJS.EventDispatcher
   el: null
+  source: null
 
   mesh: null
   weight: 0
@@ -7,11 +8,17 @@ class MorpherJS.Image extends MorpherJS.EventDispatcher
   constructor: (json = {}) ->
     @el = new window.Image()
     @el.onload = @loadHandler
+
+    @source = document.createElement('canvas')
+    
     @mesh = new MorpherJS.Mesh()
     @mesh.on 'all', @propagateMeshEvent
+    @mesh.on 'change:bounds', @refreshSource
+    
     @triangles = @mesh.triangles
     @points = @mesh.points
     @fromJSON json
+    
     
 
   # setters & getters
@@ -30,6 +37,7 @@ class MorpherJS.Image extends MorpherJS.EventDispatcher
   # image
 
   loadHandler: =>
+    @refreshSource()
     @trigger 'load', this, @el
 
 
@@ -58,7 +66,13 @@ class MorpherJS.Image extends MorpherJS.EventDispatcher
 
   draw: (ctx, mesh) =>
     for triangle, i in @triangles
-      triangle.draw @el, ctx, mesh.triangles[i]
+      triangle.draw @source, ctx, mesh.triangles[i]
+
+  refreshSource: =>
+    @source.width = @mesh.bounds.width
+    @source.height = @mesh.bounds.height
+    ctx = @source.getContext('2d')
+    ctx.drawImage @el, 0, 0
     
 
 

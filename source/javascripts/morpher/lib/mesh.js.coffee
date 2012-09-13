@@ -1,10 +1,22 @@
 class MorpherJS.Mesh extends MorpherJS.EventDispatcher
   points: null
   triangles: null
+  bounds: {width: 0, height: 0}
   
   constructor: (params = {}) ->
     @points = []
     @triangles = []
+
+  # bounds
+
+  refreshBounds: (params = {})=>
+    bounds = {width: 0, height: 0}
+    for point in @points
+      bounds.width = Math.max bounds.width, point.x
+      bounds.height = Math.max bounds.height, point.y
+    if bounds.width != @bounds.width || bounds.height != @bounds.height
+      @bounds = bounds
+      @trigger 'change:bounds' unless params.silent
 
   # points
 
@@ -22,6 +34,7 @@ class MorpherJS.Mesh extends MorpherJS.EventDispatcher
     point.on "change", @changeHandler
     point.on 'remove', @removePoint
     @points.push point
+    @refreshBounds(params)
     @trigger 'point:add', this, point, pointParams unless params.silent
     point
 
@@ -45,6 +58,7 @@ class MorpherJS.Mesh extends MorpherJS.EventDispatcher
           @addPoint x: point.x, y: point.y
 
   changeHandler: =>
+    @refreshBounds()
     @trigger 'change'
 
 

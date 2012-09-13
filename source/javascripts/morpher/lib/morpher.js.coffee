@@ -41,7 +41,7 @@ class MorpherJS.Morpher extends MorpherJS.EventDispatcher
     image.on 'point:remove', @removePointHandler
     image.on 'triangle:add', @addTriangleHandler
     image.on 'triangle:remove', @removeTriangleHandler
-    image.on 'change:weight', @draw
+    image.on 'change', @draw
     @loadHandler()
     @trigger 'image:add' unless params.silent
 

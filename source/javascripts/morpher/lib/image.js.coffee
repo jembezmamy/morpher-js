@@ -29,7 +29,7 @@ class MorpherJS.Image extends MorpherJS.EventDispatcher
 
   setWeight: (w, params = {}) =>
     @weight = w*1
-    @trigger 'change:weight' unless params.silent
+    @trigger 'change:weight change' unless params.silent
 
   getWeight: =>
     @weight

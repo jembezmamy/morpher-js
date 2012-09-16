@@ -19,10 +19,14 @@ class Gui.Models.Project extends Backbone.Model
     
   initialize: (params) =>
     @setDefaultColor()
+    
     if @isNew()
       @on 'sync', @initImagesStorage
     else
-      @initImagesStorage()    
+      @initImagesStorage()
+
+    @on 'change:blend_function', @updateBlendFunction
+    @updateBlendFunction()
     
 
   setDefaultColor: =>
@@ -39,8 +43,13 @@ class Gui.Models.Project extends Backbone.Model
     @morpher.addTriangle p1, p2, p3
 
 
+  updateBlendFunction: =>
+    eval("f = " + @get('blend_function'))
+    @morpher.blendFunction = f if f?
+    @morpher.draw()
+
   morpherChange: =>
-    @save morpher: @morpher.toJSON()
+    @save morpher: @morpher.toJSON(), {silent: true}
 
   getCode: =>
     json = @morpher.toJSON()

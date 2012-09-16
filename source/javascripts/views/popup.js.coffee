@@ -21,7 +21,12 @@ class Gui.Views.PopupWindow extends Backbone.View
 
   show: (template, params = {})=>
     if template?
-      @$('.window > .content').html JST[template](params)
+      if typeof template == "string"
+        el = JST[template](params)
+      else
+        el = template.el
+      @$('.window > .content').children().detach()
+      @$('.window > .content').html el
     @$el.addClass 'visible'
 
   hide: =>

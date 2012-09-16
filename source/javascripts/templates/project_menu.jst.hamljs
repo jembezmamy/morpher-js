@@ -1,6 +1,9 @@
 %button{data-action: 'addImage'}
   .icon.image
   Add image
+%button{data-action: 'editBlendFunction'}
+  .icon.blendFunction
+  Edit blend function
 %button{data-action: 'export'}
   .icon.export
   Export code

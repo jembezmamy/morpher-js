@@ -4,6 +4,8 @@ class Gui.Views.Project extends Backbone.View
   menuTemplate: JST["templates/project_menu"]
   menuEl: null
 
+  blendFunctionView: null
+
   imageViews: null
   previewView: null
 
@@ -13,6 +15,8 @@ class Gui.Views.Project extends Backbone.View
     @$menuEl = $('<div />').addClass('project-menu')
     @menuEl = @$menuEl[0]
     @$menuEl.on 'click', '[data-action]', @clickHandler
+
+    @blendFunctionView = new Gui.Views.Popups.BlendFunction(model: @model)
 
     @model.morpher.on "resize", @updateImagesSize
     @model.morpher.on "load", @loadHandler
@@ -47,6 +51,9 @@ class Gui.Views.Project extends Backbone.View
   export: =>
     popup = Gui.Views.Popup.show("templates/popups/code", code: @model.getCode())
     popup.$el.find('.code > textarea').focus().select()
+
+  editBlendFunction: =>
+    Gui.Views.Popup.show @blendFunctionView
 
 
   # image views
@@ -117,6 +124,7 @@ class Gui.Views.Project extends Backbone.View
 
   render: =>
     @$menuEl.html @menuTemplate()
+    @blendFunctionView.render()
     @previewView.render().$el.appendTo @el
     @previewView.$pane.append $('<div />').addClass('artboard').append(@model.morpher.canvas)
     @addAllImageViews()

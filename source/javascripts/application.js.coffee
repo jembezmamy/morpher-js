@@ -11,7 +11,9 @@ window.Gui =
   Models: {}
   Collections: {}
   Routers: {}
-  Views: {}
+  Views: {
+    Popups: {}
+  }
 
 $ =>
   if $('body').is('.gui')

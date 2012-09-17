@@ -12,7 +12,12 @@ class MorpherJS.Morpher extends MorpherJS.EventDispatcher
 
   blendFunction: null
 
-  requestID: null  
+  requestID: null
+  
+  t0: null
+  duration: null
+  state0: null
+  state1: null
 
   constructor: (params = {}) ->
     @images = []
@@ -24,7 +29,22 @@ class MorpherJS.Morpher extends MorpherJS.EventDispatcher
     @tmpCanvas = document.createElement('canvas')
     @tmpCtx = @tmpCanvas.getContext('2d')
     
-    @blendFunction = params.blendFunction || MorpherJS.Morpher.defaultBlendFunction
+    @fromJSON params
+    @set [1]
+
+
+  set: (weights, params = {}) =>
+    for img, i in @images
+      img.setWeight (weights[i] || 0), params
+
+  animate: (weights, duration) =>
+    @state0 = []
+    for img in @images
+      @state0.push img.getWeight()
+    @state1 = weights
+    @t0 = new Date().getTime()
+    @duration = duration
+    @draw()
     
 
   # images
@@ -132,14 +152,16 @@ class MorpherJS.Morpher extends MorpherJS.EventDispatcher
   drawNow: =>
     @canvas.width = @canvas.width
     @updateCanvasSize()
+    @animationStep()
     @updateMesh()
-    if @canvas.width > 0 && @canvas.height > 0 && @totalWeight > 0
+    if @canvas.width > 0 && @canvas.height > 0 && @totalWeight > 0      
       for image in @images
         @tmpCanvas.width = @tmpCanvas.width
         image.draw @tmpCtx, @mesh
         @blendFunction @ctx, @tmpCanvas, image.weight
       @trigger 'draw', this, @canvas
     @requestID = null
+    @draw() if @t0?
 
   updateCanvasSize: =>
     w = 0
@@ -166,6 +188,19 @@ class MorpherJS.Morpher extends MorpherJS.EventDispatcher
         p.x += img.points[i].x*img.weight/@totalWeight
         p.y += img.points[i].y*img.weight/@totalWeight
 
+  animationStep: =>
+    if @t0?
+      t = new Date().getTime() - @t0
+      if t >= @duration
+        state = @state1
+        @state0 = @state1 = @t0 = null
+      else
+        progress = t / @duration
+        state = []
+        for w, i in @state0
+          state.push w*(1-progress) + @state1[i]*progress
+      @set state, {silent: true}
+
   @defaultBlendFunction: (destination, source, weight) =>
     dData = destination.getImageData(0, 0, source.width, source.height)
     sData = source.getContext('2d').getImageData(0, 0, source.width, source.height)
@@ -187,6 +222,8 @@ class MorpherJS.Morpher extends MorpherJS.EventDispatcher
 
   fromJSON: (json = {}, params = {}) =>
     @reset() if params.hard
+    if json.blendFunction? || !@blendFunction?
+      @blendFunction = json.blendFunction || MorpherJS.Morpher.defaultBlendFunction
     if json.images?
       for image, i in json.images
         if i > @images.length - 1

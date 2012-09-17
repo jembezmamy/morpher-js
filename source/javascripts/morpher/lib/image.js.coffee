@@ -88,4 +88,5 @@ class MorpherJS.Image extends MorpherJS.EventDispatcher
 
   fromJSON: (json = {}, params = {}) =>
     @mesh.fromJSON(json, params)
+    @el.src = json.src if json.src?
       

@@ -195,6 +195,7 @@ class MorpherJS.Mesh extends MorpherJS.EventDispatcher
   # triangles
 
   addTriangle: (p1, p2, p3) =>
+    return unless @points[p1] && @points[p2] && @points[p3]
     triangle = new MorpherJS.Triangle @points[p1], @points[p2], @points[p3]
     triangle.on 'remove', @removeTriangle
     @triangles.push triangle

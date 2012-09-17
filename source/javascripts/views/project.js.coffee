@@ -50,7 +50,7 @@ class Gui.Views.Project extends Backbone.View
 
   export: =>
     popup = Gui.Views.Popup.show("templates/popups/code", code: @model.getCode())
-    popup.$el.find('.code > textarea').focus().select()
+    popup.$el.find('textarea.code').focus().select()
 
   editBlendFunction: =>
     Gui.Views.Popup.show @blendFunctionView

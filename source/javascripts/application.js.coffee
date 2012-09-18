@@ -1,4 +1,5 @@
 #= require ./vendor/jquery
+#= require ./vendor/jquery.effects
 #= require ./vendor/underscore
 #= require ./vendor/backbone
 #= require_tree ./vendor

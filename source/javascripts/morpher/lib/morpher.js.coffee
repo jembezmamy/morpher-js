@@ -11,6 +11,7 @@ class MorpherJS.Morpher extends MorpherJS.EventDispatcher
   tmpCtx: null
 
   blendFunction: null
+  easingFunction: null
 
   requestID: null
   
@@ -37,13 +38,14 @@ class MorpherJS.Morpher extends MorpherJS.EventDispatcher
     for img, i in @images
       img.setWeight (weights[i] || 0), params
 
-  animate: (weights, duration) =>
+  animate: (weights, duration, easing) =>
     @state0 = []
     for img in @images
       @state0.push img.getWeight()
     @state1 = weights
     @t0 = new Date().getTime()
     @duration = duration
+    @easingFunction = easing
     @draw()
     
 
@@ -196,6 +198,7 @@ class MorpherJS.Morpher extends MorpherJS.EventDispatcher
         @state0 = @state1 = @t0 = null
       else
         progress = t / @duration
+        progress = @easingFunction(progress) if @easingFunction?
         state = []
         for w, i in @state0
           state.push w*(1-progress) + @state1[i]*progress

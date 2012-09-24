@@ -20,7 +20,7 @@
 
 %p
   Check out 
-  %a{href: '/demos.html', target: '_blank'} demos page
+  %a{href: 'demos.html', target: '_blank'} demos page
   = " "
   for an inspiration.
 

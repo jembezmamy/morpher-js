@@ -6,7 +6,7 @@
   %h1 Basic setup
   %p
     Use
-    = link_to "the GUI", "/", target: '_blank'
+    = link_to "the GUI", "index.html", target: '_blank'
     to setup images and meshes. Then simply create new Morpher object using JSON code exported from GUI.
 
   .demo#demo1
@@ -90,7 +90,7 @@
   %h1 Blend  & final touch function
   %p
     You can define your own image blend rules.
-    = link_to "Use GUI", "/", target: '_blank'
+    = link_to "Use GUI", "index.html", target: '_blank'
     to experiment with your own blend algorithms. There are two functions, that can be customized:
   %h2 Blend function
   %p Blend function&apos;s goal is to mix two images.
@@ -151,6 +151,7 @@
             }
           }
           destination.getContext('2d').putImageData(dData, 0, 0);
+
         }
 
         custom.finalTouchFunction = function(canvas) {

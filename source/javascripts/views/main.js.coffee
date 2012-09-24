@@ -24,6 +24,9 @@ class Gui.Views.Main extends Backbone.View
 
     @projects.fetch()
     @showProject @current
+
+  help: =>
+    Gui.Views.Popup.show('templates/popups/help')
     
 
   addProject: =>

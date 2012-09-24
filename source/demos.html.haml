@@ -85,4 +85,100 @@
         })
       })
     
+
+%section
+  %h1 Blend  & final touch function
+  %p
+    You can define your own image blend rules.
+    = link_to "Use GUI", "/", target: '_blank'
+    to experiment with your own blend algorithms. There are two functions, that can be customized:
+  %h2 Blend function
+  %p Blend functions&apos; goal is to mix two images.
+  %p
+    It takes 3 arguments: destination canvas (on which the results should be drawn),
+    source canvas (which holds image that should be drawn) and weight
+    &mdash; number between 0 (don&apos;t draw) and 1 (completely cover destination canvas with this image).
+  %h2 Final touch function
+  %p Final touch function is called after all images are blended into morphers&apos; canvas.
+  %p It takes one argument &mdash; the resulting canvas &mdash; and can modify it in any way you need.
+    
+
+  .demo#demo3
+    .preview
+      .controls
+        %button{:"data-action" => 'reset', title: 'Reset'}
+          .reset.icon
+        %button{:"data-action" => 'play', title: 'Play'}
+          .play.icon
+        %input{type: "range", min: 0, max: 1, step: 0.01, value: 0}
+        %label
+          %input{type: "checkbox", name: 'blend'}
+          Custom blend
+        %label
+          %input{type: "checkbox", name: 'finalTouch'}
+          Custom final touch
+    :javascript
+      $('#demo3').each(function() {
+        var json = {"images":[{"points":[{"x":139,"y":27},{"x":169,"y":46},{"x":177,"y":0},{"x":194,"y":34},{"x":237,"y":3},{"x":237,"y":36},{"x":105,"y":112},{"x":219,"y":87},{"x":206,"y":164},{"x":44,"y":208},{"x":18,"y":54},{"x":68,"y":22},{"x":126,"y":220},{"x":0,"y":137},{"x":98,"y":14},{"x":88,"y":11},{"x":130,"y":17},{"x":149,"y":22},{"x":174,"y":43},{"x":202,"y":61}],"src":"images/plum-contour.png"},{"points":[{"x":103,"y":85},{"x":125,"y":86},{"x":98,"y":15},{"x":130,"y":40},{"x":145,"y":0},{"x":159,"y":23},{"x":108,"y":172},{"x":215,"y":122},{"x":211,"y":209},{"x":126,"y":294},{"x":20,"y":212},{"x":23,"y":141},{"x":187,"y":266},{"x":49,"y":274},{"x":29,"y":102},{"x":0,"y":135},{"x":8,"y":69},{"x":96,"y":52},{"x":127,"y":68},{"x":229,"y":99}],"src":"images/raspberry-contour.png"}],"triangles":[[5,3,2],[2,4,5],[6,1,0],[6,1,7],[8,7,6],[10,11,6],[8,6,12],[9,6,12],[9,6,13],[10,6,13],[11,6,14],[0,6,14],[15,14,11],[16,14,15],[0,14,16],[0,3,17],[2,3,17],[17,16,0],[1,0,18],[3,0,18],[19,7,1],[1,18,19]]};
+
+        var morpher = new Morpher(json);
+
+        $(this).find('.preview').prepend(morpher.canvas);
+
+        var custom = {};
+
+        custom.blendFunction = function (destination, source, weight) {
+          var dData = destination.getContext('2d').getImageData(0, 0, source.width, source.height);
+          var sData = source.getContext('2d').getImageData(0, 0, source.width, source.height);
+          //weight = Math.sin(weight*Math.PI/2);
+          var distance = Math.round((1-weight)*3);
+          var factor = Math.sin(weight*Math.PI/2)*255;
+          
+          for(var x = 0; x < source.width; x++) {
+            for(var y = 0; y < source.height; y++) {
+              if(sData.data[(y*source.width + x)*4 + 3] >= 128) {
+                var minX = Math.max(0, x-distance);
+                var maxX = Math.min(source.width-1, x+distance);
+                var minY = Math.max(0, y-distance);
+                var maxY = Math.min(source.height-1, y+distance);
+                var strength = factor/((maxX-minX)*(maxY-minY));
+                for(var x1 = minX; x1 <= maxX; x1++) {
+                  for(var y1 = minY; y1 <= maxY; y1++) {
+                    dData.data[(y1*source.width + x1)*4 + 3] += strength;
+                  }
+                }
+              }
+            }
+          }
+          destination.getContext('2d').putImageData(dData, 0, 0);
+        }
+
+        custom.finalTouchFunction = function(canvas) {
+          var ctx = canvas.getContext('2d');
+          var data = ctx.getImageData(0, 0, canvas.width, canvas.height);
+          for(var i = 3; i < data.data.length; i++) {
+            data.data[i] = data.data[i] > 128 ? 255 : 0;
+          }
+          ctx.putImageData(data, 0, 0);
+        }
+        
+        $(this).find('button').click(function() {
+          morpher.set([1, 0]);
+          if($(this).data('action') == 'play') {
+            morpher.animate([0, 1], 2000, $.easing["easeInOutCubic"]);
+          }
+        })
+
+        $(this).find('input').change(function() {
+          if($(this).attr('type') == 'range') {
+            var v = $(this).val()*1;
+            morpher.set([1-v, v]);
+          } else {
+            var name = $(this).attr('name')+"Function";          
+            morpher[name] = $(this).is(':checked') ? custom[name] : null;
+            morpher.draw();
+          }
+        })
+      })
+    
     

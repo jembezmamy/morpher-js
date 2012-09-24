@@ -2,8 +2,11 @@
   .icon.image
   Add image
 %button{data-action: 'editBlendFunction'}
-  .icon.blendFunction
-  Edit blend function
+  .icon.editFunction
+  Blend function
+%button{data-action: 'editFinalTouchFunction'}
+  .icon.editFunction
+  Final touch function
 %button{data-action: 'export'}
   .icon.export
   Export code

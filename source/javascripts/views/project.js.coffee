@@ -5,6 +5,7 @@ class Gui.Views.Project extends Backbone.View
   menuEl: null
 
   blendFunctionView: null
+  finalTouchFunctionView: null
 
   imageViews: null
   previewView: null
@@ -16,7 +17,8 @@ class Gui.Views.Project extends Backbone.View
     @menuEl = @$menuEl[0]
     @$menuEl.on 'click', '[data-action]', @clickHandler
 
-    @blendFunctionView = new Gui.Views.Popups.BlendFunction(model: @model)
+    @blendFunctionView = new Gui.Views.Popups.EditFunction(model: @model, name: 'blend_function')
+    @finalTouchFunctionView = new Gui.Views.Popups.EditFunction(model: @model, name: 'final_touch_function')
 
     @model.morpher.on "resize", @updateImagesSize
     @model.morpher.on "load", @loadHandler
@@ -54,6 +56,9 @@ class Gui.Views.Project extends Backbone.View
 
   editBlendFunction: =>
     Gui.Views.Popup.show @blendFunctionView
+
+  editFinalTouchFunction: =>
+    Gui.Views.Popup.show @finalTouchFunctionView
 
 
   # image views
@@ -125,6 +130,7 @@ class Gui.Views.Project extends Backbone.View
   render: =>
     @$menuEl.html @menuTemplate()
     @blendFunctionView.render()
+    @finalTouchFunctionView.render()
     @previewView.render().$el.appendTo @el
     @previewView.$pane.append $('<div />').addClass('artboard').append(@model.morpher.canvas)
     @addAllImageViews()

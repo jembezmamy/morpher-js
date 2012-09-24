@@ -26,7 +26,9 @@ class Gui.Models.Project extends Backbone.Model
       @initImagesStorage()
 
     @on 'change:blend_function', @updateBlendFunction
+    @on 'change:final_touch_function', @updateFinalTouchFunction
     @updateBlendFunction()
+    @updateFinalTouchFunction()
     
 
   setDefaultColor: =>
@@ -42,10 +44,15 @@ class Gui.Models.Project extends Backbone.Model
   addTriangle: (p1, p2, p3) =>
     @morpher.addTriangle p1, p2, p3
 
-
   updateBlendFunction: =>
-    eval("f = " + @get('blend_function'))
-    @morpher.blendFunction = f if f?
+    @updateFunction('blend_function', 'blendFunction')
+
+  updateFinalTouchFunction: =>
+    @updateFunction('final_touch_function', 'finalTouchFunction')
+
+  updateFunction: (paramName, methodName) =>
+    eval("f = " + @get(paramName))
+    @morpher[methodName] = f || null
     @morpher.draw()
 
   morpherChange: =>

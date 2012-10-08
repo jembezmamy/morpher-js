@@ -2,8 +2,6 @@ class MorpherJS.Morpher extends MorpherJS.EventDispatcher
   images: null
   triangles: []
   mesh: null
-
-  totalWeight: 0
   
   canvas: null
   ctx: null
@@ -158,7 +156,7 @@ class MorpherJS.Morpher extends MorpherJS.EventDispatcher
     @animationStep()
     @updateMesh()
     blend = @blendFunction || MorpherJS.Morpher.defaultBlendFunction
-    if @canvas.width > 0 && @canvas.height > 0 && @totalWeight > 0      
+    if @canvas.width > 0 && @canvas.height > 0    
       for image in @images
         @tmpCanvas.width = @tmpCanvas.width
         image.draw @tmpCtx, @mesh
@@ -185,13 +183,14 @@ class MorpherJS.Morpher extends MorpherJS.EventDispatcher
       img.setMaxSize(@canvas.width, @canvas.height)
 
   updateMesh: =>
-    @totalWeight = 0
-    @totalWeight += img.weight for img in @images
+    x0 = @canvas.width/2
+    y0 = @canvas.height/2
     for p, i in @mesh.points
-      p.x = p.y = 0
+      p.x = x0
+      p.y = y0
       for img in @images
-        p.x += img.points[i].x*img.weight/@totalWeight
-        p.y += img.points[i].y*img.weight/@totalWeight
+        p.x += (img.points[i].x-x0)*img.weight
+        p.y += (img.points[i].y-y0)*img.weight
 
   animationStep: =>
     if @t0?

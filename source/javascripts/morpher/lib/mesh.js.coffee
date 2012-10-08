@@ -5,6 +5,8 @@ class MorpherJS.Mesh extends MorpherJS.EventDispatcher
 
   maxWidth: 0
   maxHeight: 0
+  x: 0
+  y: 0
   
   constructor: (params = {}) ->
     @points = []

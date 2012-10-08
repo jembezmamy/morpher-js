@@ -11,12 +11,14 @@ class Gui.Views.Midpoint extends Gui.Views.Point
     'mouseout'  : 'highlightHandler'
 
   initialize: (params = {}) =>
+    @image = params.image
     @triangles = []
     @addTriangle params.triangle
     @p1 = params.p1
     @p2 = params.p2
     @p1.on 'change', @render
     @p2.on 'change', @render
+    @image.on 'change:x change:y', @render
 
   addTriangle: (triangle) =>
     triangle.on 'remove', @removeHandler
@@ -37,8 +39,8 @@ class Gui.Views.Midpoint extends Gui.Views.Point
     @trigger 'edge:split', @p1, @p2
 
   render: =>
-    x = @p1.x + (@p2.x - @p1.x)/2
-    y = @p1.y + (@p2.y - @p1.y)/2
+    x = @image.getX() + @p1.x + (@p2.x - @p1.x)/2
+    y = @image.getY() + @p1.y + (@p2.y - @p1.y)/2
     @$el.css
       left: "#{x}px",
       top: "#{y}px"

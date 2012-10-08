@@ -10,14 +10,11 @@ input[type="submit"], button, .button
   @include emboss
   &:hover, &:focus
     @include glass
-  &:active
+  &:active, &.selected
     @include browser-prefixes(box-shadow, inset 0px 1px 1px rgba(black, 0.4))
     background-color: rgba(black, 0.1)
     background-image: none
     border-color: rgba(white, 0.3)
-    border-radius: 2px
-  &.selected
-    @include browser-prefixes(box-shadow, inset 0px 1px 1px rgba(black, 0.4))
     border-radius: 2px
   &:disabled
     background: none
@@ -62,6 +59,8 @@ input[type="text"], select, textarea
     content: '?'
   &.image:before
     content: 'A'
+  &.move:before
+    content: 'v'
   &.new:before
     content: '+'
   &.next:before

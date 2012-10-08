@@ -189,8 +189,8 @@ class MorpherJS.Morpher extends MorpherJS.EventDispatcher
       p.x = x0
       p.y = y0
       for img in @images
-        p.x += (img.points[i].x-x0)*img.weight
-        p.y += (img.points[i].y-y0)*img.weight
+        p.x += (img.getX()+img.points[i].x-x0)*img.weight
+        p.y += (img.getY()+img.points[i].y-y0)*img.weight
 
   animationStep: =>
     if @t0?

@@ -11,12 +11,16 @@ class Gui.Views.Image extends Gui.Views.Tile
   midpointViews: null
   splitInProgress: false
 
+  moveMode: false
+  moveDelta: null
+
   events:
     'click [data-action]'             : 'clickHandler'
     'change input[name=file]'         : 'fileHandler'
     'change input[name=url]'          : 'changeHandler'
     'change input[name=targetWeight]' : 'changeHandler'
     'click canvas'                    : 'canvasHandler'
+    'mousedown canvas'                : 'moveHandler'
 
   initialize: =>
     @model.bind 'change:file', @renderFile
@@ -55,14 +59,37 @@ class Gui.Views.Image extends Gui.Views.Tile
   openFile: =>
     @$('input[name=file]').click()
 
+  move: =>
+    @moveMode = !@moveMode
+    if @moveMode
+      @$('button[data-action=move]').addClass('selected')
+      @$('.artboard').addClass('move-mode')
+    else
+      @$('button[data-action=move]').removeClass('selected')
+      @$('.artboard').removeClass('move-mode')
+
 
   # canvas interation
 
   canvasHandler: (e) =>
+    return if @moveMode
     offset = @$canvas.offset()
-    x = e.pageX-offset.left
-    y = e.pageY-offset.top
+    x = e.pageX-offset.left - @model.morpherImage.getX()
+    y = e.pageY-offset.top - @model.morpherImage.getY()
     @model.addPoint x, y
+
+  moveHandler: (e) =>
+    return unless @moveMode
+    switch e.type
+      when 'mousedown'
+        @moveDelta =
+          x: e.pageX - @model.morpherImage.getX(),
+          y: e.pageY - @model.morpherImage.getY()
+        $(window).on 'mousemove mouseup', @moveHandler
+      when 'mousemove'
+        @model.morpherImage.moveTo e.pageX-@moveDelta.x, e.pageY-@moveDelta.y
+      when 'mouseup'
+        $(window).off 'mousemove mouseup', @moveHandler
 
 
   # model attributes
@@ -88,7 +115,7 @@ class Gui.Views.Image extends Gui.Views.Tile
   # points
 
   addPointView: (image, point) =>
-    view = new Gui.Views.Point(model: point)
+    view = new Gui.Views.Point(model: point, image: @model.morpherImage)
     @pointViews.push view
     view.on 'drag:stop', @dragStopHandler
     view.on 'highlight', @highlightHandler
@@ -118,7 +145,7 @@ class Gui.Views.Image extends Gui.Views.Tile
       if (point.p1 == p1 && point.p2 == p2) || (point.p1 == p2 && point.p2 == p1)
         point.addTriangle triangle
         return
-    view = new Gui.Views.Midpoint(triangle: triangle, p1: p1, p2: p2)
+    view = new Gui.Views.Midpoint(triangle: triangle, p1: p1, p2: p2, image: @model.morpherImage)
     view.on 'highlight', @highlightHandler
     view.on 'edge:split', @splitHandler
     view.on 'remove', @removeMidpointView
@@ -203,12 +230,14 @@ class Gui.Views.Image extends Gui.Views.Tile
 
   draw: =>
     @canvas.width = @canvas.width
-    @ctx.drawImage @img, 0, 0
+    x0 = @model.morpherImage.getX()
+    y0 = @model.morpherImage.getY()
+    @ctx.drawImage @img, x0, y0
     for triangle in @model.morpherImage.mesh.triangles
       @ctx.beginPath()
-      @ctx.moveTo(triangle.p1.x, triangle.p1.y)
-      @ctx.lineTo(triangle.p2.x, triangle.p2.y)
-      @ctx.lineTo(triangle.p3.x, triangle.p3.y)
+      @ctx.moveTo(x0+triangle.p1.x, y0+triangle.p1.y)
+      @ctx.lineTo(x0+triangle.p2.x, y0+triangle.p2.y)
+      @ctx.lineTo(x0+triangle.p3.x, y0+triangle.p3.y)
       @ctx.closePath()
       @ctx.fillStyle = @pattern
       @ctx.fill()

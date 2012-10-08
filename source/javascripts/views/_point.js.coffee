@@ -2,6 +2,7 @@ class Gui.Views.Point extends Backbone.View
   className: 'point'
 
   delta: null
+  image: null
 
   events:
     'mousedown'   : 'dragHandler'
@@ -10,8 +11,10 @@ class Gui.Views.Point extends Backbone.View
     'mouseout'    : 'highlightHandler'
     'dblclick'    : 'selectHandler'
 
-  initialize: =>
+  initialize: (params = {})=>
+    @image = params.image
     @model.on 'change', @render
+    @image.on 'change:x change:y', @render
 
   startDrag: (x = 0, y = 0)=>
     @delta = 
@@ -26,8 +29,8 @@ class Gui.Views.Point extends Backbone.View
       when 'mousedown'
         @startDrag -(e.pageX - @$el.offset().left - @$el.width()/2), -(e.pageY - @$el.offset().top - @$el.height()/2)
       when 'mousemove'
-        @model.setX Math.round e.pageX - @delta.x
-        @model.setY Math.round e.pageY - @delta.y
+        @model.setX Math.round(e.pageX - @delta.x) - @image.getX()
+        @model.setY Math.round(e.pageY - @delta.y) - @image.getY()
       when 'mouseup'
         $('body').removeClass 'drag'
         $(window).off 'mousemove mouseup', @dragHandler
@@ -70,8 +73,8 @@ class Gui.Views.Point extends Backbone.View
 
   render: =>
     @$el.css
-      left: "#{@model.getX()}px",
-      top: "#{@model.getY()}px"
+      left: "#{@model.getX()+@image.getX()}px",
+      top: "#{@model.getY()+@image.getY()}px"
     this
 
   

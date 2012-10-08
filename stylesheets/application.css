@@ -1,22 +1,22 @@
-/* line 5, demos.css.sass */
+/* line 3, demos.css.sass */
 body.demos {
   width: 800px;
   margin: 0 auto; }
-  /* line 15, demos.css.sass */
+  /* line 8, demos.css.sass */
   body.demos .demo .preview canvas {
     border: 1px dotted silver; }
-  /* line 19, demos.css.sass */
+  /* line 10, demos.css.sass */
   body.demos .demo .preview .controls {
     margin-top: 5px; }
-    /* line 23, demos.css.sass */
+    /* line 12, demos.css.sass */
     body.demos .demo .preview .controls button .icon {
       margin: 0; }
-    /* line 27, demos.css.sass */
+    /* line 14, demos.css.sass */
     body.demos .demo .preview .controls input {
       height: 32px;
       margin-left: 5px;
       vertical-align: bottom; }
-  /* line 35, demos.css.sass */
+  /* line 18, demos.css.sass */
   body.demos .demo pre {
     border: 1px solid silver; }
 @font-face {
@@ -30,7 +30,7 @@ body.demos {
     font-style: normal;
 }
 
-/* line 5, forms.css.sass */
+/* line 3, forms.css.sass */
 input[type="submit"], button, .button {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
@@ -47,7 +47,7 @@ input[type="submit"], button, .button {
   -o-box-shadow: 0px 1px 1px rgba(255, 255, 255, 0.5), inset 0px 1px 1px rgba(255, 255, 255, 0.5);
   -ms-box-shadow: 0px 1px 1px rgba(255, 255, 255, 0.5), inset 0px 1px 1px rgba(255, 255, 255, 0.5);
   box-shadow: 0px 1px 1px rgba(255, 255, 255, 0.5), inset 0px 1px 1px rgba(255, 255, 255, 0.5); }
-  /* line 21, forms.css.sass */
+  /* line 11, forms.css.sass */
   input[type="submit"]:hover, input[type="submit"]:focus, button:hover, button:focus, .button:hover, .button:focus {
     background-image: -webkit-radial-gradient(left top, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0.2) 100%);
     background-image: -moz-radial-gradient(left top, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0.2) 100%);
@@ -60,8 +60,8 @@ input[type="submit"], button, .button {
     -o-box-shadow: 0 1px 2px 1px rgba(0, 0, 0, 0.2);
     -ms-box-shadow: 0 1px 2px 1px rgba(0, 0, 0, 0.2);
     box-shadow: 0 1px 2px 1px rgba(0, 0, 0, 0.2); }
-  /* line 25, forms.css.sass */
-  input[type="submit"]:active, button:active, .button:active {
+  /* line 13, forms.css.sass */
+  input[type="submit"]:active, input[type="submit"].selected, button:active, button.selected, .button:active, .button.selected {
     -webkit-box-shadow: inset 0px 1px 1px rgba(0, 0, 0, 0.4);
     -moz-box-shadow: inset 0px 1px 1px rgba(0, 0, 0, 0.4);
     -o-box-shadow: inset 0px 1px 1px rgba(0, 0, 0, 0.4);
@@ -71,15 +71,7 @@ input[type="submit"], button, .button {
     background-image: none;
     border-color: rgba(255, 255, 255, 0.3);
     border-radius: 2px; }
-  /* line 37, forms.css.sass */
-  input[type="submit"].selected, button.selected, .button.selected {
-    -webkit-box-shadow: inset 0px 1px 1px rgba(0, 0, 0, 0.4);
-    -moz-box-shadow: inset 0px 1px 1px rgba(0, 0, 0, 0.4);
-    -o-box-shadow: inset 0px 1px 1px rgba(0, 0, 0, 0.4);
-    -ms-box-shadow: inset 0px 1px 1px rgba(0, 0, 0, 0.4);
-    box-shadow: inset 0px 1px 1px rgba(0, 0, 0, 0.4);
-    border-radius: 2px; }
-  /* line 43, forms.css.sass */
+  /* line 19, forms.css.sass */
   input[type="submit"]:disabled, button:disabled, .button:disabled {
     background: none;
     opacity: 0.5;
@@ -90,7 +82,7 @@ input[type="submit"], button, .button {
     box-shadow: none;
     border: 1px solid rgba(0, 0, 0, 0.2); }
 
-/* line 55, forms.css.sass */
+/* line 25, forms.css.sass */
 input[type="text"], select, textarea {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
@@ -107,7 +99,7 @@ input[type="text"], select, textarea {
   -o-box-shadow: 0px 1px 1px rgba(255, 255, 255, 0.5), inset 0px 1px 1px rgba(255, 255, 255, 0.5);
   -ms-box-shadow: 0px 1px 1px rgba(255, 255, 255, 0.5), inset 0px 1px 1px rgba(255, 255, 255, 0.5);
   box-shadow: 0px 1px 1px rgba(255, 255, 255, 0.5), inset 0px 1px 1px rgba(255, 255, 255, 0.5); }
-  /* line 71, forms.css.sass */
+  /* line 33, forms.css.sass */
   input[type="text"]:focus, select:focus, textarea:focus {
     outline: none;
     -webkit-box-shadow: inset 0px 1px 1px rgba(0, 0, 0, 0.4);
@@ -116,7 +108,7 @@ input[type="text"], select, textarea {
     -ms-box-shadow: inset 0px 1px 1px rgba(0, 0, 0, 0.4);
     box-shadow: inset 0px 1px 1px rgba(0, 0, 0, 0.4);
     border-color: rgba(255, 255, 255, 0.3); }
-  /* line 79, forms.css.sass */
+  /* line 37, forms.css.sass */
   input[type="text"]:disabled, select:disabled, textarea:disabled {
     opacity: 0.5;
     -webkit-box-shadow: none;
@@ -125,68 +117,71 @@ input[type="text"], select, textarea {
     -ms-box-shadow: none;
     box-shadow: none; }
 
-/* line 87, forms.css.sass */
+/* line 41, forms.css.sass */
 .icon {
   font-family: "ModernPictograms";
   display: inline;
   margin-right: 5px;
   font-size: 130%; }
-  /* line 97, forms.css.sass */
+  /* line 46, forms.css.sass */
   .icon.standalone {
     margin: 0; }
-  /* line 101, forms.css.sass */
+  /* line 48, forms.css.sass */
   .icon.close:before {
     content: "X"; }
-  /* line 105, forms.css.sass */
+  /* line 50, forms.css.sass */
   .icon.delete:before {
     content: "I"; }
-  /* line 109, forms.css.sass */
+  /* line 52, forms.css.sass */
   .icon.export:before {
     content: "o"; }
-  /* line 113, forms.css.sass */
+  /* line 54, forms.css.sass */
   .icon.editFunction:before {
     content: "V"; }
-  /* line 117, forms.css.sass */
+  /* line 56, forms.css.sass */
   .icon.file:before {
     content: "K"; }
-  /* line 121, forms.css.sass */
+  /* line 58, forms.css.sass */
   .icon.help:before {
     content: "?"; }
-  /* line 125, forms.css.sass */
+  /* line 60, forms.css.sass */
   .icon.image:before {
     content: "A"; }
-  /* line 129, forms.css.sass */
+  /* line 62, forms.css.sass */
+  .icon.move:before {
+    content: "v"; }
+  /* line 64, forms.css.sass */
   .icon.new:before {
     content: "+"; }
-  /* line 133, forms.css.sass */
+  /* line 66, forms.css.sass */
   .icon.next:before {
     content: ">"; }
-  /* line 137, forms.css.sass */
+  /* line 68, forms.css.sass */
   .icon.play:before {
     content: ">"; }
-  /* line 141, forms.css.sass */
+  /* line 70, forms.css.sass */
   .icon.previous:before {
     content: "<"; }
-  /* line 145, forms.css.sass */
+  /* line 72, forms.css.sass */
   .icon.replace:before {
     content: "R"; }
-  /* line 149, forms.css.sass */
+  /* line 74, forms.css.sass */
   .icon.reset:before {
     content: "R"; }
-/* line 7, gui.css.sass */
+/* line 4, gui.css.sass */
 body.gui.drag {
   -webkit-user-select: none;
   -moz-user-select: none;
   -o-user-select: none;
   -ms-user-select: none;
   user-select: none; }
-/* line 11, gui.css.sass */
+/* line 6, gui.css.sass */
 body.gui .gui-main {
   position: fixed;
   width: 100%;
   height: 100%;
   background-color: #333333; }
-  /* line 21, gui.css.sass */
+  /* line 11, gui.css.sass */
   body.gui .gui-main > .menu {
     position: absolute;
     left: 0;
@@ -199,12 +194,12 @@ body.gui .gui-main {
     -o-box-shadow: inset 0px 2px 2px rgba(0, 0, 0, 0.2), 0 2px 3px 3px rgba(0, 0, 0, 0.2);
     -ms-box-shadow: inset 0px 2px 2px rgba(0, 0, 0, 0.2), 0 2px 3px 3px rgba(0, 0, 0, 0.2);
     box-shadow: inset 0px 2px 2px rgba(0, 0, 0, 0.2), 0 2px 3px 3px rgba(0, 0, 0, 0.2); }
-    /* line 37, gui.css.sass */
+    /* line 19, gui.css.sass */
     body.gui .gui-main > .menu button, body.gui .gui-main > .menu input {
       display: block;
       float: left;
       margin: 4px 0 0 5px; }
-    /* line 45, gui.css.sass */
+    /* line 23, gui.css.sass */
     body.gui .gui-main > .menu hr {
       display: block;
       float: left;
@@ -215,13 +210,13 @@ body.gui .gui-main {
       border-bottom: none;
       border-left: 1px solid rgba(0, 0, 0, 0.1);
       border-right: 1px solid rgba(255, 255, 255, 0.2); }
-    /* line 65, gui.css.sass */
+    /* line 33, gui.css.sass */
     body.gui .gui-main > .menu .project-menu {
       display: none; }
-      /* line 69, gui.css.sass */
+      /* line 35, gui.css.sass */
       body.gui .gui-main > .menu .project-menu.visible {
         display: block; }
-  /* line 75, gui.css.sass */
+  /* line 38, gui.css.sass */
   body.gui .gui-main .project {
     position: absolute;
     left: 5px;
@@ -229,13 +224,13 @@ body.gui .gui-main {
     top: 45px;
     bottom: 5px;
     display: none; }
-    /* line 89, gui.css.sass */
+    /* line 45, gui.css.sass */
     body.gui .gui-main .project.visible {
       display: block; }
-    /* line 95, gui.css.sass */
+    /* line 48, gui.css.sass */
     body.gui .gui-main .project .tile {
       position: absolute; }
-      /* line 99, gui.css.sass */
+      /* line 50, gui.css.sass */
       body.gui .gui-main .project .tile .pane {
         overflow: auto;
         position: absolute;
@@ -250,20 +245,26 @@ body.gui .gui-main {
         -ms-box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.5), inset 0px 1px 1px rgba(0, 0, 0, 0.5);
         box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.5), inset 0px 1px 1px rgba(0, 0, 0, 0.5);
         background-color: rgba(136, 136, 136, 0.2); }
-        /* line 119, gui.css.sass */
+        /* line 60, gui.css.sass */
         body.gui .gui-main .project .tile .pane .artboard {
           display: inline-block;
           position: relative;
           border: 1px dashed rgba(0, 0, 0, 0.15);
           margin: 5px; }
-          /* line 129, gui.css.sass */
+          /* line 65, gui.css.sass */
           body.gui .gui-main .project .tile .pane .artboard canvas {
             display: block; }
-      /* line 135, gui.css.sass */
+          /* line 67, gui.css.sass */
+          body.gui .gui-main .project .tile .pane .artboard.move-mode {
+            cursor: move; }
+            /* line 69, gui.css.sass */
+            body.gui .gui-main .project .tile .pane .artboard.move-mode .point, body.gui .gui-main .project .tile .pane .artboard.move-mode .midpoint {
+              display: none; }
+      /* line 72, gui.css.sass */
       body.gui .gui-main .project .tile.image .pane {
         bottom: 37px;
         border: 1px solid rgba(136, 136, 136, 0.5); }
-      /* line 141, gui.css.sass */
+      /* line 75, gui.css.sass */
       body.gui .gui-main .project .tile.image .menu {
         position: absolute;
         left: 5px;
@@ -281,19 +282,19 @@ body.gui .gui-main {
         -o-box-shadow: 0 1px 2px 1px rgba(0, 0, 0, 0.2);
         -ms-box-shadow: 0 1px 2px 1px rgba(0, 0, 0, 0.2);
         box-shadow: 0 1px 2px 1px rgba(0, 0, 0, 0.2); }
-        /* line 155, gui.css.sass */
+        /* line 82, gui.css.sass */
         body.gui .gui-main .project .tile.image .menu button {
           height: 25px;
           margin: 2px 0 0 2px;
           float: left; }
-          /* line 163, gui.css.sass */
+          /* line 86, gui.css.sass */
           body.gui .gui-main .project .tile.image .menu button .icon {
             margin: 0; }
-        /* line 167, gui.css.sass */
+        /* line 88, gui.css.sass */
         body.gui .gui-main .project .tile.image .menu input[type=file] {
           position: absolute;
           clip: rect(0, 0, 0, 0); }
-        /* line 173, gui.css.sass */
+        /* line 91, gui.css.sass */
         body.gui .gui-main .project .tile.image .menu input[type=range] {
           display: block;
           float: left;
@@ -305,14 +306,14 @@ body.gui .gui-main {
           -o-box-sizing: border-box;
           -ms-box-sizing: border-box;
           box-sizing: border-box; }
-        /* line 187, gui.css.sass */
+        /* line 98, gui.css.sass */
         body.gui .gui-main .project .tile.image .menu input[type=text] {
           height: 25px;
           margin: 2px;
           padding: 2px 5px;
           line-height: 21px;
           float: right; }
-      /* line 201, gui.css.sass */
+      /* line 105, gui.css.sass */
       body.gui .gui-main .project .tile .point, body.gui .gui-main .project .tile .midpoint {
         position: absolute;
         width: 6px;
@@ -327,7 +328,7 @@ body.gui .gui-main {
         -ms-box-shadow: 0 1px 1px 1px rgba(0, 0, 0, 0.5);
         box-shadow: 0 1px 1px 1px rgba(0, 0, 0, 0.5);
         cursor: pointer; }
-        /* line 221, gui.css.sass */
+        /* line 115, gui.css.sass */
         body.gui .gui-main .project .tile .point.highlighted, body.gui .gui-main .project .tile .midpoint.highlighted {
           background-color: rgba(0, 0, 0, 0.7);
           -webkit-box-shadow: 0 1px 1px 1px rgba(0, 0, 0, 0.7), 0 0 3px 5px rgba(255, 255, 255, 0.5);
@@ -335,24 +336,24 @@ body.gui .gui-main {
           -o-box-shadow: 0 1px 1px 1px rgba(0, 0, 0, 0.7), 0 0 3px 5px rgba(255, 255, 255, 0.5);
           -ms-box-shadow: 0 1px 1px 1px rgba(0, 0, 0, 0.7), 0 0 3px 5px rgba(255, 255, 255, 0.5);
           box-shadow: 0 1px 1px 1px rgba(0, 0, 0, 0.7), 0 0 3px 5px rgba(255, 255, 255, 0.5); }
-        /* line 227, gui.css.sass */
+        /* line 118, gui.css.sass */
         body.gui .gui-main .project .tile .point.selected, body.gui .gui-main .project .tile .midpoint.selected {
           background-color: black;
           width: 10px;
           height: 10px;
           border: 1px solid white;
           margin: -6px; }
-      /* line 241, gui.css.sass */
+      /* line 125, gui.css.sass */
       body.gui .gui-main .project .tile .midpoint {
         width: 6px;
         height: 6px;
         margin: -3px;
         border: none;
         background-color: rgba(255, 255, 255, 0.5); }
-        /* line 253, gui.css.sass */
+        /* line 131, gui.css.sass */
         body.gui .gui-main .project .tile .midpoint.highlighted {
           background-color: white; }
-/* line 5, popups.css.sass */
+/* line 3, popups.css.sass */
 .popup {
   position: fixed;
   left: 0;
@@ -362,10 +363,10 @@ body.gui .gui-main {
   overflow: auto;
   display: none;
   background-color: rgba(0, 0, 0, 0.7); }
-  /* line 23, popups.css.sass */
+  /* line 12, popups.css.sass */
   .popup.visible {
     display: block; }
-  /* line 27, popups.css.sass */
+  /* line 14, popups.css.sass */
   .popup .window {
     width: 600px;
     padding: 5px 30px;
@@ -383,7 +384,7 @@ body.gui .gui-main {
     -o-box-shadow: 0 1px 2px 1px rgba(0, 0, 0, 0.2);
     -ms-box-shadow: 0 1px 2px 1px rgba(0, 0, 0, 0.2);
     box-shadow: 0 1px 2px 1px rgba(0, 0, 0, 0.2); }
-    /* line 41, popups.css.sass */
+    /* line 21, popups.css.sass */
     .popup .window > button[data-action=close] {
       position: absolute;
       right: 5px;
@@ -392,10 +393,10 @@ body.gui .gui-main {
       width: 20px;
       height: 20px;
       line-height: 20px; }
-      /* line 57, popups.css.sass */
+      /* line 29, popups.css.sass */
       .popup .window > button[data-action=close] .icon {
         margin: 0; }
-    /* line 63, popups.css.sass */
+    /* line 32, popups.css.sass */
     .popup .window .content textarea.code {
       width: 600px;
       height: 300px;

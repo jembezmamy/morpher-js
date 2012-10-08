@@ -527,6 +527,8 @@ function hsvToRgb(h, s, v){
       return "<div class=\"pane\"><div class=\"artboard\"><canvas></canvas></div></div><div class=\"menu\">" + 
   "<button title=\"" + html_escape('Load image') + "\" data-action=\"" + html_escape('openFile') + "\">" + 
   "<div class=\"icon replace\"></div></button>" + 
+  "<button title=\"" + html_escape('Move image') + "\" data-action=\"" + html_escape('move') + "\">" + 
+  "<div class=\"icon move\"></div></button>" + 
   "<button title=\"" + html_escape('Delete') + "\" data-action=\"" + html_escape('delete') + "\">" + 
   "<div class=\"icon delete\"></div></button>" +
   "<input type=\"" + html_escape('range') + "\" name=\"" + html_escape('targetWeight') + "\" min=\"0\" max=\"1\" step=\"0.01\" />" +
@@ -669,6 +671,8 @@ function hsvToRgb(h, s, v){
 
     Point.prototype.delta = null;
 
+    Point.prototype.image = null;
+
     Point.prototype.events = {
       'mousedown': 'dragHandler',
       'contextmenu': 'destroy',
@@ -677,8 +681,13 @@ function hsvToRgb(h, s, v){
       'dblclick': 'selectHandler'
     };
 
-    Point.prototype.initialize = function() {
-      return this.model.on('change', this.render);
+    Point.prototype.initialize = function(params) {
+      if (params == null) {
+        params = {};
+      }
+      this.image = params.image;
+      this.model.on('change', this.render);
+      return this.image.on('change:x change:y', this.render);
     };
 
     Point.prototype.startDrag = function(x, y) {
@@ -702,8 +711,8 @@ function hsvToRgb(h, s, v){
         case 'mousedown':
           return this.startDrag(-(e.pageX - this.$el.offset().left - this.$el.width() / 2), -(e.pageY - this.$el.offset().top - this.$el.height() / 2));
         case 'mousemove':
-          this.model.setX(Math.round(e.pageX - this.delta.x));
-          return this.model.setY(Math.round(e.pageY - this.delta.y));
+          this.model.setX(Math.round(e.pageX - this.delta.x) - this.image.getX());
+          return this.model.setY(Math.round(e.pageY - this.delta.y) - this.image.getY());
         case 'mouseup':
           $('body').removeClass('drag');
           $(window).off('mousemove mouseup', this.dragHandler);
@@ -751,8 +760,8 @@ function hsvToRgb(h, s, v){
 
     Point.prototype.render = function() {
       this.$el.css({
-        left: "" + (this.model.getX()) + "px",
-        top: "" + (this.model.getY()) + "px"
+        left: "" + (this.model.getX() + this.image.getX()) + "px",
+        top: "" + (this.model.getY() + this.image.getY()) + "px"
       });
       return this;
     };
@@ -851,7 +860,11 @@ function hsvToRgb(h, s, v){
 
       this.fileHandler = __bind(this.fileHandler, this);
 
+      this.moveHandler = __bind(this.moveHandler, this);
+
       this.canvasHandler = __bind(this.canvasHandler, this);
+
+      this.move = __bind(this.move, this);
 
       this.openFile = __bind(this.openFile, this);
 
@@ -883,12 +896,17 @@ function hsvToRgb(h, s, v){
 
     Image.prototype.splitInProgress = false;
 
+    Image.prototype.moveMode = false;
+
+    Image.prototype.moveDelta = null;
+
     Image.prototype.events = {
       'click [data-action]': 'clickHandler',
       'change input[name=file]': 'fileHandler',
       'change input[name=url]': 'changeHandler',
       'change input[name=targetWeight]': 'changeHandler',
-      'click canvas': 'canvasHandler'
+      'click canvas': 'canvasHandler',
+      'mousedown canvas': 'moveHandler'
     };
 
     Image.prototype.initialize = function() {
@@ -925,12 +943,44 @@ function hsvToRgb(h, s, v){
       return this.$('input[name=file]').click();
     };
 
+    Image.prototype.move = function() {
+      this.moveMode = !this.moveMode;
+      if (this.moveMode) {
+        this.$('button[data-action=move]').addClass('selected');
+        return this.$('.artboard').addClass('move-mode');
+      } else {
+        this.$('button[data-action=move]').removeClass('selected');
+        return this.$('.artboard').removeClass('move-mode');
+      }
+    };
+
     Image.prototype.canvasHandler = function(e) {
       var offset, x, y;
+      if (this.moveMode) {
+        return;
+      }
       offset = this.$canvas.offset();
-      x = e.pageX - offset.left;
-      y = e.pageY - offset.top;
+      x = e.pageX - offset.left - this.model.morpherImage.getX();
+      y = e.pageY - offset.top - this.model.morpherImage.getY();
       return this.model.addPoint(x, y);
+    };
+
+    Image.prototype.moveHandler = function(e) {
+      if (!this.moveMode) {
+        return;
+      }
+      switch (e.type) {
+        case 'mousedown':
+          this.moveDelta = {
+            x: e.pageX - this.model.morpherImage.getX(),
+            y: e.pageY - this.model.morpherImage.getY()
+          };
+          return $(window).on('mousemove mouseup', this.moveHandler);
+        case 'mousemove':
+          return this.model.morpherImage.moveTo(e.pageX - this.moveDelta.x, e.pageY - this.moveDelta.y);
+        case 'mouseup':
+          return $(window).off('mousemove mouseup', this.moveHandler);
+      }
     };
 
     Image.prototype.fileHandler = function(e) {
@@ -966,7 +1016,8 @@ function hsvToRgb(h, s, v){
     Image.prototype.addPointView = function(image, point) {
       var view;
       view = new Gui.Views.Point({
-        model: point
+        model: point,
+        image: this.model.morpherImage
       });
       this.pointViews.push(view);
       view.on('drag:stop', this.dragStopHandler);
@@ -1018,7 +1069,8 @@ function hsvToRgb(h, s, v){
       view = new Gui.Views.Midpoint({
         triangle: triangle,
         p1: p1,
-        p2: p2
+        p2: p2,
+        image: this.model.morpherImage
       });
       view.on('highlight', this.highlightHandler);
       view.on('edge:split', this.splitHandler);
@@ -1128,17 +1180,19 @@ function hsvToRgb(h, s, v){
     };
 
     Image.prototype.draw = function() {
-      var triangle, _i, _len, _ref, _results;
+      var triangle, x0, y0, _i, _len, _ref, _results;
       this.canvas.width = this.canvas.width;
-      this.ctx.drawImage(this.img, 0, 0);
+      x0 = this.model.morpherImage.getX();
+      y0 = this.model.morpherImage.getY();
+      this.ctx.drawImage(this.img, x0, y0);
       _ref = this.model.morpherImage.mesh.triangles;
       _results = [];
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         triangle = _ref[_i];
         this.ctx.beginPath();
-        this.ctx.moveTo(triangle.p1.x, triangle.p1.y);
-        this.ctx.lineTo(triangle.p2.x, triangle.p2.y);
-        this.ctx.lineTo(triangle.p3.x, triangle.p3.y);
+        this.ctx.moveTo(x0 + triangle.p1.x, y0 + triangle.p1.y);
+        this.ctx.lineTo(x0 + triangle.p2.x, y0 + triangle.p2.y);
+        this.ctx.lineTo(x0 + triangle.p3.x, y0 + triangle.p3.y);
         this.ctx.closePath();
         this.ctx.fillStyle = this.pattern;
         this.ctx.fill();
@@ -1406,12 +1460,14 @@ function hsvToRgb(h, s, v){
       if (params == null) {
         params = {};
       }
+      this.image = params.image;
       this.triangles = [];
       this.addTriangle(params.triangle);
       this.p1 = params.p1;
       this.p2 = params.p2;
       this.p1.on('change', this.render);
-      return this.p2.on('change', this.render);
+      this.p2.on('change', this.render);
+      return this.image.on('change:x change:y', this.render);
     };
 
     Midpoint.prototype.addTriangle = function(triangle) {
@@ -1441,8 +1497,8 @@ function hsvToRgb(h, s, v){
 
     Midpoint.prototype.render = function() {
       var x, y;
-      x = this.p1.x + (this.p2.x - this.p1.x) / 2;
-      y = this.p1.y + (this.p2.y - this.p1.y) / 2;
+      x = this.image.getX() + this.p1.x + (this.p2.x - this.p1.x) / 2;
+      y = this.image.getY() + this.p1.y + (this.p2.y - this.p1.y) / 2;
       this.$el.css({
         left: "" + x + "px",
         top: "" + y + "px"

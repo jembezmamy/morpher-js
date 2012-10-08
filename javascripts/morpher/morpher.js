@@ -247,85 +247,6 @@
 (function() {
   var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
     __hasProp = {}.hasOwnProperty,
-    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
-
-  MorpherJS.DraggableDot = (function(_super) {
-
-    __extends(DraggableDot, _super);
-
-    DraggableDot.prototype.el = null;
-
-    DraggableDot.prototype.x = 0;
-
-    DraggableDot.prototype.y = 0;
-
-    DraggableDot.prototype.delta = null;
-
-    function DraggableDot() {
-      this.mouseHandler = __bind(this.mouseHandler, this);
-
-      this.update = __bind(this.update, this);
-
-      this.remove = __bind(this.remove, this);
-
-      this.moveTo = __bind(this.moveTo, this);
-      this.delta = {
-        x: 0,
-        y: 0
-      };
-      this.el = $('<div />').addClass('dot').bind('mousedown', this.mouseHandler);
-    }
-
-    DraggableDot.prototype.moveTo = function(x, y) {
-      this.x = x;
-      this.y = y;
-      return this.update();
-    };
-
-    DraggableDot.prototype.remove = function() {
-      return this.el.remove();
-    };
-
-    DraggableDot.prototype.update = function() {
-      return this.el.css({
-        left: this.x,
-        top: this.y
-      });
-    };
-
-    DraggableDot.prototype.mouseHandler = function(e) {
-      e.preventDefault();
-      if (e.ctrlKey) {
-        if (this.el.is('.selected')) {
-          this.el.removeClass('selected');
-          return this.trigger('deselect', this);
-        } else {
-          this.el.addClass('selected');
-          return this.trigger('select', this);
-        }
-      } else {
-        switch (e.type) {
-          case 'mousedown':
-            this.delta.x = e.pageX - this.el.position().left;
-            this.delta.y = e.pageY - this.el.position().top;
-            return $(window).bind('mousemove mouseup', this.mouseHandler);
-          case 'mousemove':
-            this.moveTo(e.pageX - this.delta.x, e.pageY - this.delta.y);
-            return this.trigger('change', this);
-          case 'mouseup':
-            return $(window).unbind('mousemove mouseup', this.mouseHandler);
-        }
-      }
-    };
-
-    return DraggableDot;
-
-  })(Backbone.Model);
-
-}).call(this);
-(function() {
-  var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; },
-    __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
     __slice = [].slice;
 
@@ -340,6 +261,10 @@
     Image.prototype.mesh = null;
 
     Image.prototype.weight = 0;
+
+    Image.prototype.x = 0;
+
+    Image.prototype.y = 0;
 
     function Image(json) {
       if (json == null) {
@@ -372,6 +297,16 @@
       this.setMaxSize = __bind(this.setMaxSize, this);
 
       this.loadHandler = __bind(this.loadHandler, this);
+
+      this.moveTo = __bind(this.moveTo, this);
+
+      this.getY = __bind(this.getY, this);
+
+      this.setY = __bind(this.setY, this);
+
+      this.getX = __bind(this.getX, this);
+
+      this.setX = __bind(this.setX, this);
 
       this.getWeight = __bind(this.getWeight, this);
 
@@ -406,6 +341,51 @@
 
     Image.prototype.getWeight = function() {
       return this.weight;
+    };
+
+    Image.prototype.setX = function(x, params) {
+      if (params == null) {
+        params = {};
+      }
+      this.x = Math.round(x * 1);
+      this.mesh.x = this.x;
+      if (!params.silent) {
+        return this.trigger('change:x change');
+      }
+    };
+
+    Image.prototype.getX = function() {
+      return this.x;
+    };
+
+    Image.prototype.setY = function(y, params) {
+      if (params == null) {
+        params = {};
+      }
+      this.y = Math.round(y * 1);
+      this.mesh.y = this.y;
+      if (!params.silent) {
+        return this.trigger('change:y change');
+      }
+    };
+
+    Image.prototype.getY = function() {
+      return this.y;
+    };
+
+    Image.prototype.moveTo = function(x, y, params) {
+      if (params == null) {
+        params = {};
+      }
+      this.setX(x, {
+        silent: true
+      });
+      this.setY(y, {
+        silent: true
+      });
+      if (!params.silent) {
+        return this.trigger('change:x change:y change');
+      }
     };
 
     Image.prototype.loadHandler = function() {
@@ -474,6 +454,8 @@
       var json;
       json = this.mesh.toJSON();
       json.src = this.el.src;
+      json.x = this.x;
+      json.y = this.y;
       return json;
     };
 
@@ -483,6 +465,12 @@
       }
       if (params == null) {
         params = {};
+      }
+      if (json.x != null) {
+        this.setX(json.x, params);
+      }
+      if (json.y != null) {
+        this.setY(json.y, params);
       }
       this.mesh.fromJSON(json, params);
       if (json.src != null) {
@@ -516,6 +504,10 @@
     Mesh.prototype.maxWidth = 0;
 
     Mesh.prototype.maxHeight = 0;
+
+    Mesh.prototype.x = 0;
+
+    Mesh.prototype.y = 0;
 
     function Mesh(params) {
       if (params == null) {
@@ -940,8 +932,6 @@
 
     Morpher.prototype.mesh = null;
 
-    Morpher.prototype.totalWeight = 0;
-
     Morpher.prototype.canvas = null;
 
     Morpher.prototype.ctx = null;
@@ -1228,7 +1218,7 @@
       this.animationStep();
       this.updateMesh();
       blend = this.blendFunction || MorpherJS.Morpher.defaultBlendFunction;
-      if (this.canvas.width > 0 && this.canvas.height > 0 && this.totalWeight > 0) {
+      if (this.canvas.width > 0 && this.canvas.height > 0) {
         _ref = this.images;
         for (_i = 0, _len = _ref.length; _i < _len; _i++) {
           image = _ref[_i];
@@ -1277,26 +1267,23 @@
     };
 
     Morpher.prototype.updateMesh = function() {
-      var i, img, p, _i, _j, _len, _len1, _ref, _ref1, _results;
-      this.totalWeight = 0;
-      _ref = this.images;
-      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-        img = _ref[_i];
-        this.totalWeight += img.weight;
-      }
-      _ref1 = this.mesh.points;
+      var i, img, p, x0, y0, _i, _len, _ref, _results;
+      x0 = this.canvas.width / 2;
+      y0 = this.canvas.height / 2;
+      _ref = this.mesh.points;
       _results = [];
-      for (i = _j = 0, _len1 = _ref1.length; _j < _len1; i = ++_j) {
-        p = _ref1[i];
-        p.x = p.y = 0;
+      for (i = _i = 0, _len = _ref.length; _i < _len; i = ++_i) {
+        p = _ref[i];
+        p.x = x0;
+        p.y = y0;
         _results.push((function() {
-          var _k, _len2, _ref2, _results1;
-          _ref2 = this.images;
+          var _j, _len1, _ref1, _results1;
+          _ref1 = this.images;
           _results1 = [];
-          for (_k = 0, _len2 = _ref2.length; _k < _len2; _k++) {
-            img = _ref2[_k];
-            p.x += img.points[i].x * img.weight / this.totalWeight;
-            _results1.push(p.y += img.points[i].y * img.weight / this.totalWeight);
+          for (_j = 0, _len1 = _ref1.length; _j < _len1; _j++) {
+            img = _ref1[_j];
+            p.x += (img.getX() + img.points[i].x - x0) * img.weight;
+            _results1.push(p.y += (img.getY() + img.points[i].y - y0) * img.weight);
           }
           return _results1;
         }).call(this));
@@ -1469,7 +1456,7 @@
         params = {};
       }
       if ((this.mesh != null) && this.mesh.maxWidth) {
-        x = Math.max(0, Math.min(this.mesh.maxWidth, x));
+        x = Math.max(-this.mesh.x, Math.min(this.mesh.maxWidth - this.mesh.x, x));
       }
       if (this.x !== x) {
         this.x = x;
@@ -1488,7 +1475,7 @@
         params = {};
       }
       if ((this.mesh != null) && this.mesh.maxHeight) {
-        y = Math.max(0, Math.min(this.mesh.maxHeight, y));
+        y = Math.max(-this.mesh.y, Math.min(this.mesh.maxHeight - this.mesh.y, y));
       }
       if (this.y !== y) {
         this.y = y;

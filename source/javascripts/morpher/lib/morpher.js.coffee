@@ -50,26 +50,33 @@ class MorpherJS.Morpher extends MorpherJS.EventDispatcher
 
   # images
 
+  imageEvents:
+    'load'            : "loadHandler"
+    'change'          : "changeHandler"
+    'point:add'       : "addPointHandler"
+    'point:remove'    : "removePointHandler"
+    'triangle:add'    : "addTriangleHandler"
+    'triangle:remove' : "removeTriangleHandler"
+    'remove'          : "removeImage"
+
   addImage: (image, params = {}) =>
     unless image instanceof MorpherJS.Image
       image = new MorpherJS.Image(image)
+    image.remove()
     if @images.length
       image.makeCompatibleWith @mesh
     else
       @mesh.makeCompatibleWith image
     @images.push image
-    image.on 'load', @loadHandler
-    image.on 'change', @changeHandler
-    image.on 'point:add', @addPointHandler
-    image.on 'point:remove', @removePointHandler
-    image.on 'triangle:add', @addTriangleHandler
-    image.on 'triangle:remove', @removeTriangleHandler
-    image.on 'change', @draw
+    for event, handler of @imageEvents
+      image.on event, @[handler]
     @loadHandler()
     @trigger 'image:add' unless params.silent
 
   removeImage: (image) =>
     i = @images.indexOf image
+    for event, handler of @imageEvents
+      image.off event, @[handler]
     if i != -1
       delete @images.splice i, 1
       @trigger 'image:remove'
@@ -82,6 +89,7 @@ class MorpherJS.Morpher extends MorpherJS.EventDispatcher
     @trigger 'load', this, @canvas
 
   changeHandler: (e) =>
+    @draw()
     @trigger 'change'
 
 

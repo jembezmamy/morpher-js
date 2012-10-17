@@ -22,7 +22,11 @@ class MorpherJS.Image extends MorpherJS.EventDispatcher
     @triangles = @mesh.triangles
     @points = @mesh.points
     @fromJSON json
-    
+
+
+  remove: =>
+    @mesh.remove()
+    @trigger 'remove', this 
     
 
   # setters & getters

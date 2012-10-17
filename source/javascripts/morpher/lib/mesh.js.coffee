@@ -237,3 +237,8 @@ class MorpherJS.Mesh extends MorpherJS.EventDispatcher
   reset: =>
     for point in @points
       @removePoint point
+
+  remove: =>
+    while t = @triangles[0]
+      @removeTriangle t, silent: true
+    console.log 'remove:', @triangles.length

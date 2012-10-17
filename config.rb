@@ -1,3 +1,6 @@
+ignore /^javascripts\/(?!morpher)/
+ignore "javascripts/morpher/lib/*"
+ignore /^stylesheets\/(?!application)/
 
 helpers do
   def body_class klass = nil

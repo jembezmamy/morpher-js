@@ -54,7 +54,9 @@ class MorpherJS.Morpher extends MorpherJS.EventDispatcher
     unless image instanceof MorpherJS.Image
       image = new MorpherJS.Image(image)
     if @images.length
-      image.makeCompatibleWith @images[@images.length-1]
+      image.makeCompatibleWith @mesh
+    else
+      @mesh.makeCompatibleWith image
     @images.push image
     image.on 'load', @loadHandler
     image.on 'change', @changeHandler
@@ -75,7 +77,7 @@ class MorpherJS.Morpher extends MorpherJS.EventDispatcher
   loadHandler: (e) =>
     @draw()
     for image in @images
-      return false unless image.el.width && image.el.height
+      return false unless image.loaded
     @refreshMaxSize()
     @trigger 'load', this, @canvas
 

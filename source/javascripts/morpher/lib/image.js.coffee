@@ -1,6 +1,7 @@
 class MorpherJS.Image extends MorpherJS.EventDispatcher
   el: null
   source: null
+  loaded: false
 
   mesh: null
   weight: 0
@@ -27,6 +28,7 @@ class MorpherJS.Image extends MorpherJS.EventDispatcher
   # setters & getters
 
   setSrc: (src) =>
+    @loaded = false
     @el.src = src
 
   setWeight: (w, params = {}) =>
@@ -59,6 +61,7 @@ class MorpherJS.Image extends MorpherJS.EventDispatcher
   # image
 
   loadHandler: =>
+    @loaded = true
     @refreshSource()
     @trigger 'load', this, @el
 
@@ -113,5 +116,5 @@ class MorpherJS.Image extends MorpherJS.EventDispatcher
     @setX json.x, params if json.x?
     @setY json.y, params if json.y?
     @mesh.fromJSON(json, params)
-    @el.src = json.src if json.src?
+    @setSrc json.src if json.src?
     

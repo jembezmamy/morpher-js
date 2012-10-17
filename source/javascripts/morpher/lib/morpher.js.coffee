@@ -180,8 +180,8 @@ class MorpherJS.Morpher extends MorpherJS.EventDispatcher
     w = 0
     h = 0
     for image in @images
-      w = Math.max image.el.width, w
-      h = Math.max image.el.height, h
+      w = Math.max image.el.width+image.getX(), w
+      h = Math.max image.el.height+image.getY(), h
     if w != @canvas.width || h != @canvas.height
       @canvas.width = @tmpCanvas.width = w
       @canvas.height = @tmpCanvas.height = h

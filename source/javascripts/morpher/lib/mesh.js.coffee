@@ -19,11 +19,18 @@ class MorpherJS.Mesh extends MorpherJS.EventDispatcher
     @maxHeight = h
 
   refreshBounds: (params = {})=>
-    bounds = {width: 0, height: 0}
+    bounds = {left: 0, top: 0, width: 0, height: 0}
+    if @points.length
+      bounds.left = @points[0].x
+      bounds.top = @points[0].y
     for point in @points
       bounds.width = Math.max bounds.width, point.x
       bounds.height = Math.max bounds.height, point.y
-    if bounds.width != @bounds.width || bounds.height != @bounds.height
+      bounds.left = Math.min bounds.left, point.x
+      bounds.top = Math.min bounds.top, point.y
+    bounds.width -= bounds.left
+    bounds.height -= bounds.top
+    if bounds.width != @bounds.width || bounds.height != @bounds.height || bounds.left != @bounds.left || bounds.top != @bounds.top
       @bounds = bounds
       @trigger 'change:bounds' unless params.silent
 

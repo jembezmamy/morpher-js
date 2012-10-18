@@ -100,8 +100,8 @@ class MorpherJS.Image extends MorpherJS.EventDispatcher
       triangle.draw @source, ctx, mesh.triangles[i]
 
   refreshSource: =>
-    @source.width = @mesh.bounds.width
-    @source.height = @mesh.bounds.height
+    @source.width = @mesh.bounds.left + @mesh.bounds.width
+    @source.height = @mesh.bounds.top + @mesh.bounds.height
     ctx = @source.getContext('2d')
     ctx.drawImage @el, 0, 0
     

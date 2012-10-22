@@ -2,6 +2,8 @@
 
 MorpherJS is an JavaScript image morphing library. It uses HTML 5 canvas element.
 
+I've extracted it from my [FruitLabour](http://fruit-labour.nibynic.com/) project, which allows you to mix fruits and create new species.
+
 MorpherJS comes along with [GUI] which helps you to configure your own Morpher instance (add images, define geometry, etc.).
 
 # Features
@@ -40,3 +42,4 @@ Copyright (c) 2012 Paweł Bator. MIT License, see [LICENSE] for details.
 [morpher.js]: http://jembezmamy.github.com/morpher-js/javascripts/morpher/morpher.js
 [demos page]: http://jembezmamy.github.com/morpher-js/demos.html
 [LICENSE]: https://github.com/jembezmamy/morpher-js/blob/master/LICENSE
+

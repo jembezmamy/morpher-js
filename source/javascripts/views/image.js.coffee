@@ -232,7 +232,7 @@ class Gui.Views.Image extends Gui.Views.Tile
     @canvas.width = @canvas.width
     x0 = @model.morpherImage.getX()
     y0 = @model.morpherImage.getY()
-    @ctx.drawImage @img, x0, y0
+    @ctx.drawImage @img, x0, y0 if @img.width > 0
     for triangle in @model.morpherImage.mesh.triangles
       @ctx.beginPath()
       @ctx.moveTo(x0+triangle.p1.x, y0+triangle.p1.y)

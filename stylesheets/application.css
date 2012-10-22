@@ -402,7 +402,7 @@ body.gui .gui-main {
       height: 300px;
       font-family: monospace; }
 /* normalize.css 2012-07-07T09:50 UTC - http://github.com/necolas/normalize.css */
-/* line 18, ../../../../../../../../usr/share/ruby-rvm/gems/ruby-1.9.3-p125/gems/compass-normalize-1.1.2/stylesheets/normalize/html5.scss */
+/* line 18, ../../../../../../../../home/pawel/.rvm/gems/ruby-1.9.3-p194/gems/compass-normalize-1.1.2/stylesheets/normalize/html5.scss */
 article,
 aside,
 details,
@@ -416,7 +416,7 @@ section,
 summary {
   display: block; }
 
-/* line 26, ../../../../../../../../usr/share/ruby-rvm/gems/ruby-1.9.3-p125/gems/compass-normalize-1.1.2/stylesheets/normalize/html5.scss */
+/* line 26, ../../../../../../../../home/pawel/.rvm/gems/ruby-1.9.3-p194/gems/compass-normalize-1.1.2/stylesheets/normalize/html5.scss */
 audio,
 canvas,
 video {
@@ -424,20 +424,20 @@ video {
   *display: inline;
   *zoom: 1; }
 
-/* line 35, ../../../../../../../../usr/share/ruby-rvm/gems/ruby-1.9.3-p125/gems/compass-normalize-1.1.2/stylesheets/normalize/html5.scss */
+/* line 35, ../../../../../../../../home/pawel/.rvm/gems/ruby-1.9.3-p194/gems/compass-normalize-1.1.2/stylesheets/normalize/html5.scss */
 audio:not([controls]) {
   display: none;
   height: 0; }
 
-/* line 43, ../../../../../../../../usr/share/ruby-rvm/gems/ruby-1.9.3-p125/gems/compass-normalize-1.1.2/stylesheets/normalize/html5.scss */
+/* line 43, ../../../../../../../../home/pawel/.rvm/gems/ruby-1.9.3-p194/gems/compass-normalize-1.1.2/stylesheets/normalize/html5.scss */
 [hidden] {
   display: none; }
 
-/* line 53, ../../../../../../../../usr/share/ruby-rvm/gems/ruby-1.9.3-p125/gems/compass-normalize-1.1.2/stylesheets/normalize/html5.scss */
+/* line 53, ../../../../../../../../home/pawel/.rvm/gems/ruby-1.9.3-p194/gems/compass-normalize-1.1.2/stylesheets/normalize/html5.scss */
 figure {
   margin: 0; }
 
-/* line 10, ../../../../../../../../usr/share/ruby-rvm/gems/ruby-1.9.3-p125/gems/compass-normalize-1.1.2/stylesheets/normalize/base.scss */
+/* line 10, ../../../../../../../../home/pawel/.rvm/gems/ruby-1.9.3-p194/gems/compass-normalize-1.1.2/stylesheets/normalize/base.scss */
 html {
   font-size: 100%;
   /* 1 */
@@ -446,7 +446,7 @@ html {
   -ms-text-size-adjust: 100%;
   /* 2 */ }
 
-/* line 22, ../../../../../../../../usr/share/ruby-rvm/gems/ruby-1.9.3-p125/gems/compass-normalize-1.1.2/stylesheets/normalize/base.scss */
+/* line 22, ../../../../../../../../home/pawel/.rvm/gems/ruby-1.9.3-p194/gems/compass-normalize-1.1.2/stylesheets/normalize/base.scss */
 html,
 button,
 input,
@@ -454,77 +454,77 @@ select,
 textarea {
   font-family: sans-serif; }
 
-/* line 28, ../../../../../../../../usr/share/ruby-rvm/gems/ruby-1.9.3-p125/gems/compass-normalize-1.1.2/stylesheets/normalize/base.scss */
+/* line 28, ../../../../../../../../home/pawel/.rvm/gems/ruby-1.9.3-p194/gems/compass-normalize-1.1.2/stylesheets/normalize/base.scss */
 body {
   margin: 0; }
 
-/* line 40, ../../../../../../../../usr/share/ruby-rvm/gems/ruby-1.9.3-p125/gems/compass-normalize-1.1.2/stylesheets/normalize/base.scss */
+/* line 40, ../../../../../../../../home/pawel/.rvm/gems/ruby-1.9.3-p194/gems/compass-normalize-1.1.2/stylesheets/normalize/base.scss */
 a:focus {
   outline: thin dotted; }
 
-/* line 48, ../../../../../../../../usr/share/ruby-rvm/gems/ruby-1.9.3-p125/gems/compass-normalize-1.1.2/stylesheets/normalize/base.scss */
+/* line 48, ../../../../../../../../home/pawel/.rvm/gems/ruby-1.9.3-p194/gems/compass-normalize-1.1.2/stylesheets/normalize/base.scss */
 a:hover,
 a:active {
   outline: 0; }
 
-/* line 60, ../../../../../../../../usr/share/ruby-rvm/gems/ruby-1.9.3-p125/gems/compass-normalize-1.1.2/stylesheets/normalize/base.scss */
+/* line 60, ../../../../../../../../home/pawel/.rvm/gems/ruby-1.9.3-p194/gems/compass-normalize-1.1.2/stylesheets/normalize/base.scss */
 h1 {
   font-size: 2em;
   margin: 0.67em 0; }
 
-/* line 65, ../../../../../../../../usr/share/ruby-rvm/gems/ruby-1.9.3-p125/gems/compass-normalize-1.1.2/stylesheets/normalize/base.scss */
+/* line 65, ../../../../../../../../home/pawel/.rvm/gems/ruby-1.9.3-p194/gems/compass-normalize-1.1.2/stylesheets/normalize/base.scss */
 h2 {
   font-size: 1.5em;
   margin: 0.83em 0; }
 
-/* line 70, ../../../../../../../../usr/share/ruby-rvm/gems/ruby-1.9.3-p125/gems/compass-normalize-1.1.2/stylesheets/normalize/base.scss */
+/* line 70, ../../../../../../../../home/pawel/.rvm/gems/ruby-1.9.3-p194/gems/compass-normalize-1.1.2/stylesheets/normalize/base.scss */
 h3 {
   font-size: 1.17em;
   margin: 1em 0; }
 
-/* line 75, ../../../../../../../../usr/share/ruby-rvm/gems/ruby-1.9.3-p125/gems/compass-normalize-1.1.2/stylesheets/normalize/base.scss */
+/* line 75, ../../../../../../../../home/pawel/.rvm/gems/ruby-1.9.3-p194/gems/compass-normalize-1.1.2/stylesheets/normalize/base.scss */
 h4 {
   font-size: 1em;
   margin: 1.33em 0; }
 
-/* line 80, ../../../../../../../../usr/share/ruby-rvm/gems/ruby-1.9.3-p125/gems/compass-normalize-1.1.2/stylesheets/normalize/base.scss */
+/* line 80, ../../../../../../../../home/pawel/.rvm/gems/ruby-1.9.3-p194/gems/compass-normalize-1.1.2/stylesheets/normalize/base.scss */
 h5 {
   font-size: 0.83em;
   margin: 1.67em 0; }
 
-/* line 85, ../../../../../../../../usr/share/ruby-rvm/gems/ruby-1.9.3-p125/gems/compass-normalize-1.1.2/stylesheets/normalize/base.scss */
+/* line 85, ../../../../../../../../home/pawel/.rvm/gems/ruby-1.9.3-p194/gems/compass-normalize-1.1.2/stylesheets/normalize/base.scss */
 h6 {
   font-size: 0.75em;
   margin: 2.33em 0; }
 
-/* line 92, ../../../../../../../../usr/share/ruby-rvm/gems/ruby-1.9.3-p125/gems/compass-normalize-1.1.2/stylesheets/normalize/base.scss */
+/* line 92, ../../../../../../../../home/pawel/.rvm/gems/ruby-1.9.3-p194/gems/compass-normalize-1.1.2/stylesheets/normalize/base.scss */
 abbr[title] {
   border-bottom: 1px dotted; }
 
-/* line 99, ../../../../../../../../usr/share/ruby-rvm/gems/ruby-1.9.3-p125/gems/compass-normalize-1.1.2/stylesheets/normalize/base.scss */
+/* line 99, ../../../../../../../../home/pawel/.rvm/gems/ruby-1.9.3-p194/gems/compass-normalize-1.1.2/stylesheets/normalize/base.scss */
 b,
 strong {
   font-weight: bold; }
 
-/* line 103, ../../../../../../../../usr/share/ruby-rvm/gems/ruby-1.9.3-p125/gems/compass-normalize-1.1.2/stylesheets/normalize/base.scss */
+/* line 103, ../../../../../../../../home/pawel/.rvm/gems/ruby-1.9.3-p194/gems/compass-normalize-1.1.2/stylesheets/normalize/base.scss */
 blockquote {
   margin: 1em 40px; }
 
-/* line 109, ../../../../../../../../usr/share/ruby-rvm/gems/ruby-1.9.3-p125/gems/compass-normalize-1.1.2/stylesheets/normalize/base.scss */
+/* line 109, ../../../../../../../../home/pawel/.rvm/gems/ruby-1.9.3-p194/gems/compass-normalize-1.1.2/stylesheets/normalize/base.scss */
 dfn {
   font-style: italic; }
 
-/* line 115, ../../../../../../../../usr/share/ruby-rvm/gems/ruby-1.9.3-p125/gems/compass-normalize-1.1.2/stylesheets/normalize/base.scss */
+/* line 115, ../../../../../../../../home/pawel/.rvm/gems/ruby-1.9.3-p194/gems/compass-normalize-1.1.2/stylesheets/normalize/base.scss */
 mark {
   background: #ff0;
   color: #000; }
 
-/* line 123, ../../../../../../../../usr/share/ruby-rvm/gems/ruby-1.9.3-p125/gems/compass-normalize-1.1.2/stylesheets/normalize/base.scss */
+/* line 123, ../../../../../../../../home/pawel/.rvm/gems/ruby-1.9.3-p194/gems/compass-normalize-1.1.2/stylesheets/normalize/base.scss */
 p,
 pre {
   margin: 1em 0; }
 
-/* line 133, ../../../../../../../../usr/share/ruby-rvm/gems/ruby-1.9.3-p125/gems/compass-normalize-1.1.2/stylesheets/normalize/base.scss */
+/* line 133, ../../../../../../../../home/pawel/.rvm/gems/ruby-1.9.3-p194/gems/compass-normalize-1.1.2/stylesheets/normalize/base.scss */
 pre,
 code,
 kbd,
@@ -533,27 +533,27 @@ samp {
   _font-family: 'courier new', monospace;
   font-size: 1em; }
 
-/* line 141, ../../../../../../../../usr/share/ruby-rvm/gems/ruby-1.9.3-p125/gems/compass-normalize-1.1.2/stylesheets/normalize/base.scss */
+/* line 141, ../../../../../../../../home/pawel/.rvm/gems/ruby-1.9.3-p194/gems/compass-normalize-1.1.2/stylesheets/normalize/base.scss */
 pre {
   white-space: pre;
   white-space: pre-wrap;
   word-wrap: break-word; }
 
-/* line 152, ../../../../../../../../usr/share/ruby-rvm/gems/ruby-1.9.3-p125/gems/compass-normalize-1.1.2/stylesheets/normalize/base.scss */
+/* line 152, ../../../../../../../../home/pawel/.rvm/gems/ruby-1.9.3-p194/gems/compass-normalize-1.1.2/stylesheets/normalize/base.scss */
 q {
   quotes: none; }
 
-/* line 159, ../../../../../../../../usr/share/ruby-rvm/gems/ruby-1.9.3-p125/gems/compass-normalize-1.1.2/stylesheets/normalize/base.scss */
+/* line 159, ../../../../../../../../home/pawel/.rvm/gems/ruby-1.9.3-p194/gems/compass-normalize-1.1.2/stylesheets/normalize/base.scss */
 q:before,
 q:after {
   content: '';
   content: none; }
 
-/* line 164, ../../../../../../../../usr/share/ruby-rvm/gems/ruby-1.9.3-p125/gems/compass-normalize-1.1.2/stylesheets/normalize/base.scss */
+/* line 164, ../../../../../../../../home/pawel/.rvm/gems/ruby-1.9.3-p194/gems/compass-normalize-1.1.2/stylesheets/normalize/base.scss */
 small {
   font-size: 75%; }
 
-/* line 172, ../../../../../../../../usr/share/ruby-rvm/gems/ruby-1.9.3-p125/gems/compass-normalize-1.1.2/stylesheets/normalize/base.scss */
+/* line 172, ../../../../../../../../home/pawel/.rvm/gems/ruby-1.9.3-p194/gems/compass-normalize-1.1.2/stylesheets/normalize/base.scss */
 sub,
 sup {
   font-size: 75%;
@@ -561,71 +561,71 @@ sup {
   position: relative;
   vertical-align: baseline; }
 
-/* line 179, ../../../../../../../../usr/share/ruby-rvm/gems/ruby-1.9.3-p125/gems/compass-normalize-1.1.2/stylesheets/normalize/base.scss */
+/* line 179, ../../../../../../../../home/pawel/.rvm/gems/ruby-1.9.3-p194/gems/compass-normalize-1.1.2/stylesheets/normalize/base.scss */
 sup {
   top: -0.5em; }
 
-/* line 183, ../../../../../../../../usr/share/ruby-rvm/gems/ruby-1.9.3-p125/gems/compass-normalize-1.1.2/stylesheets/normalize/base.scss */
+/* line 183, ../../../../../../../../home/pawel/.rvm/gems/ruby-1.9.3-p194/gems/compass-normalize-1.1.2/stylesheets/normalize/base.scss */
 sub {
   bottom: -0.25em; }
 
-/* line 197, ../../../../../../../../usr/share/ruby-rvm/gems/ruby-1.9.3-p125/gems/compass-normalize-1.1.2/stylesheets/normalize/base.scss */
+/* line 197, ../../../../../../../../home/pawel/.rvm/gems/ruby-1.9.3-p194/gems/compass-normalize-1.1.2/stylesheets/normalize/base.scss */
 dl,
 menu,
 ol,
 ul {
   margin: 1em 0; }
 
-/* line 201, ../../../../../../../../usr/share/ruby-rvm/gems/ruby-1.9.3-p125/gems/compass-normalize-1.1.2/stylesheets/normalize/base.scss */
+/* line 201, ../../../../../../../../home/pawel/.rvm/gems/ruby-1.9.3-p194/gems/compass-normalize-1.1.2/stylesheets/normalize/base.scss */
 dd {
   margin: 0 0 0 40px; }
 
-/* line 209, ../../../../../../../../usr/share/ruby-rvm/gems/ruby-1.9.3-p125/gems/compass-normalize-1.1.2/stylesheets/normalize/base.scss */
+/* line 209, ../../../../../../../../home/pawel/.rvm/gems/ruby-1.9.3-p194/gems/compass-normalize-1.1.2/stylesheets/normalize/base.scss */
 menu,
 ol,
 ul {
   padding: 0 0 0 40px; }
 
-/* line 216, ../../../../../../../../usr/share/ruby-rvm/gems/ruby-1.9.3-p125/gems/compass-normalize-1.1.2/stylesheets/normalize/base.scss */
+/* line 216, ../../../../../../../../home/pawel/.rvm/gems/ruby-1.9.3-p194/gems/compass-normalize-1.1.2/stylesheets/normalize/base.scss */
 nav ul,
 nav ol {
   list-style: none;
   list-style-image: none; }
 
-/* line 230, ../../../../../../../../usr/share/ruby-rvm/gems/ruby-1.9.3-p125/gems/compass-normalize-1.1.2/stylesheets/normalize/base.scss */
+/* line 230, ../../../../../../../../home/pawel/.rvm/gems/ruby-1.9.3-p194/gems/compass-normalize-1.1.2/stylesheets/normalize/base.scss */
 img {
   border: 0;
   /* 1 */
   -ms-interpolation-mode: bicubic;
   /* 2 */ }
 
-/* line 237, ../../../../../../../../usr/share/ruby-rvm/gems/ruby-1.9.3-p125/gems/compass-normalize-1.1.2/stylesheets/normalize/base.scss */
+/* line 237, ../../../../../../../../home/pawel/.rvm/gems/ruby-1.9.3-p194/gems/compass-normalize-1.1.2/stylesheets/normalize/base.scss */
 svg:not(:root) {
   overflow: hidden; }
 
-/* line 248, ../../../../../../../../usr/share/ruby-rvm/gems/ruby-1.9.3-p125/gems/compass-normalize-1.1.2/stylesheets/normalize/base.scss */
+/* line 248, ../../../../../../../../home/pawel/.rvm/gems/ruby-1.9.3-p194/gems/compass-normalize-1.1.2/stylesheets/normalize/base.scss */
 table {
   border-collapse: collapse;
   border-spacing: 0; }
 
-/* line 7, ../../../../../../../../usr/share/ruby-rvm/gems/ruby-1.9.3-p125/gems/compass-normalize-1.1.2/stylesheets/normalize/forms.scss */
+/* line 7, ../../../../../../../../home/pawel/.rvm/gems/ruby-1.9.3-p194/gems/compass-normalize-1.1.2/stylesheets/normalize/forms.scss */
 form {
   margin: 0; }
 
-/* line 13, ../../../../../../../../usr/share/ruby-rvm/gems/ruby-1.9.3-p125/gems/compass-normalize-1.1.2/stylesheets/normalize/forms.scss */
+/* line 13, ../../../../../../../../home/pawel/.rvm/gems/ruby-1.9.3-p194/gems/compass-normalize-1.1.2/stylesheets/normalize/forms.scss */
 fieldset {
   border: 1px solid #c0c0c0;
   margin: 0 2px;
   padding: 0.35em 0.625em 0.75em; }
 
-/* line 23, ../../../../../../../../usr/share/ruby-rvm/gems/ruby-1.9.3-p125/gems/compass-normalize-1.1.2/stylesheets/normalize/forms.scss */
+/* line 23, ../../../../../../../../home/pawel/.rvm/gems/ruby-1.9.3-p194/gems/compass-normalize-1.1.2/stylesheets/normalize/forms.scss */
 legend {
   border: 0;
   padding: 0;
   white-space: normal;
   *margin-left: -7px; }
 
-/* line 37, ../../../../../../../../usr/share/ruby-rvm/gems/ruby-1.9.3-p125/gems/compass-normalize-1.1.2/stylesheets/normalize/forms.scss */
+/* line 37, ../../../../../../../../home/pawel/.rvm/gems/ruby-1.9.3-p194/gems/compass-normalize-1.1.2/stylesheets/normalize/forms.scss */
 button,
 input,
 select,
@@ -635,12 +635,12 @@ textarea {
   vertical-align: baseline;
   *vertical-align: middle; }
 
-/* line 47, ../../../../../../../../usr/share/ruby-rvm/gems/ruby-1.9.3-p125/gems/compass-normalize-1.1.2/stylesheets/normalize/forms.scss */
+/* line 47, ../../../../../../../../home/pawel/.rvm/gems/ruby-1.9.3-p194/gems/compass-normalize-1.1.2/stylesheets/normalize/forms.scss */
 button,
 input {
   line-height: normal; }
 
-/* line 62, ../../../../../../../../usr/share/ruby-rvm/gems/ruby-1.9.3-p125/gems/compass-normalize-1.1.2/stylesheets/normalize/forms.scss */
+/* line 62, ../../../../../../../../home/pawel/.rvm/gems/ruby-1.9.3-p194/gems/compass-normalize-1.1.2/stylesheets/normalize/forms.scss */
 button,
 html input[type="button"],
 input[type="reset"],
@@ -649,12 +649,12 @@ input[type="submit"] {
   cursor: pointer;
   *overflow: visible; }
 
-/* line 71, ../../../../../../../../usr/share/ruby-rvm/gems/ruby-1.9.3-p125/gems/compass-normalize-1.1.2/stylesheets/normalize/forms.scss */
+/* line 71, ../../../../../../../../home/pawel/.rvm/gems/ruby-1.9.3-p194/gems/compass-normalize-1.1.2/stylesheets/normalize/forms.scss */
 button[disabled],
 input[disabled] {
   cursor: default; }
 
-/* line 81, ../../../../../../../../usr/share/ruby-rvm/gems/ruby-1.9.3-p125/gems/compass-normalize-1.1.2/stylesheets/normalize/forms.scss */
+/* line 81, ../../../../../../../../home/pawel/.rvm/gems/ruby-1.9.3-p194/gems/compass-normalize-1.1.2/stylesheets/normalize/forms.scss */
 input[type="checkbox"],
 input[type="radio"] {
   box-sizing: border-box;
@@ -662,25 +662,25 @@ input[type="radio"] {
   *height: 13px;
   *width: 13px; }
 
-/* line 91, ../../../../../../../../usr/share/ruby-rvm/gems/ruby-1.9.3-p125/gems/compass-normalize-1.1.2/stylesheets/normalize/forms.scss */
+/* line 91, ../../../../../../../../home/pawel/.rvm/gems/ruby-1.9.3-p194/gems/compass-normalize-1.1.2/stylesheets/normalize/forms.scss */
 input[type="search"] {
   -webkit-appearance: textfield;
   -moz-box-sizing: content-box;
   -webkit-box-sizing: content-box;
   box-sizing: content-box; }
 
-/* line 101, ../../../../../../../../usr/share/ruby-rvm/gems/ruby-1.9.3-p125/gems/compass-normalize-1.1.2/stylesheets/normalize/forms.scss */
+/* line 101, ../../../../../../../../home/pawel/.rvm/gems/ruby-1.9.3-p194/gems/compass-normalize-1.1.2/stylesheets/normalize/forms.scss */
 input[type="search"]::-webkit-search-decoration,
 input[type="search"]::-webkit-search-cancel-button {
   -webkit-appearance: none; }
 
-/* line 108, ../../../../../../../../usr/share/ruby-rvm/gems/ruby-1.9.3-p125/gems/compass-normalize-1.1.2/stylesheets/normalize/forms.scss */
+/* line 108, ../../../../../../../../home/pawel/.rvm/gems/ruby-1.9.3-p194/gems/compass-normalize-1.1.2/stylesheets/normalize/forms.scss */
 button::-moz-focus-inner,
 input::-moz-focus-inner {
   border: 0;
   padding: 0; }
 
-/* line 116, ../../../../../../../../usr/share/ruby-rvm/gems/ruby-1.9.3-p125/gems/compass-normalize-1.1.2/stylesheets/normalize/forms.scss */
+/* line 116, ../../../../../../../../home/pawel/.rvm/gems/ruby-1.9.3-p194/gems/compass-normalize-1.1.2/stylesheets/normalize/forms.scss */
 textarea {
   overflow: auto;
   vertical-align: top; }

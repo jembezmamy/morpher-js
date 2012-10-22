@@ -17,39 +17,42 @@
 
     }
 
+    EventDispatcher.prototype.eventSplitter = /\s+/;
+
     EventDispatcher.prototype.on = function(events, callback, context) {
-      var calls, ev, list, tail;
-      ev = null;
-      events = events.split(/\s+/);
+      var calls, event, list;
+      if (!callback) {
+        return this;
+      }
+      events = events.split(this.eventSplitter);
       calls = this._callbacks || (this._callbacks = {});
-      while (ev = events.shift()) {
-        list = calls[ev] || (calls[ev] = {});
-        tail = list.tail || (list.tail = list.next = {});
-        tail.callback = callback;
-        tail.context = context;
-        list.tail = tail.next = {};
+      while (event = events.shift()) {
+        list = calls[event] || (calls[event] = []);
+        list.push(callback, context);
       }
       return this;
     };
 
     EventDispatcher.prototype.off = function(events, callback, context) {
-      var calls, ev, node;
-      ev = calls = node = null;
-      if (!events) {
+      var calls, event, i, list;
+      if (!(calls = this._callbacks)) {
+        return this;
+      }
+      if (!(events || callback || context)) {
         delete this._callbacks;
-      } else if (calls = this._callbacks) {
-        events = events.split(/\s+/);
-        while (ev = events.shift()) {
-          node = calls[ev];
-          delete calls[ev];
-          if (!callback || !node) {
-            continue;
-          }
-          while ((node = node.next) && node.next) {
-            if (node.callback === callback && (!context || node.context === context)) {
-              continue;
+        return this;
+      }
+      events = events ? events.split(this.eventSplitter) : _.keys(calls);
+      while (event = events.shift()) {
+        if (!(list = calls[event]) || !(callback || context)) {
+          delete calls[event];
+        } else {
+          i = list.length - 2;
+          while (i >= 0) {
+            if (!(callback && list[i] !== callback || context && list[i + 1] !== context)) {
+              list.splice(i, 2);
             }
-            this.bind(ev, node.callback, node.context);
+            i -= 2;
           }
         }
       }
@@ -57,35 +60,41 @@
     };
 
     EventDispatcher.prototype.trigger = function(events) {
-      var all, args, calls, event, node, rest, tail;
-      event = node = calls = tail = args = all = rest = null;
+      var all, args, calls, event, i, length, list, rest;
       if (!(calls = this._callbacks)) {
         return this;
       }
-      all = calls['all'];
-      (events = events.split(/\s+/)).push(null);
-      while (event = events.shift()) {
-        if (all) {
-          events.push({
-            next: all.next,
-            tail: all.tail,
-            event: event
-          });
-        }
-        if (!(node = calls[event])) {
-          continue;
-        }
-        events.push({
-          next: node.next,
-          tail: node.tail
-        });
+      rest = [];
+      events = events.split(this.eventSplitter);
+      i = 1;
+      length = arguments.length;
+      while (i < length) {
+        rest[i - 1] = arguments[i];
+        i++;
       }
-      rest = Array.prototype.slice.call(arguments, 1);
-      while (node = events.pop()) {
-        tail = node.tail;
-        args = node.event ? [node.event].concat(rest) : rest;
-        while ((node = node.next) !== tail) {
-          node.callback.apply(node.context || this, args);
+      while (event = events.shift()) {
+        if (all = calls.all) {
+          all = all.slice();
+        }
+        if (list = calls[event]) {
+          list = list.slice();
+        }
+        if (list) {
+          i = 0;
+          length = list.length;
+          while (i < length) {
+            list[i].apply(list[i + 1] || this, rest);
+            i += 2;
+          }
+        }
+        if (all) {
+          args = [event].concat(rest);
+          i = 0;
+          length = all.length;
+          while (i < length) {
+            all[i].apply(all[i + 1] || this, args);
+            i += 2;
+          }
         }
       }
       return this;
@@ -258,6 +267,8 @@
 
     Image.prototype.source = null;
 
+    Image.prototype.loaded = false;
+
     Image.prototype.mesh = null;
 
     Image.prototype.weight = 0;
@@ -314,6 +325,8 @@
 
       this.setSrc = __bind(this.setSrc, this);
 
+      this.remove = __bind(this.remove, this);
+
       this.el = new window.Image();
       this.el.onload = this.loadHandler;
       this.source = document.createElement('canvas');
@@ -325,7 +338,13 @@
       this.fromJSON(json);
     }
 
+    Image.prototype.remove = function() {
+      this.mesh.remove();
+      return this.trigger('remove', this);
+    };
+
     Image.prototype.setSrc = function(src) {
+      this.loaded = false;
       return this.el.src = src;
     };
 
@@ -389,6 +408,7 @@
     };
 
     Image.prototype.loadHandler = function() {
+      this.loaded = true;
       this.refreshSource();
       return this.trigger('load', this, this.el);
     };
@@ -444,8 +464,11 @@
 
     Image.prototype.refreshSource = function() {
       var ctx;
-      this.source.width = this.mesh.bounds.width;
-      this.source.height = this.mesh.bounds.height;
+      if (!this.loaded) {
+        return;
+      }
+      this.source.width = this.mesh.bounds.left + this.mesh.bounds.width;
+      this.source.height = this.mesh.bounds.top + this.mesh.bounds.height;
       ctx = this.source.getContext('2d');
       return ctx.drawImage(this.el, 0, 0);
     };
@@ -474,7 +497,7 @@
       }
       this.mesh.fromJSON(json, params);
       if (json.src != null) {
-        return this.el.src = json.src;
+        return this.setSrc(json.src);
       }
     };
 
@@ -513,6 +536,8 @@
       if (params == null) {
         params = {};
       }
+      this.remove = __bind(this.remove, this);
+
       this.reset = __bind(this.reset, this);
 
       this.fromJSON = __bind(this.fromJSON, this);
@@ -560,16 +585,26 @@
         params = {};
       }
       bounds = {
+        left: 0,
+        top: 0,
         width: 0,
         height: 0
       };
+      if (this.points.length) {
+        bounds.left = this.points[0].x;
+        bounds.top = this.points[0].y;
+      }
       _ref = this.points;
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         point = _ref[_i];
         bounds.width = Math.max(bounds.width, point.x);
         bounds.height = Math.max(bounds.height, point.y);
+        bounds.left = Math.min(bounds.left, point.x);
+        bounds.top = Math.min(bounds.top, point.y);
       }
-      if (bounds.width !== this.bounds.width || bounds.height !== this.bounds.height) {
+      bounds.width -= bounds.left;
+      bounds.height -= bounds.top;
+      if (bounds.width !== this.bounds.width || bounds.height !== this.bounds.height || bounds.left !== this.bounds.left || bounds.top !== this.bounds.top) {
         this.bounds = bounds;
         if (!params.silent) {
           return this.trigger('change:bounds');
@@ -912,6 +947,17 @@
       return _results;
     };
 
+    Mesh.prototype.remove = function() {
+      var t, _results;
+      _results = [];
+      while (t = this.triangles[0]) {
+        _results.push(this.removeTriangle(t, {
+          silent: true
+        }));
+      }
+      return _results;
+    };
+
     return Mesh;
 
   })(MorpherJS.EventDispatcher);
@@ -1044,24 +1090,36 @@
       return this.draw();
     };
 
+    Morpher.prototype.imageEvents = {
+      'load': "loadHandler",
+      'change': "changeHandler",
+      'point:add': "addPointHandler",
+      'point:remove': "removePointHandler",
+      'triangle:add': "addTriangleHandler",
+      'triangle:remove': "removeTriangleHandler",
+      'remove': "removeImage"
+    };
+
     Morpher.prototype.addImage = function(image, params) {
+      var event, handler, _ref;
       if (params == null) {
         params = {};
       }
       if (!(image instanceof MorpherJS.Image)) {
         image = new MorpherJS.Image(image);
       }
+      image.remove();
       if (this.images.length) {
-        image.makeCompatibleWith(this.images[this.images.length - 1]);
+        image.makeCompatibleWith(this.mesh);
+      } else {
+        this.mesh.makeCompatibleWith(image);
       }
       this.images.push(image);
-      image.on('load', this.loadHandler);
-      image.on('change', this.changeHandler);
-      image.on('point:add', this.addPointHandler);
-      image.on('point:remove', this.removePointHandler);
-      image.on('triangle:add', this.addTriangleHandler);
-      image.on('triangle:remove', this.removeTriangleHandler);
-      image.on('change', this.draw);
+      _ref = this.imageEvents;
+      for (event in _ref) {
+        handler = _ref[event];
+        image.on(event, this[handler]);
+      }
       this.loadHandler();
       if (!params.silent) {
         return this.trigger('image:add');
@@ -1069,8 +1127,13 @@
     };
 
     Morpher.prototype.removeImage = function(image) {
-      var i;
+      var event, handler, i, _ref;
       i = this.images.indexOf(image);
+      _ref = this.imageEvents;
+      for (event in _ref) {
+        handler = _ref[event];
+        image.off(event, this[handler]);
+      }
       if (i !== -1) {
         delete this.images.splice(i, 1);
         return this.trigger('image:remove');
@@ -1083,7 +1146,7 @@
       _ref = this.images;
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         image = _ref[_i];
-        if (!(image.el.width && image.el.height)) {
+        if (!image.loaded) {
           return false;
         }
       }
@@ -1092,6 +1155,7 @@
     };
 
     Morpher.prototype.changeHandler = function(e) {
+      this.draw();
       return this.trigger('change');
     };
 
@@ -1244,8 +1308,8 @@
       _ref = this.images;
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         image = _ref[_i];
-        w = Math.max(image.el.width, w);
-        h = Math.max(image.el.height, h);
+        w = Math.max(image.el.width + image.getX(), w);
+        h = Math.max(image.el.height + image.getY(), h);
       }
       if (w !== this.canvas.width || h !== this.canvas.height) {
         this.canvas.width = this.tmpCanvas.width = w;

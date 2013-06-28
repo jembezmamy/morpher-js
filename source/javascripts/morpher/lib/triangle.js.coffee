@@ -1,4 +1,4 @@
-class MorpherJS.Triangle extends Backbone.Model
+class MorpherJS.Triangle extends MorpherJS.EventDispatcher
   p1: null
   p2: null
   p3: null

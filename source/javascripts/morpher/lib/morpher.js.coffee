@@ -166,8 +166,10 @@ class MorpherJS.Morpher extends MorpherJS.EventDispatcher
     @animationStep()
     @updateMesh()
     blend = @blendFunction || MorpherJS.Morpher.defaultBlendFunction
-    if @canvas.width > 0 && @canvas.height > 0    
-      for image in @images
+    if @canvas.width > 0 && @canvas.height > 0
+      sortedImages = @images.slice().sort (a, b) ->
+        b.weight - a.weight
+      for image in sortedImages
         @tmpCanvas.width = @tmpCanvas.width
         image.draw @tmpCtx, @mesh
         blend @canvas, @tmpCanvas, image.weight
@@ -193,8 +195,8 @@ class MorpherJS.Morpher extends MorpherJS.EventDispatcher
       img.setMaxSize(@canvas.width, @canvas.height)
 
   updateMesh: =>
-    x0 = @canvas.width/2
-    y0 = @canvas.height/2
+    x0 = @canvas.width / 2
+    y0 = @canvas.height / 2
     for p, i in @mesh.points
       p.x = x0
       p.y = y0

@@ -18,6 +18,7 @@ class MorpherJS.Morpher extends MorpherJS.EventDispatcher
   duration: null
   state0: null
   state1: null
+  state: null
 
   constructor: (params = {}) ->
     @images = []
@@ -34,8 +35,14 @@ class MorpherJS.Morpher extends MorpherJS.EventDispatcher
 
 
   set: (weights, params = {}) =>
+    @state = []
     for img, i in @images
-      img.setWeight (weights[i] || 0), params
+      w = weights[i] || 0
+      @state.push w
+      img.setWeight w, params
+      
+  get: =>
+    @state.slice()
 
   animate: (weights, duration, easing) =>
     @state0 = []

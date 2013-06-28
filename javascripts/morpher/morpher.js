@@ -1002,6 +1002,8 @@
 
     Morpher.prototype.state1 = null;
 
+    Morpher.prototype.state = null;
+
     function Morpher(params) {
       if (params == null) {
         params = {};
@@ -1048,6 +1050,8 @@
 
       this.animate = __bind(this.animate, this);
 
+      this.get = __bind(this.get, this);
+
       this.set = __bind(this.set, this);
 
       this.images = [];
@@ -1062,17 +1066,24 @@
     }
 
     Morpher.prototype.set = function(weights, params) {
-      var i, img, _i, _len, _ref, _results;
+      var i, img, w, _i, _len, _ref, _results;
       if (params == null) {
         params = {};
       }
+      this.state = [];
       _ref = this.images;
       _results = [];
       for (i = _i = 0, _len = _ref.length; _i < _len; i = ++_i) {
         img = _ref[i];
-        _results.push(img.setWeight(weights[i] || 0, params));
+        w = weights[i] || 0;
+        this.state.push(w);
+        _results.push(img.setWeight(w, params));
       }
       return _results;
+    };
+
+    Morpher.prototype.get = function() {
+      return this.state.slice();
     };
 
     Morpher.prototype.animate = function(weights, duration, easing) {
@@ -1276,16 +1287,18 @@
     };
 
     Morpher.prototype.drawNow = function() {
-      var blend, image, _i, _len, _ref;
+      var blend, image, sortedImages, _i, _len;
       this.canvas.width = this.canvas.width;
       this.updateCanvasSize();
       this.animationStep();
       this.updateMesh();
       blend = this.blendFunction || MorpherJS.Morpher.defaultBlendFunction;
       if (this.canvas.width > 0 && this.canvas.height > 0) {
-        _ref = this.images;
-        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-          image = _ref[_i];
+        sortedImages = this.images.slice().sort(function(a, b) {
+          return b.weight - a.weight;
+        });
+        for (_i = 0, _len = sortedImages.length; _i < _len; _i++) {
+          image = sortedImages[_i];
           this.tmpCanvas.width = this.tmpCanvas.width;
           image.draw(this.tmpCtx, this.mesh);
           blend(this.canvas, this.tmpCanvas, image.weight);
@@ -1730,6 +1743,6 @@
 
     return Triangle;
 
-  })(Backbone.Model);
+  })(MorpherJS.EventDispatcher);
 
 }).call(this);

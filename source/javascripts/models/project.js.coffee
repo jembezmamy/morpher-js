@@ -56,7 +56,10 @@ class Gui.Models.Project extends Backbone.Model
     @morpher.draw()
 
   morpherChange: =>
-    @save morpher: @morpher.toJSON(), {silent: true}
+    json = @morpher.toJSON()
+    for img, i in json.images
+      img.src = null
+    @save morpher: json, {silent: true}
 
   getCode: =>
     json = @morpher.toJSON()

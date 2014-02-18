@@ -109,17 +109,21 @@ class MorpherJS.Morpher extends MorpherJS.EventDispatcher
 
   addPointHandler: (image, point, pointParams = null) =>
     position = pointParams || image.getRelativePositionOf(point)
-    for img in @images.concat @mesh
+    for img in @images
       if img.points.length < image.points.length
         img.addPoint position
         return
-    @trigger 'point:add', this
+    if @mesh.points.length < image.points.length
+      @mesh.addPoint position
+      @trigger 'point:add', this
 
   removePointHandler: (image, point, index) =>
-    for img in @images.concat @mesh
+    for img in @images
       if img.points.length > image.points.length
         img.removePoint index
         return
+    if @mesh.points.length > image.points.length
+      @mesh.removePoint index
     for triangle in @triangles
       for v, k in triangle
         triangle[k] -= 1 if v >= index
@@ -141,19 +145,23 @@ class MorpherJS.Morpher extends MorpherJS.EventDispatcher
   addTriangleHandler: (image, i1, i2, i3, triangle) =>
     if image.triangles.length > @triangles.length && !@triangleExists(i1, i2, i3)
       @triangles.push [i1, i2, i3]
-    for img in @images.concat @mesh
+    for img in @images
       if img.triangles.length < @triangles.length
         img.addTriangle i1, i2, i3
         return
+    if @mesh.triangles.length < @triangles.length
+      @mesh.addTriangle i1, i2, i3
     @trigger 'triangle:add', this
 
   removeTriangleHandler: (image, triangle, index) =>
     if image.triangles.length < @triangles.length
       delete @triangles.splice index, 1
-    for img in @images.concat @mesh
+    for img in @images
       if img.triangles.length > @triangles.length
         img.removeTriangle index
         return
+    if @mesh.triangles.length > @triangles.length
+      @mesh.removeTriangle index
     @trigger 'triangle:remove', this
     
 

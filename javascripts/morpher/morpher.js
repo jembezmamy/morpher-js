@@ -1189,7 +1189,7 @@
         pointParams = null;
       }
       position = pointParams || image.getRelativePositionOf(point);
-      _ref = this.images;
+      _ref = this.images.concat(this.mesh);
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         img = _ref[_i];
         if (img.points.length < image.points.length) {
@@ -1197,24 +1197,18 @@
           return;
         }
       }
-      if (this.mesh.points.length < image.points.length) {
-        this.mesh.addPoint(position);
-        return this.trigger('point:add', this);
-      }
+      return this.trigger('point:add', this);
     };
 
     Morpher.prototype.removePointHandler = function(image, point, index) {
       var img, k, triangle, v, _i, _j, _k, _len, _len1, _len2, _ref, _ref1;
-      _ref = this.images;
+      _ref = this.images.concat(this.mesh);
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         img = _ref[_i];
         if (img.points.length > image.points.length) {
           img.removePoint(index);
           return;
         }
-      }
-      if (this.mesh.points.length > image.points.length) {
-        this.mesh.removePoint(index);
       }
       _ref1 = this.triangles;
       for (_j = 0, _len1 = _ref1.length; _j < _len1; _j++) {
@@ -1252,16 +1246,13 @@
       if (image.triangles.length > this.triangles.length && !this.triangleExists(i1, i2, i3)) {
         this.triangles.push([i1, i2, i3]);
       }
-      _ref = this.images;
+      _ref = this.images.concat(this.mesh);
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         img = _ref[_i];
         if (img.triangles.length < this.triangles.length) {
           img.addTriangle(i1, i2, i3);
           return;
         }
-      }
-      if (this.mesh.triangles.length < this.triangles.length) {
-        this.mesh.addTriangle(i1, i2, i3);
       }
       return this.trigger('triangle:add', this);
     };
@@ -1271,16 +1262,13 @@
       if (image.triangles.length < this.triangles.length) {
         delete this.triangles.splice(index, 1);
       }
-      _ref = this.images;
+      _ref = this.images.concat(this.mesh);
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         img = _ref[_i];
         if (img.triangles.length > this.triangles.length) {
           img.removeTriangle(index);
           return;
         }
-      }
-      if (this.mesh.triangles.length > this.triangles.length) {
-        this.mesh.removeTriangle(index);
       }
       return this.trigger('triangle:remove', this);
     };

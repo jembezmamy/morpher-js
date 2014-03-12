@@ -66,12 +66,12 @@ class MorpherJS.Triangle extends MorpherJS.EventDispatcher
     to = destinationTriangle.clone()
     to.transform(matr2.apply())
 
-    scaleX = to.p2.x/from.p2.x
-    scaleY = to.p3.y/from.p3.y
+    scaleX = to.p2.x / from.p2.x
+    scaleY = to.p3.y / from.p3.y
     matr1.scale(scaleX, scaleY)
     state2 = @clone()
     state2.transform(matr1.apply())
-    matr1.shear((to.p3.x-from.p3.x*scaleX)/(from.p3.y*scaleY))
+    matr1.shear((to.p3.x-from.p3.x*scaleX) / (from.p3.y*scaleY))
     state3 = @clone()
     state3.transform(matr1.apply())
     matr1.rotate(rotation2)
@@ -80,12 +80,30 @@ class MorpherJS.Triangle extends MorpherJS.EventDispatcher
     destinationCtx.save()
     destinationCtx.setTransform.apply destinationCtx, matr1.apply(true).toTransform()
     
+    points = []
+    points.push @offset(@p1, @p2)
+    points.push @offset(@p1, @p3)
+    points.push @offset(@p2, @p3)
+    points.push @offset(@p2, @p1)
+    points.push @offset(@p3, @p1)
+    points.push @offset(@p3, @p2)
+    
     destinationCtx.beginPath()
-    destinationCtx.moveTo(@p1.x, @p1.y)
-    destinationCtx.lineTo(@p2.x, @p2.y)
-    destinationCtx.lineTo(@p3.x, @p3.y)
+    destinationCtx.moveTo points[0].x, points[0].y
+    for point in points[1..-1]
+      destinationCtx.lineTo point.x, point.y
     destinationCtx.closePath()
     destinationCtx.clip()
     destinationCtx.drawImage sourceBitmap, left, top, width, height, left, top, width, height
 
     destinationCtx.restore()
+  
+  offset: (p1, p2, distance = 0.7) =>
+    # it's not the best solution, but better than nothing :)
+    distance = 0 if window.chrome
+    dx = p2.x - p1.x
+    dy = p2.y - p1.y
+    length = Math.sqrt(Math.pow(dx, 2) + Math.pow(dy, 2))
+    dx2 = dx * distance / length;
+    dy2 = dy * distance / length;
+    {x: p1.x - dx2, y: p1.y - dy2}

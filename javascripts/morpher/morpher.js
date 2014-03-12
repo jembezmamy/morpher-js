@@ -1641,6 +1641,8 @@
     Triangle.prototype.p3 = null;
 
     function Triangle(p1, p2, p3) {
+      this.offset = __bind(this.offset, this);
+
       this.draw = __bind(this.draw, this);
 
       this.visualize = __bind(this.visualize, this);
@@ -1716,7 +1718,7 @@
     };
 
     Triangle.prototype.draw = function(sourceBitmap, destinationCtx, destinationTriangle) {
-      var bottom, from, height, left, matr1, matr2, right, rotation2, scaleX, scaleY, state2, state3, to, top, width, _ref;
+      var bottom, from, height, left, matr1, matr2, point, points, right, rotation2, scaleX, scaleY, state2, state3, to, top, width, _i, _len, _ref, _ref1;
       _ref = this.getBounds(), left = _ref[0], top = _ref[1], right = _ref[2], bottom = _ref[3];
       width = right - left;
       height = bottom - top;
@@ -1743,14 +1745,43 @@
       matr1.translate(destinationTriangle.p1.x, destinationTriangle.p1.y);
       destinationCtx.save();
       destinationCtx.setTransform.apply(destinationCtx, matr1.apply(true).toTransform());
+      points = [];
+      points.push(this.offset(this.p1, this.p2));
+      points.push(this.offset(this.p1, this.p3));
+      points.push(this.offset(this.p2, this.p3));
+      points.push(this.offset(this.p2, this.p1));
+      points.push(this.offset(this.p3, this.p1));
+      points.push(this.offset(this.p3, this.p2));
       destinationCtx.beginPath();
-      destinationCtx.moveTo(this.p1.x, this.p1.y);
-      destinationCtx.lineTo(this.p2.x, this.p2.y);
-      destinationCtx.lineTo(this.p3.x, this.p3.y);
+      destinationCtx.moveTo(points[0].x, points[0].y);
+      _ref1 = points.slice(1);
+      for (_i = 0, _len = _ref1.length; _i < _len; _i++) {
+        point = _ref1[_i];
+        destinationCtx.lineTo(point.x, point.y);
+      }
       destinationCtx.closePath();
       destinationCtx.clip();
       destinationCtx.drawImage(sourceBitmap, left, top, width, height, left, top, width, height);
       return destinationCtx.restore();
+    };
+
+    Triangle.prototype.offset = function(p1, p2, distance) {
+      var dx, dx2, dy, dy2, length;
+      if (distance == null) {
+        distance = 0.7;
+      }
+      if (window.chrome) {
+        distance = 0;
+      }
+      dx = p2.x - p1.x;
+      dy = p2.y - p1.y;
+      length = Math.sqrt(Math.pow(dx, 2) + Math.pow(dy, 2));
+      dx2 = dx * distance / length;
+      dy2 = dy * distance / length;
+      return {
+        x: p1.x - dx2,
+        y: p1.y - dy2
+      };
     };
 
     return Triangle;

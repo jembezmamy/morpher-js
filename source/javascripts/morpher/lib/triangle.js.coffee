@@ -100,6 +100,12 @@ class MorpherJS.Triangle extends MorpherJS.EventDispatcher
     if top < 0
       height += top
       top = 0
+    excess = left + width - destinationCtx.canvas.width
+    if excess > 0
+      width -= excess
+    excess = top + height - destinationCtx.canvas.height
+    if excess > 0
+      height -= excess
     destinationCtx.drawImage sourceBitmap, left, top, width, height, left, top, width, height
 
     destinationCtx.restore()

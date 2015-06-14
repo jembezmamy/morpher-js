@@ -200,9 +200,11 @@
         var custom = {};
 
         custom.blendFunction = function (destination, source, weight) {
-          var dData = destination.getContext('2d').getImageData(0, 0, source.width, source.height);
-          var sData = source.getContext('2d').getImageData(0, 0, source.width, source.height);
-          //weight = Math.sin(weight*Math.PI/2);
+          var dData = destination.getContext('2d')
+            .getImageData(0, 0, source.width, source.height);
+          var sData = source.getContext('2d')
+            .getImageData(0, 0, source.width, source.height);
+            
           var distance = Math.round((1-weight)*3);
           var factor = Math.sin(weight*Math.PI/2)*255;
           

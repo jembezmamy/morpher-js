@@ -225,6 +225,7 @@ class MorpherJS.Morpher extends MorpherJS.EventDispatcher
       if t >= @duration
         state = @state1
         @state0 = @state1 = @t0 = null
+        @trigger "complete", this
       else
         progress = t / @duration
         progress = @easingFunction(progress) if @easingFunction?

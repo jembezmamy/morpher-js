@@ -79,7 +79,7 @@ class MorpherJS.Morpher extends MorpherJS.EventDispatcher
     for event, handler of @imageEvents
       image.on event, @[handler]
     @loadHandler()
-    @trigger 'image:add' this, image unless params.silent
+    @trigger 'image:add', this, image unless params.silent
 
   removeImage: (image) =>
     i = @images.indexOf image
@@ -87,7 +87,7 @@ class MorpherJS.Morpher extends MorpherJS.EventDispatcher
       image.off event, @[handler]
     if i != -1
       delete @images.splice i, 1
-      @trigger 'image:remove' this, image
+      @trigger 'image:remove', this, image
 
   loadHandler: (e) =>
     @draw()

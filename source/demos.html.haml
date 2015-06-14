@@ -1,4 +1,7 @@
 - body_class 'demos'
+- content_for :head do
+  = stylesheet_link_tag "//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.6/styles/zenburn.min.css"
+  = javascript_include_tag "//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.6/highlight.min.js"
 
 %h1 Demos
 

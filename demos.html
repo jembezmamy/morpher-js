@@ -4,8 +4,9 @@
     <title>Morpher.js - JavaScript morphing library</title>
     <link href="stylesheets/application.css?1433788886" media="screen" rel="stylesheet" type="text/css" />
     <script src="javascripts/application.js?1350503143" type="text/javascript"></script>
-    <script src="javascripts/morpher/morpher.js?1394651875" type="text/javascript"></script>
-    
+    <script src="javascripts/morpher/morpher.js?1434284969" type="text/javascript"></script>
+    <link href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.6/styles/zenburn.min.css" media="screen" rel="stylesheet" type="text/css" />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.6/highlight.min.js" type="text/javascript"></script>
   </head>
   <body class='demos'>
     <h1>Demos</h1>
@@ -238,9 +239,11 @@
           var custom = {};
         
           custom.blendFunction = function (destination, source, weight) {
-            var dData = destination.getContext('2d').getImageData(0, 0, source.width, source.height);
-            var sData = source.getContext('2d').getImageData(0, 0, source.width, source.height);
-            //weight = Math.sin(weight*Math.PI/2);
+            var dData = destination.getContext('2d')
+              .getImageData(0, 0, source.width, source.height);
+            var sData = source.getContext('2d')
+              .getImageData(0, 0, source.width, source.height);
+              
             var distance = Math.round((1-weight)*3);
             var factor = Math.sin(weight*Math.PI/2)*255;
             

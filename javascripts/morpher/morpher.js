@@ -1387,6 +1387,7 @@
         if (t >= this.duration) {
           state = this.state1;
           this.state0 = this.state1 = this.t0 = null;
+          this.trigger("complete", this);
         } else {
           progress = t / this.duration;
           if (this.easingFunction != null) {

@@ -34,6 +34,28 @@ MorpherJS comes along with [GUI] which helps you to configure your own Morpher i
 
 Check out [demos page] for an inspiration.
 
+## Events
+
+You can listen to events using typical `on` and `off` methods:
+
+        var morpher = new Morpher(/* some JSON */);
+        morpher.on("load", function(morpher, canvas) {
+            // do something
+        });
+
+* `load`: `(morpher, canvas)` – all images are loaded and ready to morph
+* `change`: `(morpher, canvas)` – any change in geometry happened
+* `draw`: `(morpher, canvas)` – new frame (image) was drawn
+* `resize`: `(morpher, canvas)` – canvas was resized
+* `animation:start`: `(moprher)`
+* `animation:complete`: `(moprher)`
+* `image:add`: `(morpher, image)`
+* `image:remove`: `(morpher, image)`
+* `point:add`: `(morpher)`
+* `point:remove`: `(morpher)`
+* `triangle:add`: `(morpher)`
+* `triangle:remove`: `(morpher)`
+
 # License
 
 Copyright (c) 2012 Paweł Bator. MIT License, see [LICENSE] for details.

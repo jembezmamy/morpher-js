@@ -52,6 +52,7 @@ class MorpherJS.Morpher extends MorpherJS.EventDispatcher
     @t0 = new Date().getTime()
     @duration = duration
     @easingFunction = easing
+    @trigger "animation:start", this
     @draw()
     
 
@@ -78,7 +79,7 @@ class MorpherJS.Morpher extends MorpherJS.EventDispatcher
     for event, handler of @imageEvents
       image.on event, @[handler]
     @loadHandler()
-    @trigger 'image:add' unless params.silent
+    @trigger 'image:add' this, image unless params.silent
 
   removeImage: (image) =>
     i = @images.indexOf image
@@ -86,7 +87,7 @@ class MorpherJS.Morpher extends MorpherJS.EventDispatcher
       image.off event, @[handler]
     if i != -1
       delete @images.splice i, 1
-      @trigger 'image:remove'
+      @trigger 'image:remove' this, image
 
   loadHandler: (e) =>
     @draw()
@@ -97,7 +98,7 @@ class MorpherJS.Morpher extends MorpherJS.EventDispatcher
 
   changeHandler: (e) =>
     @draw()
-    @trigger 'change'
+    @trigger 'change', this
 
 
   # points
@@ -225,7 +226,7 @@ class MorpherJS.Morpher extends MorpherJS.EventDispatcher
       if t >= @duration
         state = @state1
         @state0 = @state1 = @t0 = null
-        @trigger "complete", this
+        @trigger "animation:complete", this
       else
         progress = t / @duration
         progress = @easingFunction(progress) if @easingFunction?

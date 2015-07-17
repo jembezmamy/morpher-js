@@ -415,8 +415,15 @@ function hsvToRgb(h, s, v){
     };
 
     Project.prototype.morpherChange = function() {
+      var i, img, json, _i, _len, _ref;
+      json = this.morpher.toJSON();
+      _ref = json.images;
+      for (i = _i = 0, _len = _ref.length; _i < _len; i = ++_i) {
+        img = _ref[i];
+        img.src = null;
+      }
       return this.save({
-        morpher: this.morpher.toJSON()
+        morpher: json
       }, {
         silent: true
       });
@@ -905,6 +912,7 @@ function hsvToRgb(h, s, v){
       'change input[name=file]': 'fileHandler',
       'change input[name=url]': 'changeHandler',
       'change input[name=targetWeight]': 'changeHandler',
+      'input input[name=targetWeight]': 'changeHandler',
       'click canvas': 'canvasHandler',
       'mousedown canvas': 'moveHandler'
     };
@@ -1184,7 +1192,9 @@ function hsvToRgb(h, s, v){
       this.canvas.width = this.canvas.width;
       x0 = this.model.morpherImage.getX();
       y0 = this.model.morpherImage.getY();
-      this.ctx.drawImage(this.img, x0, y0);
+      if (this.img.width > 0) {
+        this.ctx.drawImage(this.img, x0, y0);
+      }
       _ref = this.model.morpherImage.mesh.triangles;
       _results = [];
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
@@ -1911,11 +1921,17 @@ function hsvToRgb(h, s, v){
   var _this = this;
 
   $(function() {
-    return $('body.demos .demo').each(function(i, el) {
-      var pre;
+    $('body.demos .demo').each(function(i, el) {
+      var code, pre, text;
       pre = $('<pre />').appendTo(el);
-      return pre.text($(el).find('script').text());
+      code = $('<code />').addClass("javascript").appendTo(pre);
+      text = $(el).find('script').text().replace(/([\r\n]+)[ ]{8}/g, "$1");
+      text = text.replace(/\s*\/\/<![CDATA[[\r\n]*/, "").replace(/\s*\/\/]][\r\n]*>/, "");
+      return code.text(text);
     });
+    if (window.hljs) {
+      return hljs.initHighlighting();
+    }
   });
 
 }).call(this);

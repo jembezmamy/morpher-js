@@ -1,4 +1,4 @@
-ignore /^javascripts\/(?!morpher)/
+ignore /^javascripts\/(?!(morpher|application))/
 ignore "javascripts/morpher/lib/*"
 ignore /^stylesheets\/(?!application)/
 

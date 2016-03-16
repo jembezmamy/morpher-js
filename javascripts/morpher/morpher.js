@@ -291,6 +291,8 @@
 
       this.propagateMeshEvent = __bind(this.propagateMeshEvent, this);
 
+      this.refreshBounds = __bind(this.refreshBounds, this);
+
       this.removeTriangle = __bind(this.removeTriangle, this);
 
       this.addTriangle = __bind(this.addTriangle, this);
@@ -325,10 +327,11 @@
 
       this.setSrc = __bind(this.setSrc, this);
 
+      this.setImage = __bind(this.setImage, this);
+
       this.remove = __bind(this.remove, this);
 
-      this.el = new window.Image();
-      this.el.onload = this.loadHandler;
+      this.setImage(new window.Image());
       this.source = document.createElement('canvas');
       this.mesh = new MorpherJS.Mesh();
       this.mesh.on('all', this.propagateMeshEvent);
@@ -341,6 +344,18 @@
     Image.prototype.remove = function() {
       this.mesh.remove();
       return this.trigger('remove', this);
+    };
+
+    Image.prototype.setImage = function(imgEl) {
+      this.el = imgEl;
+      switch (this.el.tagName) {
+        case "IMG":
+          this.loaded = this.el.complete && this.el.naturalWidth !== 0;
+          this.el.onload = this.loadHandler;
+          return this.refreshSource();
+        case "CANVAS":
+          return this.loadHandler();
+      }
     };
 
     Image.prototype.setSrc = function(src) {
@@ -414,35 +429,39 @@
     };
 
     Image.prototype.setMaxSize = function() {
-      return this.mesh.setMaxSize.apply(this, arguments);
+      return this.mesh.setMaxSize.apply(this.mesh, arguments);
     };
 
     Image.prototype.addPoint = function() {
-      return this.mesh.addPoint.apply(this, arguments);
+      return this.mesh.addPoint.apply(this.mesh, arguments);
     };
 
     Image.prototype.removePoint = function() {
-      return this.mesh.removePoint.apply(this, arguments);
+      return this.mesh.removePoint.apply(this.mesh, arguments);
     };
 
     Image.prototype.makeCompatibleWith = function() {
-      return this.mesh.makeCompatibleWith.apply(this, arguments);
+      return this.mesh.makeCompatibleWith.apply(this.mesh, arguments);
     };
 
     Image.prototype.getRelativePositionOf = function() {
-      return this.mesh.getRelativePositionOf.apply(this, arguments);
+      return this.mesh.getRelativePositionOf.apply(this.mesh, arguments);
     };
 
     Image.prototype.splitEdge = function() {
-      return this.mesh.splitEdge.apply(this, arguments);
+      return this.mesh.splitEdge.apply(this.mesh, arguments);
     };
 
     Image.prototype.addTriangle = function() {
-      return this.mesh.addTriangle.apply(this, arguments);
+      return this.mesh.addTriangle.apply(this.mesh, arguments);
     };
 
     Image.prototype.removeTriangle = function() {
-      return this.mesh.removeTriangle.apply(this, arguments);
+      return this.mesh.removeTriangle.apply(this.mesh, arguments);
+    };
+
+    Image.prototype.refreshBounds = function() {
+      return this.mesh.refreshBounds();
     };
 
     Image.prototype.propagateMeshEvent = function() {
@@ -579,11 +598,8 @@
       return this.maxHeight = h;
     };
 
-    Mesh.prototype.refreshBounds = function(params) {
+    Mesh.prototype.refreshBounds = function() {
       var bounds, point, _i, _len, _ref;
-      if (params == null) {
-        params = {};
-      }
       bounds = {
         left: 0,
         top: 0,
@@ -606,9 +622,7 @@
       bounds.height -= bounds.top;
       if (bounds.width !== this.bounds.width || bounds.height !== this.bounds.height || bounds.left !== this.bounds.left || bounds.top !== this.bounds.top) {
         this.bounds = bounds;
-        if (!params.silent) {
-          return this.trigger('change:bounds');
-        }
+        return this.trigger('change:bounds');
       }
     };
 
@@ -635,9 +649,11 @@
       point.on("change", this.changeHandler);
       point.on('remove', this.removePoint);
       this.points.push(point);
-      this.refreshBounds(params);
+      this.refreshBounds();
       if (!params.silent) {
-        this.trigger('point:add', this, point, pointParams);
+        if (!params.silent) {
+          this.trigger('point:add', this, point, pointParams);
+        }
       }
       return point;
     };
@@ -1054,16 +1070,23 @@
 
       this.set = __bind(this.set, this);
 
+      this.setCanvas = __bind(this.setCanvas, this);
+
       this.images = [];
       this.triangles = [];
       this.mesh = new MorpherJS.Mesh();
-      this.canvas = document.createElement('canvas');
-      this.ctx = this.canvas.getContext('2d');
+      this.setCanvas(document.createElement('canvas'));
       this.tmpCanvas = document.createElement('canvas');
       this.tmpCtx = this.tmpCanvas.getContext('2d');
       this.fromJSON(params);
       this.set([1]);
     }
+
+    Morpher.prototype.setCanvas = function(canvas) {
+      this.canvas = canvas;
+      this.ctx = this.canvas.getContext('2d');
+      return this.draw();
+    };
 
     Morpher.prototype.set = function(weights, params) {
       var i, img, w, _i, _len, _ref, _results;
@@ -1179,6 +1202,8 @@
         image.addPoint({
           x: x,
           y: y
+        }, {
+          silent: true
         });
       }
       return this.trigger('point:add', this);
@@ -1552,9 +1577,10 @@
       if (this.x !== x) {
         this.x = x;
         if (!params.silent) {
-          return this.trigger('change:x change', this);
+          this.trigger('change:x change', this);
         }
       }
+      return this;
     };
 
     Point.prototype.getY = function() {
@@ -1571,9 +1597,10 @@
       if (this.y !== y) {
         this.y = y;
         if (!params.silent) {
-          return this.trigger('change:y change', this);
+          this.trigger('change:y change', this);
         }
       }
+      return this;
     };
 
     Point.prototype.remove = function() {

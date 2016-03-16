@@ -33,7 +33,7 @@ class MorpherJS.Morpher extends MorpherJS.EventDispatcher
     @set [1]
 
 
-  setCanvas: (canvas) ->
+  setCanvas: (canvas) =>
     @canvas = canvas
     @ctx = @canvas.getContext('2d')
     @draw()
@@ -110,7 +110,7 @@ class MorpherJS.Morpher extends MorpherJS.EventDispatcher
 
   addPoint: (x, y) =>
     for image in @images.concat @mesh
-      image.addPoint x: x, y: y
+      image.addPoint {x: x, y: y}, {silent: true}
     @trigger 'point:add', this
 
   addPointHandler: (image, point, pointParams = null) =>

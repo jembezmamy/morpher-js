@@ -1,5 +1,5 @@
 // CommonJS wrapper for morpher
 
-globals.MorpherJS = {}
+globals.Morpher = {}
 require('./demo/morpher')
-module.exports = globals.MorpherJS
+module.exports = globals.Morpher

@@ -4,7 +4,7 @@
   "description": "JavaScript image morphing library",
   "main": "index.js",
   "scripts": {
-    "build": "coffee --compile --join demo/morpher.js -- src/**/*.coffee",
+    "build": "coffee --compile --join gh/morpher.js -- src/morpher.js.coffee src/lib/*.coffee",
     "prepubish": "npm run build"
   },
   "repository": {

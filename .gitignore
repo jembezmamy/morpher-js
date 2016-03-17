@@ -1,4 +1,4 @@
 node_modules
 *.log
 .DS_Store
-demo/morpher.js
+gh/morpher.js

@@ -1,21 +1,21 @@
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
   <head>
     <title>Morpher.js - JavaScript morphing library</title>
-    <link href="demo.css" media="screen" rel="stylesheet" type="text/css" />
-    <script src="https://code.jquery.com/jquery-2.2.1.min.js" type="text/javascript"></script>
+    <link href="application.css" media="screen" rel="stylesheet" type="text/css" />
+    <script src="application.js" type="text/javascript"></script>
     <script src="morpher.js" type="text/javascript"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.6/styles/zenburn.min.css" media="screen" rel="stylesheet" type="text/css" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.6/highlight.min.js" type="text/javascript"></script>
-    <script src="demo.js" type="text/javascript"></script>
+    <link href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.6/styles/zenburn.min.css" media="screen" rel="stylesheet" type="text/css" />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.6/highlight.min.js" type="text/javascript"></script>
   </head>
   <body class='demos'>
     <h1>Demos</h1>
 <section>
-  <h2>Basic setup</h2>
+  <h1>Basic setup</h1>
   <p>
     Use
-    <a target="_blank" href="index.html">the GUI</a>
+    <a target="_blank" href="/index.html">the GUI</a>
     to setup images and meshes. Then simply create new Morpher object using JSON code exported from GUI.
   </p>
   <div class='demo' id='demo1'>
@@ -33,30 +33,32 @@
     </div>
     <div class='clear'></div>
     <script type='text/javascript'>
-$('#demo1').each(function() {
-  var json = {"images":[{"points":[{"x":139,"y":27},{"x":169,"y":46},{"x":177,"y":0},{"x":194,"y":34},{"x":237,"y":3},{"x":237,"y":36},{"x":105,"y":112},{"x":219,"y":87},{"x":206,"y":164},{"x":44,"y":208},{"x":18,"y":54},{"x":68,"y":22},{"x":126,"y":220},{"x":0,"y":137},{"x":98,"y":14},{"x":88,"y":11},{"x":130,"y":17},{"x":149,"y":22},{"x":174,"y":43},{"x":202,"y":61}],"src":"images/plum.png"},{"points":[{"x":103,"y":85},{"x":125,"y":86},{"x":98,"y":15},{"x":130,"y":40},{"x":145,"y":0},{"x":159,"y":23},{"x":108,"y":172},{"x":215,"y":122},{"x":211,"y":209},{"x":126,"y":294},{"x":20,"y":212},{"x":23,"y":141},{"x":187,"y":266},{"x":49,"y":274},{"x":29,"y":102},{"x":0,"y":135},{"x":8,"y":69},{"x":96,"y":52},{"x":127,"y":68},{"x":229,"y":99}],"src":"images/raspberry.png"}],"triangles":[[5,3,2],[2,4,5],[6,1,0],[6,1,7],[8,7,6],[10,11,6],[8,6,12],[9,6,12],[9,6,13],[10,6,13],[11,6,14],[0,6,14],[15,14,11],[16,14,15],[0,14,16],[0,3,17],[2,3,17],[17,16,0],[1,0,18],[3,0,18],[19,7,1],[1,18,19]]};
-
-  var morpher = new Morpher(json);
-
-  morpher.setCanvas($('.preview canvas', this).get(0));
-
-  $('button', this).click(function() {
-    morpher.set([1, 0]);
-    if($(this).data('action') == 'play') {
-      morpher.animate([0, 1], 2000);
-    }
-  })
-
-  $('input', this).on("input change", function() {
-    var v = $(this).val()*1;
-    morpher.set([1-v, v]);
-  })
-})
+      //<![CDATA[
+        $('#demo1').each(function() {
+          var json = {"images":[{"points":[{"x":139,"y":27},{"x":169,"y":46},{"x":177,"y":0},{"x":194,"y":34},{"x":237,"y":3},{"x":237,"y":36},{"x":105,"y":112},{"x":219,"y":87},{"x":206,"y":164},{"x":44,"y":208},{"x":18,"y":54},{"x":68,"y":22},{"x":126,"y":220},{"x":0,"y":137},{"x":98,"y":14},{"x":88,"y":11},{"x":130,"y":17},{"x":149,"y":22},{"x":174,"y":43},{"x":202,"y":61}],"src":"images/plum.png"},{"points":[{"x":103,"y":85},{"x":125,"y":86},{"x":98,"y":15},{"x":130,"y":40},{"x":145,"y":0},{"x":159,"y":23},{"x":108,"y":172},{"x":215,"y":122},{"x":211,"y":209},{"x":126,"y":294},{"x":20,"y":212},{"x":23,"y":141},{"x":187,"y":266},{"x":49,"y":274},{"x":29,"y":102},{"x":0,"y":135},{"x":8,"y":69},{"x":96,"y":52},{"x":127,"y":68},{"x":229,"y":99}],"src":"images/raspberry.png"}],"triangles":[[5,3,2],[2,4,5],[6,1,0],[6,1,7],[8,7,6],[10,11,6],[8,6,12],[9,6,12],[9,6,13],[10,6,13],[11,6,14],[0,6,14],[15,14,11],[16,14,15],[0,14,16],[0,3,17],[2,3,17],[17,16,0],[1,0,18],[3,0,18],[19,7,1],[1,18,19]]};
+        
+          var morpher = new Morpher(json);
+        
+          morpher.setCanvas($(this).find('.preview canvas').get(0));
+        
+          $(this).find('button').click(function() {
+            morpher.set([1, 0]);
+            if($(this).data('action') == 'play') {
+              morpher.animate([0, 1], 2000);
+            }
+          })
+        
+          $(this).find('input').on("input change", function() {
+            var v = $(this).val()*1;
+            morpher.set([1-v, v]);
+          })
+        })
+      //]]>
     </script>
   </div>
 </section>
 <section>
-  <h2>Multiple images, different sizes</h2>
+  <h1>Multiple images, different sizes</h1>
   <p>You can blend as many images as you like. Images don't need to have same dimensions.</p>
   <p>
     When morphing multiple images
@@ -90,47 +92,49 @@ $('#demo1').each(function() {
     </div>
     <div class='clear'></div>
     <script type='text/javascript'>
-$('#demo2').each(function() {
-  var json = {"images":[{"points":[{"x":22,"y":55},{"x":30,"y":8},{"x":88,"y":8},{"x":42,"y":59},{"x":115,"y":70},{"x":32,"y":114},{"x":74,"y":160},{"x":174,"y":118},{"x":223,"y":190},{"x":235,"y":265},{"x":198,"y":280},{"x":119,"y":209},{"x":208,"y":203},{"x":55,"y":30},{"x":70,"y":195},{"x":75,"y":210},{"x":152,"y":244},{"x":103,"y":275},{"x":161,"y":305},{"x":86,"y":309},{"x":87,"y":167},{"x":75,"y":179},{"x":75,"y":239},{"x":138,"y":200},{"x":130,"y":226},{"x":75,"y":224.5}],"src":"images/parrot-1.jpg","x":0,"y":0},{"points":[{"x":11,"y":46},{"x":19,"y":12},{"x":62,"y":8},{"x":31,"y":53},{"x":89,"y":54},{"x":28,"y":97},{"x":60,"y":130},{"x":134,"y":90},{"x":209,"y":143},{"x":191,"y":203},{"x":157,"y":186},{"x":115,"y":160},{"x":163,"y":154},{"x":44,"y":24},{"x":65,"y":154},{"x":81,"y":179},{"x":153,"y":215},{"x":112,"y":247},{"x":130,"y":300},{"x":89,"y":304},{"x":74,"y":131},{"x":65,"y":143},{"x":102,"y":210},{"x":134,"y":149},{"x":135,"y":177},{"x":101,"y":196}],"src":"images/parrot-2.jpg","x":0,"y":0},{"points":[{"x":24,"y":34},{"x":42,"y":10},{"x":91,"y":15},{"x":51,"y":68},{"x":113,"y":52},{"x":48,"y":104},{"x":90,"y":149},{"x":174.83784876668017,"y":99.99231702385764},{"x":240,"y":205},{"x":238,"y":238},{"x":184,"y":236},{"x":155,"y":200},{"x":219,"y":202},{"x":60,"y":28},{"x":100,"y":221},{"x":126,"y":229},{"x":174,"y":246},{"x":122,"y":269},{"x":143,"y":325},{"x":96,"y":327},{"x":122,"y":169},{"x":68,"y":178},{"x":124.5,"y":250.5},{"x":171,"y":190},{"x":164.5,"y":223},{"x":125.25,"y":239.75}],"src":"images/parrot-3.jpg","x":0,"y":0}],"triangles":[[4,2,3],[5,3,4],[6,4,5],[7,4,6],[7,8,12],[9,8,12],[7,10,12],[9,10,12],[0,1,13],[2,1,13],[0,3,13],[2,3,13],[11,7,15],[18,16,17],[19,17,18],[7,15,20],[14,15,20],[20,6,7],[6,21,20],[21,14,20],[17,16,22],[11,7,23],[10,7,23],[11,15,24],[16,15,24],[22,16,25],[15,16,25]]};
-  var morpher = new Morpher(json);
-
-  $('.preview', this).prepend(morpher.canvas);
-
-  var $inputs = $('input[type=range]', this);
-  var $checkbox = $('input[type=checkbox]', this);
-  var mainFactor = 1;
-  var factors = [1, 0, 0];
-
-  $inputs.add($checkbox).on("input change", function(e) {
-    var i = $inputs.get().indexOf(e.target);
-    if(i != -1) {
-      factors[i] = $(e.target).val() * 1;
-      mainFactor = i;
-    }
-    if($checkbox.is(":checked")) {
-      morpher.set(normalizeFactors());
-    } else {
-      morpher.set(factors);
-    }
-  });
-
-  var normalizeFactors = function() {
-    var normalized = [];
-    var total = factors.reduce(function(a,b){ return a + b; });
-    var gain = (1 - Math.min(total, 1)) / factors.length;
-
-    for(var i = 0; i < factors.length; i++ ) {
-      normalized[i] = factors[i] / Math.max(total, 1) + gain;
-    }
-
-    return normalized;
-  }
-})
+      //<![CDATA[
+        $('#demo2').each(function() {
+          var json = {"images":[{"points":[{"x":22,"y":55},{"x":30,"y":8},{"x":88,"y":8},{"x":42,"y":59},{"x":115,"y":70},{"x":32,"y":114},{"x":74,"y":160},{"x":174,"y":118},{"x":223,"y":190},{"x":235,"y":265},{"x":198,"y":280},{"x":119,"y":209},{"x":208,"y":203},{"x":55,"y":30},{"x":70,"y":195},{"x":75,"y":210},{"x":152,"y":244},{"x":103,"y":275},{"x":161,"y":305},{"x":86,"y":309},{"x":87,"y":167},{"x":75,"y":179},{"x":75,"y":239},{"x":138,"y":200},{"x":130,"y":226},{"x":75,"y":224.5}],"src":"images/parrot-1.jpg","x":0,"y":0},{"points":[{"x":11,"y":46},{"x":19,"y":12},{"x":62,"y":8},{"x":31,"y":53},{"x":89,"y":54},{"x":28,"y":97},{"x":60,"y":130},{"x":134,"y":90},{"x":209,"y":143},{"x":191,"y":203},{"x":157,"y":186},{"x":115,"y":160},{"x":163,"y":154},{"x":44,"y":24},{"x":65,"y":154},{"x":81,"y":179},{"x":153,"y":215},{"x":112,"y":247},{"x":130,"y":300},{"x":89,"y":304},{"x":74,"y":131},{"x":65,"y":143},{"x":102,"y":210},{"x":134,"y":149},{"x":135,"y":177},{"x":101,"y":196}],"src":"images/parrot-2.jpg","x":0,"y":0},{"points":[{"x":24,"y":34},{"x":42,"y":10},{"x":91,"y":15},{"x":51,"y":68},{"x":113,"y":52},{"x":48,"y":104},{"x":90,"y":149},{"x":174.83784876668017,"y":99.99231702385764},{"x":240,"y":205},{"x":238,"y":238},{"x":184,"y":236},{"x":155,"y":200},{"x":219,"y":202},{"x":60,"y":28},{"x":100,"y":221},{"x":126,"y":229},{"x":174,"y":246},{"x":122,"y":269},{"x":143,"y":325},{"x":96,"y":327},{"x":122,"y":169},{"x":68,"y":178},{"x":124.5,"y":250.5},{"x":171,"y":190},{"x":164.5,"y":223},{"x":125.25,"y":239.75}],"src":"images/parrot-3.jpg","x":0,"y":0}],"triangles":[[4,2,3],[5,3,4],[6,4,5],[7,4,6],[7,8,12],[9,8,12],[7,10,12],[9,10,12],[0,1,13],[2,1,13],[0,3,13],[2,3,13],[11,7,15],[18,16,17],[19,17,18],[7,15,20],[14,15,20],[20,6,7],[6,21,20],[21,14,20],[17,16,22],[11,7,23],[10,7,23],[11,15,24],[16,15,24],[22,16,25],[15,16,25]]};
+          var morpher = new Morpher(json);
+        
+          $(this).find('.preview').prepend(morpher.canvas);
+        
+          var $inputs = $(this).find('input[type=range]');
+          var $checkbox = $(this).find('input[type=checkbox]');
+          var mainFactor = 1;
+          var factors = [1, 0, 0];
+        
+          $inputs.add($checkbox).on("input change", function(e) {
+            var i = $inputs.get().indexOf(e.target);
+            if(i != -1) {
+              factors[i] = $(e.target).val() * 1;
+              mainFactor = i;
+            }
+            if($checkbox.is(":checked")) {
+              morpher.set(normalizeFactors());
+            } else {
+              morpher.set(factors);
+            }
+          });
+        
+          var normalizeFactors = function() {
+            var normalized = [];
+            var total = factors.reduce(function(a,b){ return a + b; });
+            var gain = (1 - Math.min(total, 1)) / factors.length;
+        
+            for(var i = 0; i < factors.length; i++ ) {
+              normalized[i] = factors[i] / Math.max(total, 1) + gain;
+            }
+        
+            return normalized;
+          }
+        })
+      //]]>
     </script>
   </div>
 </section>
 <section>
-  <h2>Easing</h2>
+  <h1>Easing</h1>
   <p>
     You can use one of the
     <a target="_blank" href="http://jqueryui.com/demos/effect/#easing">jQuery UI easing functions</a>
@@ -158,38 +162,40 @@ $('#demo2').each(function() {
     </div>
     <div class='clear'></div>
     <script type='text/javascript'>
-$('#demo3').each(function() {
-  var json = {"images":[{"points":[{"x":139,"y":27},{"x":169,"y":46},{"x":177,"y":0},{"x":194,"y":34},{"x":237,"y":3},{"x":237,"y":36},{"x":105,"y":112},{"x":219,"y":87},{"x":206,"y":164},{"x":44,"y":208},{"x":18,"y":54},{"x":68,"y":22},{"x":126,"y":220},{"x":0,"y":137},{"x":98,"y":14},{"x":88,"y":11},{"x":130,"y":17},{"x":149,"y":22},{"x":174,"y":43},{"x":202,"y":61}],"src":"images/plum.png"},{"points":[{"x":103,"y":85},{"x":125,"y":86},{"x":98,"y":15},{"x":130,"y":40},{"x":145,"y":0},{"x":159,"y":23},{"x":108,"y":172},{"x":215,"y":122},{"x":211,"y":209},{"x":126,"y":294},{"x":20,"y":212},{"x":23,"y":141},{"x":187,"y":266},{"x":49,"y":274},{"x":29,"y":102},{"x":0,"y":135},{"x":8,"y":69},{"x":96,"y":52},{"x":127,"y":68},{"x":229,"y":99}],"src":"images/raspberry.png"}],"triangles":[[5,3,2],[2,4,5],[6,1,0],[6,1,7],[8,7,6],[10,11,6],[8,6,12],[9,6,12],[9,6,13],[10,6,13],[11,6,14],[0,6,14],[15,14,11],[16,14,15],[0,14,16],[0,3,17],[2,3,17],[17,16,0],[1,0,18],[3,0,18],[19,7,1],[1,18,19]]};
-
-  var morpher = new Morpher(json);
-
-  $('.preview', this).prepend(morpher.canvas);
-
-  $('button', this).click(function() {
-    var easingFunction;
-    var action = $(this).data('action');
-    morpher.set([1, 0]);
-    switch(action) {
-      case 'reset':
-        return;
-      case 'custom':
-        easingFunction = function(v) { return Math.floor(v*3)%2 ? 1-((v*3)%1) : (v*3)%1; };
-        break;
-      default:
-        easingFunction = $.easing[action];
-        break;
-    }
-    morpher.animate([0, 1], 2000, easingFunction);
-  })
-})
+      //<![CDATA[
+        $('#demo3').each(function() {
+          var json = {"images":[{"points":[{"x":139,"y":27},{"x":169,"y":46},{"x":177,"y":0},{"x":194,"y":34},{"x":237,"y":3},{"x":237,"y":36},{"x":105,"y":112},{"x":219,"y":87},{"x":206,"y":164},{"x":44,"y":208},{"x":18,"y":54},{"x":68,"y":22},{"x":126,"y":220},{"x":0,"y":137},{"x":98,"y":14},{"x":88,"y":11},{"x":130,"y":17},{"x":149,"y":22},{"x":174,"y":43},{"x":202,"y":61}],"src":"images/plum.png"},{"points":[{"x":103,"y":85},{"x":125,"y":86},{"x":98,"y":15},{"x":130,"y":40},{"x":145,"y":0},{"x":159,"y":23},{"x":108,"y":172},{"x":215,"y":122},{"x":211,"y":209},{"x":126,"y":294},{"x":20,"y":212},{"x":23,"y":141},{"x":187,"y":266},{"x":49,"y":274},{"x":29,"y":102},{"x":0,"y":135},{"x":8,"y":69},{"x":96,"y":52},{"x":127,"y":68},{"x":229,"y":99}],"src":"images/raspberry.png"}],"triangles":[[5,3,2],[2,4,5],[6,1,0],[6,1,7],[8,7,6],[10,11,6],[8,6,12],[9,6,12],[9,6,13],[10,6,13],[11,6,14],[0,6,14],[15,14,11],[16,14,15],[0,14,16],[0,3,17],[2,3,17],[17,16,0],[1,0,18],[3,0,18],[19,7,1],[1,18,19]]};
+        
+          var morpher = new Morpher(json);
+        
+          $(this).find('.preview').prepend(morpher.canvas);
+        
+          $(this).find('button').click(function() {
+            var easingFunction;
+            var action = $(this).data('action');
+            morpher.set([1, 0]);
+            switch(action) {
+              case 'reset':
+                return;
+              case 'custom':
+                easingFunction = function(v) { return Math.floor(v*3)%2 ? 1-((v*3)%1) : (v*3)%1; };
+                break;
+              default:
+                easingFunction = $.easing[action];
+                break;
+            }
+            morpher.animate([0, 1], 2000, easingFunction);
+          })
+        })
+      //]]>
     </script>
   </div>
 </section>
 <section>
-  <h2>Blend &amp; final touch function</h2>
+  <h1>Blend  & final touch function</h1>
   <p>
     You can define your own image blend rules.
-    <a target="_blank" href="index.html">Use GUI</a>
+    <a target="_blank" href="/index.html">Use GUI</a>
     to experiment with your own blend algorithms. There are two functions, that can be customized:
   </p>
   <h2>Blend function</h2>
@@ -224,76 +230,78 @@ $('#demo3').each(function() {
     </div>
     <div class='clear'></div>
     <script type='text/javascript'>
-$('#demo4').each(function() {
-  var json = {"images":[{"points":[{"x":139,"y":27},{"x":169,"y":46},{"x":177,"y":0},{"x":194,"y":34},{"x":237,"y":3},{"x":237,"y":36},{"x":105,"y":112},{"x":219,"y":87},{"x":206,"y":164},{"x":44,"y":208},{"x":18,"y":54},{"x":68,"y":22},{"x":126,"y":220},{"x":0,"y":137},{"x":98,"y":14},{"x":88,"y":11},{"x":130,"y":17},{"x":149,"y":22},{"x":174,"y":43},{"x":202,"y":61}],"src":"images/plum-contour.png"},{"points":[{"x":103,"y":85},{"x":125,"y":86},{"x":98,"y":15},{"x":130,"y":40},{"x":145,"y":0},{"x":159,"y":23},{"x":108,"y":172},{"x":215,"y":122},{"x":211,"y":209},{"x":126,"y":294},{"x":20,"y":212},{"x":23,"y":141},{"x":187,"y":266},{"x":49,"y":274},{"x":29,"y":102},{"x":0,"y":135},{"x":8,"y":69},{"x":96,"y":52},{"x":127,"y":68},{"x":229,"y":99}],"src":"images/raspberry-contour.png"}],"triangles":[[5,3,2],[2,4,5],[6,1,0],[6,1,7],[8,7,6],[10,11,6],[8,6,12],[9,6,12],[9,6,13],[10,6,13],[11,6,14],[0,6,14],[15,14,11],[16,14,15],[0,14,16],[0,3,17],[2,3,17],[17,16,0],[1,0,18],[3,0,18],[19,7,1],[1,18,19]]};
-
-  var morpher = new Morpher(json);
-
-  $('.preview', this).prepend(morpher.canvas);
-
-  var custom = {};
-
-  custom.blendFunction = function (destination, source, weight) {
-    var dData = destination.getContext('2d')
-      .getImageData(0, 0, source.width, source.height);
-    var sData = source.getContext('2d')
-      .getImageData(0, 0, source.width, source.height);
-
-    var distance = Math.round((1-weight)*3);
-    var factor = Math.sin(weight*Math.PI/2)*255;
-
-    for(var x = 0; x < source.width; x++) {
-      for(var y = 0; y < source.height; y++) {
-        if(sData.data[(y*source.width + x)*4 + 3] >= 128) {
-          var minX = Math.max(0, x-distance);
-          var maxX = Math.min(source.width-1, x+distance);
-          var minY = Math.max(0, y-distance);
-          var maxY = Math.min(source.height-1, y+distance);
-          var strength = factor/((maxX-minX)*(maxY-minY));
-          for(var x1 = minX; x1 <= maxX; x1++) {
-            for(var y1 = minY; y1 <= maxY; y1++) {
-              dData.data[(y1*source.width + x1)*4 + 3] += strength;
+      //<![CDATA[
+        $('#demo4').each(function() {
+          var json = {"images":[{"points":[{"x":139,"y":27},{"x":169,"y":46},{"x":177,"y":0},{"x":194,"y":34},{"x":237,"y":3},{"x":237,"y":36},{"x":105,"y":112},{"x":219,"y":87},{"x":206,"y":164},{"x":44,"y":208},{"x":18,"y":54},{"x":68,"y":22},{"x":126,"y":220},{"x":0,"y":137},{"x":98,"y":14},{"x":88,"y":11},{"x":130,"y":17},{"x":149,"y":22},{"x":174,"y":43},{"x":202,"y":61}],"src":"images/plum-contour.png"},{"points":[{"x":103,"y":85},{"x":125,"y":86},{"x":98,"y":15},{"x":130,"y":40},{"x":145,"y":0},{"x":159,"y":23},{"x":108,"y":172},{"x":215,"y":122},{"x":211,"y":209},{"x":126,"y":294},{"x":20,"y":212},{"x":23,"y":141},{"x":187,"y":266},{"x":49,"y":274},{"x":29,"y":102},{"x":0,"y":135},{"x":8,"y":69},{"x":96,"y":52},{"x":127,"y":68},{"x":229,"y":99}],"src":"images/raspberry-contour.png"}],"triangles":[[5,3,2],[2,4,5],[6,1,0],[6,1,7],[8,7,6],[10,11,6],[8,6,12],[9,6,12],[9,6,13],[10,6,13],[11,6,14],[0,6,14],[15,14,11],[16,14,15],[0,14,16],[0,3,17],[2,3,17],[17,16,0],[1,0,18],[3,0,18],[19,7,1],[1,18,19]]};
+        
+          var morpher = new Morpher(json);
+        
+          $(this).find('.preview').prepend(morpher.canvas);
+        
+          var custom = {};
+        
+          custom.blendFunction = function (destination, source, weight) {
+            var dData = destination.getContext('2d')
+              .getImageData(0, 0, source.width, source.height);
+            var sData = source.getContext('2d')
+              .getImageData(0, 0, source.width, source.height);
+        
+            var distance = Math.round((1-weight)*3);
+            var factor = Math.sin(weight*Math.PI/2)*255;
+        
+            for(var x = 0; x < source.width; x++) {
+              for(var y = 0; y < source.height; y++) {
+                if(sData.data[(y*source.width + x)*4 + 3] >= 128) {
+                  var minX = Math.max(0, x-distance);
+                  var maxX = Math.min(source.width-1, x+distance);
+                  var minY = Math.max(0, y-distance);
+                  var maxY = Math.min(source.height-1, y+distance);
+                  var strength = factor/((maxX-minX)*(maxY-minY));
+                  for(var x1 = minX; x1 <= maxX; x1++) {
+                    for(var y1 = minY; y1 <= maxY; y1++) {
+                      dData.data[(y1*source.width + x1)*4 + 3] += strength;
+                    }
+                  }
+                }
+              }
             }
+            destination.getContext('2d').putImageData(dData, 0, 0);
+        
           }
-        }
-      }
-    }
-    destination.getContext('2d').putImageData(dData, 0, 0);
-
-  }
-
-  custom.finalTouchFunction = function(canvas) {
-    var ctx = canvas.getContext('2d');
-    var data = ctx.getImageData(0, 0, canvas.width, canvas.height);
-    for(var i = 3; i < data.data.length; i++) {
-      data.data[i] = data.data[i] > 128 ? 255 : 0;
-    }
-    ctx.putImageData(data, 0, 0);
-  }
-
-  $('button', this).click(function() {
-    morpher.set([1, 0]);
-    if($(this).data('action') == 'play') {
-      morpher.animate([0, 1], 2000, $.easing["easeInOutCubic"]);
-    }
-  })
-
-  $('input', this).on("input change", function() {
-    if($(this).attr('type') == 'range') {
-      var v = $(this).val()*1;
-      morpher.set([1-v, v]);
-    } else {
-      var name = $(this).attr('name')+"Function";
-      morpher[name] = $(this).is(':checked') ? custom[name] : null;
-      morpher.draw();
-    }
-  })
-})
+        
+          custom.finalTouchFunction = function(canvas) {
+            var ctx = canvas.getContext('2d');
+            var data = ctx.getImageData(0, 0, canvas.width, canvas.height);
+            for(var i = 3; i < data.data.length; i++) {
+              data.data[i] = data.data[i] > 128 ? 255 : 0;
+            }
+            ctx.putImageData(data, 0, 0);
+          }
+        
+          $(this).find('button').click(function() {
+            morpher.set([1, 0]);
+            if($(this).data('action') == 'play') {
+              morpher.animate([0, 1], 2000, $.easing["easeInOutCubic"]);
+            }
+          })
+        
+          $(this).find('input').on("input change", function() {
+            if($(this).attr('type') == 'range') {
+              var v = $(this).val()*1;
+              morpher.set([1-v, v]);
+            } else {
+              var name = $(this).attr('name')+"Function";
+              morpher[name] = $(this).is(':checked') ? custom[name] : null;
+              morpher.draw();
+            }
+          })
+        })
+      //]]>
     </script>
   </div>
 </section>
 <section>
-  <h2>Defining mesh with API</h2>
+  <h1>Defining mesh with API</h1>
   <p>
     If you wish, you can use MorpherJS API to define images and meshes instead of
     providing json configuration.
@@ -317,70 +325,72 @@ $('#demo4').each(function() {
     </div>
     <div class='clear'></div>
     <script type='text/javascript'>
-$('#demo5').each(function() {
-  var morpher = new Morpher();
-
-  morpher.addImage({src: "images/parrot-1.jpg"});
-
-  var image2 = new MorpherJS.Image();
-  var img = new Image();
-  img.src = "images/parrot-2.jpg";
-  image2.setImage(img);
-  morpher.addImage(image2);
-
-  var image3 = new MorpherJS.Image();
-  var canvas = document.createElement("canvas");
-  canvas.width = 234;
-  canvas.height = 317;
-  var ctx = canvas.getContext("2d");
-  ctx.arc(117, 159, 50, 0, 2 * Math.PI);
-  ctx.fill();
-  image3.setImage(canvas);
-  morpher.addImage(image3);
-
-
-  morpher.addPoint(0, 0);
-  morpher.addPoint(234, 317);
-  morpher.addPoint(0, 317);
-
-  morpher.addTriangle(0, 1, 2);
-
-  image2.points[0].setX(117).setY(50);
-
-  image3.points[0].setX(234).setY(0);
-
-  morpher.set([1, 0, 0]);
-
-  $('.preview', this).prepend(morpher.canvas);
-
-  var $inputs = $('input[type=range]', this);
-  var mainFactor = 1;
-  var factors = [1, 0, 0];
-
-  $inputs.on("input change", function(e) {
-    var i = $inputs.get().indexOf(e.target);
-    if(i != -1) {
-      factors[i] = $(e.target).val() * 1;
-      mainFactor = i;
-    }
-    morpher.set(normalizeFactors());
-  });
-
-  var normalizeFactors = function() {
-    var normalized = [];
-    var total = factors.reduce(function(a,b){ return a + b; });
-    var gain = (1 - Math.min(total, 1)) / factors.length;
-
-    for(var i = 0; i < factors.length; i++ ) {
-      normalized[i] = factors[i] / Math.max(total, 1) + gain;
-    }
-
-    return normalized;
-  }
-
-})
+      //<![CDATA[
+        $('#demo5').each(function() {
+          var morpher = new Morpher();
+        
+          morpher.addImage({src: "images/parrot-1.jpg"});
+        
+          var image2 = new MorpherJS.Image();
+          var img = new Image();
+          img.src = "images/parrot-2.jpg";
+          image2.setImage(img);
+          morpher.addImage(image2);
+        
+          var image3 = new MorpherJS.Image();
+          var canvas = document.createElement("canvas");
+          canvas.width = 234;
+          canvas.height = 317;
+          var ctx = canvas.getContext("2d");
+          ctx.arc(117, 159, 50, 0, 2 * Math.PI);
+          ctx.fill();
+          image3.setImage(canvas);
+          morpher.addImage(image3);
+        
+        
+          morpher.addPoint(0, 0);
+          morpher.addPoint(234, 317);
+          morpher.addPoint(0, 317);
+        
+          morpher.addTriangle(0, 1, 2);
+        
+          image2.points[0].setX(117).setY(50);
+        
+          image3.points[0].setX(234).setY(0);
+        
+          morpher.set([1, 0, 0]);
+        
+          $(this).find('.preview').prepend(morpher.canvas);
+        
+          var $inputs = $(this).find('input[type=range]');
+          var mainFactor = 1;
+          var factors = [1, 0, 0];
+        
+          $inputs.on("input change", function(e) {
+            var i = $inputs.get().indexOf(e.target);
+            if(i != -1) {
+              factors[i] = $(e.target).val() * 1;
+              mainFactor = i;
+            }
+            morpher.set(normalizeFactors());
+          });
+        
+          var normalizeFactors = function() {
+            var normalized = [];
+            var total = factors.reduce(function(a,b){ return a + b; });
+            var gain = (1 - Math.min(total, 1)) / factors.length;
+        
+            for(var i = 0; i < factors.length; i++ ) {
+              normalized[i] = factors[i] / Math.max(total, 1) + gain;
+            }
+        
+            return normalized;
+          }
+        
+        })
+      //]]>
     </script>
   </div>
 </section>
-</body>
+  </body>
 </html>

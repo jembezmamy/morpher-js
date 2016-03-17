@@ -56,6 +56,14 @@ You can listen to events using typical `on` and `off` methods:
 * `triangle:add`: `(morpher)`
 * `triangle:remove`: `(morpher)`
 
+## Building
+
+If you make any changes to morpher, you can run `npm run build` to rebuild the lib from the coffeescript.
+
+## Use it in browserify
+
+`npm install --save morpher-js` then you can `var Morpher = require('morpher-js')`.
+
 # License
 
 Copyright (c) 2012 Paweł Bator. MIT License, see [LICENSE] for details.

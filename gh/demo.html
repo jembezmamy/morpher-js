@@ -38,16 +38,16 @@ $('#demo1').each(function() {
 
   var morpher = new Morpher(json);
 
-  morpher.setCanvas($(this).find('.preview canvas').get(0));
+  morpher.setCanvas($('.preview canvas', this).get(0));
 
-  $(this).find('button').click(function() {
+  $('button', this).click(function() {
     morpher.set([1, 0]);
     if($(this).data('action') == 'play') {
       morpher.animate([0, 1], 2000);
     }
   })
 
-  $(this).find('input').on("input change", function() {
+  $('input', this).on("input change", function() {
     var v = $(this).val()*1;
     morpher.set([1-v, v]);
   })
@@ -94,10 +94,10 @@ $('#demo2').each(function() {
   var json = {"images":[{"points":[{"x":22,"y":55},{"x":30,"y":8},{"x":88,"y":8},{"x":42,"y":59},{"x":115,"y":70},{"x":32,"y":114},{"x":74,"y":160},{"x":174,"y":118},{"x":223,"y":190},{"x":235,"y":265},{"x":198,"y":280},{"x":119,"y":209},{"x":208,"y":203},{"x":55,"y":30},{"x":70,"y":195},{"x":75,"y":210},{"x":152,"y":244},{"x":103,"y":275},{"x":161,"y":305},{"x":86,"y":309},{"x":87,"y":167},{"x":75,"y":179},{"x":75,"y":239},{"x":138,"y":200},{"x":130,"y":226},{"x":75,"y":224.5}],"src":"images/parrot-1.jpg","x":0,"y":0},{"points":[{"x":11,"y":46},{"x":19,"y":12},{"x":62,"y":8},{"x":31,"y":53},{"x":89,"y":54},{"x":28,"y":97},{"x":60,"y":130},{"x":134,"y":90},{"x":209,"y":143},{"x":191,"y":203},{"x":157,"y":186},{"x":115,"y":160},{"x":163,"y":154},{"x":44,"y":24},{"x":65,"y":154},{"x":81,"y":179},{"x":153,"y":215},{"x":112,"y":247},{"x":130,"y":300},{"x":89,"y":304},{"x":74,"y":131},{"x":65,"y":143},{"x":102,"y":210},{"x":134,"y":149},{"x":135,"y":177},{"x":101,"y":196}],"src":"images/parrot-2.jpg","x":0,"y":0},{"points":[{"x":24,"y":34},{"x":42,"y":10},{"x":91,"y":15},{"x":51,"y":68},{"x":113,"y":52},{"x":48,"y":104},{"x":90,"y":149},{"x":174.83784876668017,"y":99.99231702385764},{"x":240,"y":205},{"x":238,"y":238},{"x":184,"y":236},{"x":155,"y":200},{"x":219,"y":202},{"x":60,"y":28},{"x":100,"y":221},{"x":126,"y":229},{"x":174,"y":246},{"x":122,"y":269},{"x":143,"y":325},{"x":96,"y":327},{"x":122,"y":169},{"x":68,"y":178},{"x":124.5,"y":250.5},{"x":171,"y":190},{"x":164.5,"y":223},{"x":125.25,"y":239.75}],"src":"images/parrot-3.jpg","x":0,"y":0}],"triangles":[[4,2,3],[5,3,4],[6,4,5],[7,4,6],[7,8,12],[9,8,12],[7,10,12],[9,10,12],[0,1,13],[2,1,13],[0,3,13],[2,3,13],[11,7,15],[18,16,17],[19,17,18],[7,15,20],[14,15,20],[20,6,7],[6,21,20],[21,14,20],[17,16,22],[11,7,23],[10,7,23],[11,15,24],[16,15,24],[22,16,25],[15,16,25]]};
   var morpher = new Morpher(json);
 
-  $(this).find('.preview').prepend(morpher.canvas);
+  $('.preview', this).prepend(morpher.canvas);
 
-  var $inputs = $(this).find('input[type=range]');
-  var $checkbox = $(this).find('input[type=checkbox]');
+  var $inputs = $('input[type=range]', this);
+  var $checkbox = $('input[type=checkbox]', this);
   var mainFactor = 1;
   var factors = [1, 0, 0];
 
@@ -163,9 +163,9 @@ $('#demo3').each(function() {
 
   var morpher = new Morpher(json);
 
-  $(this).find('.preview').prepend(morpher.canvas);
+  $('.preview', this).prepend(morpher.canvas);
 
-  $(this).find('button').click(function() {
+  $('button', this).click(function() {
     var easingFunction;
     var action = $(this).data('action');
     morpher.set([1, 0]);
@@ -229,7 +229,7 @@ $('#demo4').each(function() {
 
   var morpher = new Morpher(json);
 
-  $(this).find('.preview').prepend(morpher.canvas);
+  $('.preview', this).prepend(morpher.canvas);
 
   var custom = {};
 
@@ -271,14 +271,14 @@ $('#demo4').each(function() {
     ctx.putImageData(data, 0, 0);
   }
 
-  $(this).find('button').click(function() {
+  $('button', this).click(function() {
     morpher.set([1, 0]);
     if($(this).data('action') == 'play') {
       morpher.animate([0, 1], 2000, $.easing["easeInOutCubic"]);
     }
   })
 
-  $(this).find('input').on("input change", function() {
+  $('input', this).on("input change", function() {
     if($(this).attr('type') == 'range') {
       var v = $(this).val()*1;
       morpher.set([1-v, v]);
@@ -351,9 +351,9 @@ $('#demo5').each(function() {
 
   morpher.set([1, 0, 0]);
 
-  $(this).find('.preview').prepend(morpher.canvas);
+  $('.preview', this).prepend(morpher.canvas);
 
-  var $inputs = $(this).find('input[type=range]');
+  var $inputs = $('input[type=range]', this);
   var mainFactor = 1;
   var factors = [1, 0, 0];
 

@@ -1,0 +1,27 @@
+{
+  "name": "morpher-js",
+  "version": "1.0.0",
+  "description": "JavaScript image morphing library",
+  "main": "index.js",
+  "scripts": {
+    "build": "coffee --compile --join demo/morpher.js -- src/**/*.coffee",
+    "prepubish": "npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jembezmamy/morpher-js.git"
+  },
+  "keywords": [
+    "morph",
+    "image"
+  ],
+  "author": "Paweł Bator <jembezmamy>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jembezmamy/morpher-js/issues"
+  },
+  "homepage": "https://github.com/jembezmamy/morpher-js#readme",
+  "devDependencies": {
+    "coffee-script": "^1.10.0"
+  }
+}

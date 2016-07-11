@@ -7,7 +7,7 @@ class MorpherJS.Point extends MorpherJS.EventDispatcher
     @mesh = params.mesh if params.mesh?
     @setX x, silent: true
     @setY y, silent: true
-    
+
 
   # getters & setters
 
@@ -18,6 +18,7 @@ class MorpherJS.Point extends MorpherJS.EventDispatcher
     unless @x == x
       @x = x
       @trigger 'change:x change', this unless params.silent
+    this
 
   getY: =>
     @y
@@ -26,8 +27,8 @@ class MorpherJS.Point extends MorpherJS.EventDispatcher
     unless @y == y
       @y = y
       @trigger 'change:y change', this unless params.silent
+    this
 
-      
   # public methods
 
   remove: =>
@@ -59,7 +60,7 @@ class MorpherJS.Point extends MorpherJS.EventDispatcher
   reset: =>
     @x = null
     @y = null
-      
+
 
   # old
 

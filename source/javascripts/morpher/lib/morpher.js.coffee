@@ -2,7 +2,7 @@ class MorpherJS.Morpher extends MorpherJS.EventDispatcher
   images: null
   triangles: []
   mesh: null
-  
+
   canvas: null
   ctx: null
   tmpCanvas: null
@@ -13,7 +13,7 @@ class MorpherJS.Morpher extends MorpherJS.EventDispatcher
   easingFunction: null
 
   requestID: null
-  
+
   t0: null
   duration: null
   state0: null
@@ -24,14 +24,19 @@ class MorpherJS.Morpher extends MorpherJS.EventDispatcher
     @images = []
     @triangles = []
     @mesh = new MorpherJS.Mesh()
-    
-    @canvas = document.createElement('canvas')
-    @ctx = @canvas.getContext('2d')
+
+    @setCanvas document.createElement('canvas')
     @tmpCanvas = document.createElement('canvas')
     @tmpCtx = @tmpCanvas.getContext('2d')
-    
+
     @fromJSON params
     @set [1]
+
+
+  setCanvas: (canvas) =>
+    @canvas = canvas
+    @ctx = @canvas.getContext('2d')
+    @draw()
 
 
   set: (weights, params = {}) =>
@@ -40,7 +45,7 @@ class MorpherJS.Morpher extends MorpherJS.EventDispatcher
       w = weights[i] || 0
       @state.push w
       img.setWeight w, params
-      
+
   get: =>
     @state.slice()
 
@@ -52,8 +57,9 @@ class MorpherJS.Morpher extends MorpherJS.EventDispatcher
     @t0 = new Date().getTime()
     @duration = duration
     @easingFunction = easing
+    @trigger "animation:start", this
     @draw()
-    
+
 
   # images
 
@@ -78,7 +84,7 @@ class MorpherJS.Morpher extends MorpherJS.EventDispatcher
     for event, handler of @imageEvents
       image.on event, @[handler]
     @loadHandler()
-    @trigger 'image:add' unless params.silent
+    @trigger 'image:add', this, image unless params.silent
 
   removeImage: (image) =>
     i = @images.indexOf image
@@ -86,7 +92,7 @@ class MorpherJS.Morpher extends MorpherJS.EventDispatcher
       image.off event, @[handler]
     if i != -1
       delete @images.splice i, 1
-      @trigger 'image:remove'
+      @trigger 'image:remove', this, image
 
   loadHandler: (e) =>
     @draw()
@@ -97,14 +103,14 @@ class MorpherJS.Morpher extends MorpherJS.EventDispatcher
 
   changeHandler: (e) =>
     @draw()
-    @trigger 'change'
+    @trigger 'change', this
 
 
   # points
 
   addPoint: (x, y) =>
     for image in @images.concat @mesh
-      image.addPoint x: x, y: y
+      image.addPoint {x: x, y: y}, {silent: true}
     @trigger 'point:add', this
 
   addPointHandler: (image, point, pointParams = null) =>
@@ -163,7 +169,7 @@ class MorpherJS.Morpher extends MorpherJS.EventDispatcher
     if @mesh.triangles.length > @triangles.length
       @mesh.removeTriangle index
     @trigger 'triangle:remove', this
-    
+
 
   # drawing
 
@@ -225,6 +231,7 @@ class MorpherJS.Morpher extends MorpherJS.EventDispatcher
       if t >= @duration
         state = @state1
         @state0 = @state1 = @t0 = null
+        @trigger "animation:complete", this
       else
         progress = t / @duration
         progress = @easingFunction(progress) if @easingFunction?
@@ -266,7 +273,7 @@ class MorpherJS.Morpher extends MorpherJS.EventDispatcher
     if json.triangles?
       for triangle in json.triangles[@triangles.length..-1]
         @addTriangle triangle[0], triangle[1], triangle[2]
-      
+
 
   reset: =>
     for image in @images

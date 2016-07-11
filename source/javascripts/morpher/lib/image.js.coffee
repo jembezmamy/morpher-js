@@ -7,18 +7,17 @@ class MorpherJS.Image extends MorpherJS.EventDispatcher
   weight: 0
   x: 0
   y: 0
-  
+
 
   constructor: (json = {}) ->
-    @el = new window.Image()
-    @el.onload = @loadHandler
+    @setImage(new window.Image())
 
     @source = document.createElement('canvas')
-    
+
     @mesh = new MorpherJS.Mesh()
     @mesh.on 'all', @propagateMeshEvent
     @mesh.on 'change:bounds', @refreshSource
-    
+
     @triangles = @mesh.triangles
     @points = @mesh.points
     @fromJSON json
@@ -26,10 +25,20 @@ class MorpherJS.Image extends MorpherJS.EventDispatcher
 
   remove: =>
     @mesh.remove()
-    @trigger 'remove', this 
-    
+    @trigger 'remove', this
+
 
   # setters & getters
+
+  setImage: (imgEl) =>
+    @el = imgEl
+    switch @el.tagName
+      when "IMG"
+        @loaded = @el.complete && @el.naturalWidth != 0
+        @el.onload = @loadHandler
+        @refreshSource()
+      when "CANVAS"
+        @loadHandler()
 
   setSrc: (src) =>
     @loaded = false
@@ -71,23 +80,25 @@ class MorpherJS.Image extends MorpherJS.EventDispatcher
 
 
   # mesh proxy
-  
+
   setMaxSize: =>
-    @mesh.setMaxSize.apply this, arguments
+    @mesh.setMaxSize.apply @mesh, arguments
   addPoint: =>
-    @mesh.addPoint.apply this, arguments
+    @mesh.addPoint.apply @mesh, arguments
   removePoint: =>
-    @mesh.removePoint.apply this, arguments
+    @mesh.removePoint.apply @mesh, arguments
   makeCompatibleWith: =>
-    @mesh.makeCompatibleWith.apply this, arguments
+    @mesh.makeCompatibleWith.apply @mesh, arguments
   getRelativePositionOf: =>
-    @mesh.getRelativePositionOf.apply this, arguments
+    @mesh.getRelativePositionOf.apply @mesh, arguments
   splitEdge: =>
-    @mesh.splitEdge.apply this, arguments
+    @mesh.splitEdge.apply @mesh, arguments
   addTriangle: =>
-    @mesh.addTriangle.apply this, arguments
+    @mesh.addTriangle.apply @mesh, arguments
   removeTriangle: =>
-    @mesh.removeTriangle.apply this, arguments
+    @mesh.removeTriangle.apply @mesh, arguments
+  refreshBounds: =>
+    @mesh.refreshBounds()
 
   propagateMeshEvent: (type, target, args...) =>
     @trigger.apply this, [type, this].concat args
@@ -105,7 +116,7 @@ class MorpherJS.Image extends MorpherJS.EventDispatcher
     @source.height = @mesh.bounds.top + @mesh.bounds.height
     ctx = @source.getContext('2d')
     ctx.drawImage @el, 0, 0
-    
+
 
 
   # JSON
@@ -122,4 +133,3 @@ class MorpherJS.Image extends MorpherJS.EventDispatcher
     @setY json.y, params if json.y?
     @mesh.fromJSON(json, params)
     @setSrc json.src if json.src?
-    

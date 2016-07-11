@@ -19,6 +19,7 @@ class Gui.Views.Image extends Gui.Views.Tile
     'change input[name=file]'         : 'fileHandler'
     'change input[name=url]'          : 'changeHandler'
     'change input[name=targetWeight]' : 'changeHandler'
+    'input input[name=targetWeight]'  : 'changeHandler'
     'click canvas'                    : 'canvasHandler'
     'mousedown canvas'                : 'moveHandler'
 

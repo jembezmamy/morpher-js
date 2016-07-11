@@ -7,7 +7,7 @@ class MorpherJS.Mesh extends MorpherJS.EventDispatcher
   maxHeight: 0
   x: 0
   y: 0
-  
+
   constructor: (params = {}) ->
     @points = []
     @triangles = []
@@ -18,7 +18,7 @@ class MorpherJS.Mesh extends MorpherJS.EventDispatcher
     @maxWidth = w
     @maxHeight = h
 
-  refreshBounds: (params = {})=>
+  refreshBounds: =>
     bounds = {left: 0, top: 0, width: 0, height: 0}
     if @points.length
       bounds.left = @points[0].x
@@ -32,7 +32,7 @@ class MorpherJS.Mesh extends MorpherJS.EventDispatcher
     bounds.height -= bounds.top
     if bounds.width != @bounds.width || bounds.height != @bounds.height || bounds.left != @bounds.left || bounds.top != @bounds.top
       @bounds = bounds
-      @trigger 'change:bounds' unless params.silent
+      @trigger 'change:bounds'
 
   # points
 
@@ -51,8 +51,9 @@ class MorpherJS.Mesh extends MorpherJS.EventDispatcher
     point.on "change", @changeHandler
     point.on 'remove', @removePoint
     @points.push point
-    @refreshBounds(params)
-    @trigger 'point:add', this, point, pointParams unless params.silent
+    @refreshBounds()
+    unless params.silent
+      @trigger 'point:add', this, point, pointParams unless params.silent
     point
 
   removePoint: (point, params = {}) =>
@@ -129,7 +130,7 @@ class MorpherJS.Mesh extends MorpherJS.EventDispatcher
           baseD = nearest[2].point.distanceTo intersection
           directionY = if (point.x - intersection.x) * (nearest[2].point.x - intersection.x) > 0 then 1 else -1
         y = dY * directionY / baseD
-        
+
     nearest = (@points.indexOf(n.point) for n in nearest)
     {points: nearest, x: x, y: y}
 
@@ -162,7 +163,7 @@ class MorpherJS.Mesh extends MorpherJS.EventDispatcher
   findLine: (p1, p2) =>
     if p1.x - p2.x
       a = (p1.y - p2.y) / (p1.x - p2.x)
-      b = p1.y - a*p1.x 
+      b = p1.y - a*p1.x
       [a, b]
     else # vertical line
       [null, p1.x]
@@ -177,7 +178,7 @@ class MorpherJS.Mesh extends MorpherJS.EventDispatcher
       x = b
       y = p.y
     new MorpherJS.Point x, y
-    
+
 
 
   # edges
@@ -198,7 +199,7 @@ class MorpherJS.Mesh extends MorpherJS.EventDispatcher
         @addTriangle(i2, i3, i4)
       else
         i++
-        
+
 
 
   # triangles

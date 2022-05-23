@@ -94,6 +94,26 @@ class MorpherJS.Triangle extends MorpherJS.EventDispatcher
       destinationCtx.lineTo point.x, point.y
     destinationCtx.closePath()
     destinationCtx.clip()
+    if left < 0
+      width += left
+      left = 0
+    if top < 0
+      height += top
+      top = 0
+    excess = left + width - destinationCtx.canvas.width
+    if excess > 0
+      width -= excess
+    excess = top + height - destinationCtx.canvas.height
+    if excess > 0
+      height -= excess
+    excess = left + width - sourceBitmap.width
+    if excess > 0
+      width -= excess
+    excess = top + height - sourceBitmap.height
+    if excess > 0
+      height -= excess
+    if width < 0 or height < 0
+      return
     destinationCtx.drawImage sourceBitmap, left, top, width, height, left, top, width, height
 
     destinationCtx.restore()

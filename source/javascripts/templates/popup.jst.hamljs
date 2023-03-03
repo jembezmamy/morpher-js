@@ -1,4 +1,0 @@
-.window
-  %button{title: 'Close', data-action: 'close'}
-    .close.icon
-  .content
